@@ -49,4 +49,4 @@ jobs:
           git config --global user.name "Github CI"
 
           npx lerna version -m "${{ inputs.bump }} release ($TAG): ${{ inputs.package }}" --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
-          npx lerna publish --dist-tag $TAG --yes from-git
+          npx lerna publish --dist-tag $TAG --yes from-package
