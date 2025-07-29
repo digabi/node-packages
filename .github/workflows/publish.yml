@@ -1,0 +1,39 @@
+name: 'Publish new version'
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: choice
+        description: Package
+        options:
+          - '@digabi/validation'
+      bump:
+        type: choice
+        description: Package new version increment
+        options:
+          - major
+          - minor
+          - patch
+          - premajor
+          - preminor
+          - prepatch
+          - prerelease
+
+run-name: 'Publish new ${{ inputs.bump }} version of package ${{ inputs.package }}'
+
+jobs:
+  publish:
+    name: Publish new version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-npm-token
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx lerna run --scope ${{ github.event.inputs.package }} lint
+      - run: npx lerna run --scope ${{ github.event.inputs.package }} test
+      - run: npx lerna version ${{ github.event.inputs.bump }}

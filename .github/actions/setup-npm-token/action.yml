@@ -1,0 +1,8 @@
+name: 'Create npmrc'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Create npmrc file
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > $PWD/.npmrc
+      shell: bash
