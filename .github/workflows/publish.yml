@@ -34,6 +34,6 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
-      - run: npx lerna run --scope ${{ github.event.inputs.package }} lint
-      - run: npx lerna run --scope ${{ github.event.inputs.package }} test
-      - run: npx lerna version ${{ github.event.inputs.bump }}
+      - run: npx lerna run --scope ${{ inputs.package }} lint
+      - run: npx lerna run --scope ${{ inputs.package }} test
+      - run: npx lerna version --exact --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
