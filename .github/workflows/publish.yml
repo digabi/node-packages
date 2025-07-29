@@ -8,6 +8,7 @@ on:
         description: Package
         options:
           - '@digabi/validation'
+          - '@digabi/fetch'
       bump:
         type: choice
         description: Version bump
