@@ -36,4 +36,4 @@ jobs:
       - run: npm ci
       - run: npx lerna run --scope ${{ inputs.package }} lint
       - run: npx lerna run --scope ${{ inputs.package }} test
-      - run: npx lerna version --exact --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
+      - run: npx lerna publish --exact --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
