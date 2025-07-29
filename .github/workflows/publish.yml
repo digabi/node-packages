@@ -36,8 +36,15 @@ jobs:
       - run: npm ci
       - run: npx lerna run --scope ${{ inputs.package }} lint
       - run: npx lerna run --scope ${{ inputs.package }} test
-      - run: |
+      - name: Publish to npm
+        run: |
+          TAG=latest
+
+          if [[ "${{ inputs.bump }}" == *pre* ]]; then
+            TAG=alpha
+          fi
+
           git config --global user.email "ci@ylioppilastutkinto.fi"
           git config --global user.name "Github CI"
 
-          npx lerna publish --exact --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
+          npx lerna publish --dist-tag $TAG --exact --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
