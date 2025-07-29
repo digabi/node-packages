@@ -10,7 +10,7 @@ on:
           - '@digabi/validation'
       bump:
         type: choice
-        description: Package new version increment
+        description: Version bump
         options:
           - major
           - minor
