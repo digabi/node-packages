@@ -2,7 +2,7 @@
   "name": "@digabi/validation",
   "version": "2.0.1",
   "author": "Matriculation Examination Board, Finland",
-  "license": "MIT",
+  "license": "EUPL-1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/digabi/node-packages.git"
