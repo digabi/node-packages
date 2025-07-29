@@ -21,7 +21,7 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "compile": "lerna run tsc",
+    "build": "lerna run build",
     "test": "lerna run test",
     "lint": "lerna run lint"
   }
