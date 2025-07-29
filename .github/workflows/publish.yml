@@ -48,4 +48,5 @@ jobs:
           git config --global user.email "ci@ylioppilastutkinto.fi"
           git config --global user.name "Github CI"
 
-          npx lerna publish --dist-tag $TAG --exact --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
+          npx lerna version -m "${{ inputs.bump }} release ($TAG): ${{ inputs.package }}" --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
+          npx lerna publish --dist-tag $TAG --yes from-git
