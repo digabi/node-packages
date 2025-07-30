@@ -52,5 +52,10 @@ jobs:
           git config --global user.email "ci@ylioppilastutkinto.fi"
           git config --global user.name "Github CI"
 
-          npx lerna version -m "${{ inputs.bump }} release ($TAG): ${{ inputs.package }}" --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
-          npx lerna publish --dist-tag $TAG --yes from-package
+          npm run build --workspace=${{inputs.package}}
+
+          npm version ${{ inputs.bump }} --preid="$TAG" -m "${{ inputs.bump }} release ($TAG): ${{ inputs.package }}" --workspace=${{ inputs.package }}
+          git push
+          git push --tags
+
+          npm publish --workspace=${{ inputs.package }} --access=restricted --tag=$TAG
