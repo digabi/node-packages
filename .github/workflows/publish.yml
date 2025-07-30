@@ -9,6 +9,7 @@ on:
         options:
           - '@digabi/validation'
           - '@digabi/fetch'
+          - '@digabi/logger'
       bump:
         type: choice
         description: Version bump
