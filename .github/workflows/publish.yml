@@ -55,7 +55,7 @@ jobs:
           npm run build --workspace=${{inputs.package}}
           npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
 
-          git add package.json package-lock.json
+          git add **/package.json package-lock.json
           git commit -m "CI: ${{ inputs.bump }} release ($TAG): ${{ inputs.package }}"
 
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
