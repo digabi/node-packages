@@ -17,7 +17,7 @@ const splatSymbol = Symbol.for('splat')
  *
  * Unlike winston's `format.splat()`, it doesn't support printf-style parameters.
  */
-export const combineMeta = format(info => {
+const combineMeta = format(info => {
   const splats = (info[splatSymbol] as unknown[]) || []
 
   for (let i = 0; i < splats.length; i++) {
@@ -36,7 +36,7 @@ export const combineMeta = format(info => {
   return info
 })
 
-export const convertErrorToObject = format(info => {
+const convertErrorToObject = format(info => {
   for (const key in info) {
     if (Object.prototype.hasOwnProperty.call(info, key) && info[key] instanceof Error) {
       const errorInstance = info[key]
@@ -46,28 +46,13 @@ export const convertErrorToObject = format(info => {
   return info
 })
 
-export const trimMessage = format(info => {
+const trimMessage = format(info => {
   if (typeof info.message === 'string' || info.message instanceof String) {
     info.message = info.message.trim()
   }
 
   return info
 })
-
-export function awsFormats(options: LoggerOptions) {
-  return [
-    format.timestamp(),
-    combineMeta(),
-    format(info => {
-      info.requestId = getRequestId()
-      return info
-    })(),
-    convertErrorToObject(),
-    options.format,
-    trimMessage(),
-    format.json()
-  ]
-}
 
 function serializeMeta(meta: Record<string, unknown>) {
   let str = ''
@@ -82,6 +67,21 @@ function serializeMeta(meta: Record<string, unknown>) {
   }
 
   return str
+}
+
+export function awsFormats(options: LoggerOptions) {
+  return [
+    format.timestamp(),
+    combineMeta(),
+    format(info => {
+      info.requestId = getRequestId()
+      return info
+    })(),
+    convertErrorToObject(),
+    options.format,
+    trimMessage(),
+    format.json()
+  ]
 }
 
 export function localFormats(options: LoggerOptions, requestFinishedMessage: string) {
