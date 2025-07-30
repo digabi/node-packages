@@ -61,7 +61,7 @@ jobs:
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
           GIT_TAG_NAME=${{ inputs.package }}@$VERSION
 
-          git tag -a $GIT_TAG_NAME
+          git tag -a $GIT_TAG_NAME -m $GIT_TAG_NAME
 
           git push
           git push --tags
