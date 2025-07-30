@@ -44,7 +44,8 @@ jobs:
           TAG=latest
 
           if [[ "${{ inputs.bump }}" == *pre* ]]; then
-            TAG=alpha
+            branchName="${{ github.ref_name }}"
+            TAG=${branchName//\//-}
           fi
 
           git config --global user.email "ci@ylioppilastutkinto.fi"
