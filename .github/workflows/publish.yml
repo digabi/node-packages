@@ -62,7 +62,7 @@ jobs:
 
           # create release commit
           git add **/package.json package-lock.json
-          git commit -m "CI: ${{ inputs.bump }} release ($TAG): $GIT_TAG_NAME"
+          git commit -m "CI: Release $GIT_TAG_NAME with tag $TAG"
 
           # create tag
           git tag -a $GIT_TAG_NAME -m $GIT_TAG_NAME
