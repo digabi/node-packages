@@ -1,4 +1,4 @@
-import { testApp } from '@digabi/js-test-utils'
+import { testApp } from '@digabi/testing'
 import express from 'express'
 import * as requestWrappers from '../src'
 import bodyParser from 'body-parser'
@@ -7,10 +7,7 @@ import { loadSomeFileToBuffer } from './utils'
 import { CookieJar } from 'tough-cookie'
 import { test, describe, before, after } from 'node:test'
 import assert from 'node:assert/strict'
-import { DataError } from '@digabi/js-utils/dist-cjs/app-error'
-import * as jsUtils from '@digabi/js-utils'
-
-const { fileUploadMiddleware, respondWithZip, setupDefaultErrorHandlers } = jsUtils.expressUtils
+import { fileUploadMiddleware, respondWithZip, setupDefaultErrorHandlers, DataError } from '@digabi/express'
 
 interface Test {
   value: number

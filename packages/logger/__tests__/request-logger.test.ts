@@ -2,7 +2,7 @@ import { test, describe, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import express from 'express'
 import { createLogger, requestLogger } from '../src'
-import { testApp } from '@digabi/js-test-utils'
+import { testApp } from '@digabi/testing'
 import { assertNextLogEvent } from './utils'
 import { Logform } from 'winston'
 

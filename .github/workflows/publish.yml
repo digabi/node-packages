@@ -10,6 +10,8 @@ on:
           - '@digabi/validation'
           - '@digabi/fetch'
           - '@digabi/logger'
+          - '@digabi/express'
+          - '@digabi/testing'
       bump:
         type: choice
         description: Version bump

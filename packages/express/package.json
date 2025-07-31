@@ -1,6 +1,6 @@
 {
-  "name": "@digabi/fetch",
-  "version": "1.0.5-alpha.0",
+  "name": "@digabi/express",
+  "version": "0.0.1",
   "author": "Matriculation Examination Board, Finland",
   "license": "EUPL-1.1",
   "repository": {
@@ -14,21 +14,21 @@
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json",
     "test": "node --import tsx ./__tests__/*.test.ts",
-    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
-    "prepare": "npm run build"
-  },
-  "dependencies": {
-    "tough-cookie": "^5.1.2"
-  },
-  "devDependencies": {
-    "@digabi/express": "^0.0.1",
-    "@digabi/testing": "^0.0.1",
-    "@types/multer": "^2.0.0",
-    "body-parser": "^2.2.0",
-    "express": "^5.1.0",
-    "multer": "^2.0.2"
+    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./"
   },
   "publishConfig": {
     "access": "restricted"
+  },
+  "dependencies": {
+    "basic-auth": "^2.0.1",
+    "express": "^5.1.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "lodash": "^4.17.21",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/basic-auth": "^1.1.8",
+    "@types/json2csv": "^5.0.7",
+    "@types/lodash": "^4.17.20"
   }
 }
