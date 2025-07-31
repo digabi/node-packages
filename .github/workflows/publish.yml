@@ -9,6 +9,7 @@ on:
         options:
           - '@digabi/validation'
           - '@digabi/fetch'
+          - '@digabi/logger'
       bump:
         type: choice
         description: Version bump
@@ -37,18 +38,34 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
-      - run: npx lerna run --scope ${{ inputs.package }} lint
-      - run: npx lerna run --scope ${{ inputs.package }} test
+      - run: npm run lint --workspace=${{ inputs.package }}
+      - run: npm run test --workspace=${{ inputs.package }}
+      - run: npm run build --workspace=${{ inputs.package }}
       - name: Publish to npm
         run: |
           TAG=latest
 
           if [[ "${{ inputs.bump }}" == *pre* ]]; then
-            TAG=alpha
+            branchName="${{ github.ref_name }}"
+            TAG=${branchName//\//-}
           fi
 
           git config --global user.email "ci@ylioppilastutkinto.fi"
           git config --global user.name "Github CI"
 
-          npx lerna version -m "${{ inputs.bump }} release ($TAG): ${{ inputs.package }}" --yes --force-publish=${{ inputs.package }} ${{ inputs.bump }}
-          npx lerna publish --dist-tag $TAG --yes from-package
+          # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
+          npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
+
+          # get new version
+          VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
+          GIT_TAG_NAME=${{ inputs.package }}@$VERSION
+
+          # create release commit
+          git add **/package.json package-lock.json
+          git commit -m "CI: Release $GIT_TAG_NAME with tag $TAG"
+
+          # create tag
+          git tag -a $GIT_TAG_NAME -m $GIT_TAG_NAME
+
+          git push --follow-tags
+          npm publish --workspace=${{ inputs.package }} --tag=$TAG

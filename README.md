@@ -24,17 +24,19 @@ This repository contains utility packages for Digabi codebase.
 Publishing should be done only via github actions by triggering the `Publish new version` workflow.
 
 1. Go to https://github.com/digabi/node-packages/actions/workflows/publish.yml and choose `Run workflow`.
-2. Workflow should always be run from `main` branch!
+2. If you want to create an alpha release from a feature branch, select that as the branch to run workflow from.
 3. Select package to update
 4. Select what kind of version bump would you like to do. If doing a `pre` type release, the version will be
    tagged as `alpha`. If normal release then it will be tagged as `latest`.
 
-### Make package public
+### Set package access
 
-Add this to `package.json`. Note that by default packages are private.
+https://docs.npmjs.com/cli/v11/using-npm/config#access
+
+package.json
 
 ```
   "publishConfig": {
-    "access": "restricted"
+    "access": "restricted" | "public"
   }
 ```

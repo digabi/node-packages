@@ -1,0 +1,30 @@
+{
+  "name": "@digabi/logger",
+  "version": "1.1.0-feature-import-logger-package.2",
+  "author": "Matriculation Examination Board, Finland",
+  "license": "EUPL-1.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digabi/node-packages.git"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project ./tsconfig.build.json",
+    "test": "node --test --import tsx ./__tests__/*.test.ts",
+    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0"
+  },
+  "dependencies": {
+    "cls-rtracer": "^2.6.3",
+    "winston": "^3.17.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}
