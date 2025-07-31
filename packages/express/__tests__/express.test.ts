@@ -5,12 +5,6 @@ import express from 'express'
 import { AppError, DataError, setupDefaultErrorHandlers } from '../src'
 import _ from 'lodash'
 
-describe('test-app', () => {
-  test('todo', () => {
-    assert.equal(true, true)
-  })
-})
-
 const errorMessages: unknown[] = []
 const warnMessages: unknown[] = []
 
