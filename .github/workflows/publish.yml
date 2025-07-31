@@ -38,8 +38,9 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
-      - run: npx lerna run --scope ${{ inputs.package }} lint
-      - run: npx lerna run --scope ${{ inputs.package }} test
+      - run: npm run lint --workspace= ${{ inputs.package }} lint
+      - run: npm run lint --workspace= ${{ inputs.package }} test
+      - run: npm run lint --workspace= ${{ inputs.package }} build
       - name: Publish to npm
         run: |
           TAG=latest
@@ -52,18 +53,19 @@ jobs:
           git config --global user.email "ci@ylioppilastutkinto.fi"
           git config --global user.name "Github CI"
 
-          npm run build --workspace=${{inputs.package}}
+          # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
           npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
 
-          git add **/package.json package-lock.json
-          git commit -m "CI: ${{ inputs.bump }} release ($TAG): ${{ inputs.package }}"
-
+          # get new version
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
           GIT_TAG_NAME=${{ inputs.package }}@$VERSION
 
+          # create release commit
+          git add **/package.json package-lock.json
+          git commit -m "CI: ${{ inputs.bump }} release ($TAG): $GIT_TAG_NAME"
+
+          # create tag
           git tag -a $GIT_TAG_NAME -m $GIT_TAG_NAME
 
-          git push
-          git push --tags
-
-          npm publish --workspace=${{ inputs.package }} --access=restricted --tag=$TAG
+          git push --follow-tags
+          npm publish --workspace=${{ inputs.package }} --tag=$TAG

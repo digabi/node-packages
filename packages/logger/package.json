@@ -23,5 +23,8 @@
   "dependencies": {
     "cls-rtracer": "^2.6.3",
     "winston": "^3.17.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
   }
 }

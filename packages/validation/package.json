@@ -16,5 +16,8 @@
     "test": "node --import tsx ./__tests__/*.test.ts",
     "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
     "prepare": "npm run build"
+  },
+  "publishConfig": {
+    "access": "restricted"
   }
 }
