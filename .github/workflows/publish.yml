@@ -26,6 +26,9 @@ on:
 
 run-name: 'Publish new ${{ inputs.bump }} version of package ${{ inputs.package }}'
 
+concurrency:
+  group: publish-queue # Publish jobs fail if ran simultaneously
+
 jobs:
   publish:
     name: Publish new version
