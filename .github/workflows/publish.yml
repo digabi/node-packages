@@ -38,9 +38,9 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
-      - run: npm run lint --workspace=${{ inputs.package }} lint
-      - run: npm run lint --workspace=${{ inputs.package }} test
-      - run: npm run lint --workspace=${{ inputs.package }} build
+      - run: npm run lint --workspace=${{ inputs.package }}
+      - run: npm run test --workspace=${{ inputs.package }}
+      - run: npm run build --workspace=${{ inputs.package }}
       - name: Publish to npm
         run: |
           TAG=latest
