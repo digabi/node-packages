@@ -7,7 +7,7 @@ This repository contains utility packages for Digabi codebase.
 - Typescript only
 - Good unit test coverage
 - If a devDependency is needed in all packages, add it to the root level package.json. Otherwise it should go in the packages own package.json
-- Zero dependency should be the goal. Only add dependencies if absolutely necessary.
+- Let’s keep dependencies to a minimum and only add them when they’re truly needed. Try to avoid pulling in a large library just for a single function.
 
 ### Package structure
 
