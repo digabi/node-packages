@@ -5,7 +5,7 @@
   "license": "EUPL-1.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/digabi/node-packages.git"
+    "url": "git+https://github.com/digabi/node-packages.git"
   },
   "main": "dist/index.js",
   "files": [
