@@ -55,9 +55,12 @@ jobs:
             TAG=${branchName//\//-}
           fi
 
+          echo "Using tag: $TAG"
+
           git config --global user.email "ci@ylioppilastutkinto.fi"
           git config --global user.name "Github CI"
 
+          echo "Creating new version"
           # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
           npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
 
@@ -65,12 +68,16 @@ jobs:
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
           GIT_TAG_NAME=${{ inputs.package }}@$VERSION
 
-          # create release commit
+          echo "New version: $VERSION"
+          echo "Git tag name: $GIT_TAG_NAME"
+
+          echo "Create release commit"
           git add **/package.json package-lock.json
           git commit -m "CI: Release $GIT_TAG_NAME with tag $TAG"
 
-          # create tag
+          echo "Create tag"
           git tag -a $GIT_TAG_NAME -m $GIT_TAG_NAME
 
+          echo "Push to git and publish to npm"
           git push --follow-tags
           npm publish --workspace=${{ inputs.package }} --tag=$TAG
