@@ -24,7 +24,7 @@ on:
           - prepatch
           - prerelease
 
-run-name: 'Publish new ${{ inputs.bump }} version of package ${{ inputs.package }}'
+run-name: 'Publish ${{ inputs.package }}'
 
 concurrency:
   group: publish-queue # Publish jobs fail if ran simultaneously
@@ -94,5 +94,7 @@ jobs:
 
       - name: Publish to npm and push to git
         run: |
+          TAG=${{ steps.publish-parameters.outputs.tag }}
+
           npm publish --workspace=${{ inputs.package }} --tag=$TAG
           git push && git push --tags
