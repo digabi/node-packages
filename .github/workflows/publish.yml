@@ -64,13 +64,12 @@ jobs:
           CODE=$(npm view ${{ inputs.package }} --json | jq '.error.code')
 
           if [ "$CODE" = '"E404"' ]; then
-            echo "Package doesn't exist in npm registry. publishing current version instead."
-          else
-            echo "Package found in npm registry"
-
-            # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
-            npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
+            echo "Package doesn't exist in npm registry. Publishing current version first."
+            npm publish --workspace=${{ inputs.package }} --tag=$TAG
           fi
+
+          # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
+          npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
 
           # get new version
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
