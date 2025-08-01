@@ -13,8 +13,8 @@ describe('migration-runner', () => {
       const path = '20221212-155836-add-screenshot-index.sql'
       const date = parseDateFromMigrationFilePath(path, mockLogger)
 
-      assert.equal(date.toISOString(), '2022-12-12T13:58:36.000Z')
-      assert.equal(date.valueOf(), 1670853516000)
+      assert.equal(date.toISOString(), '2022-12-12T15:58:36.000Z')
+      assert.equal(date.valueOf(), 1670860716000)
     })
   })
 })
