@@ -45,14 +45,29 @@ jobs:
       - run: npm ci
       - run: npm run lint --workspace=${{ inputs.package }}
       - run: npm run test --workspace=${{ inputs.package }}
-      - run: npm run build --workspace=${{ inputs.package }}
 
-      - name: Determine publish parameters
-        id: publish-parameters
+      - name: Setup git config
         run: |
           git config --global user.email "ci@ylioppilastutkinto.fi"
           git config --global user.name "Github CI"
 
+      # Check if package exists in npm registry
+      - name: Get publish type
+        id: publish-type
+        run: |
+          CODE=$(npm view ${{ inputs.package }} --json | jq '.error.code')
+
+          if [ "$CODE" = '"E404"' ]; then
+            STATE=initial
+          else
+            STATE=update
+          fi
+
+          echo "value=$STATUS" >> $GITHUB_OUTPUT
+
+      - name: Get NPM tag name
+        id: npm-tag
+        run: |
           TAG=latest
 
           if [[ "${{ inputs.bump }}" == *pre* ]]; then
@@ -60,41 +75,40 @@ jobs:
             TAG=${branchName//\//-}
           fi
 
-          echo "Check if package exists in npm registry"
-          CODE=$(npm view ${{ inputs.package }} --json | jq '.error.code')
+          echo "value=$TAG" >> $GITHUB_OUTPUT
 
-          if [ "$CODE" = '"E404"' ]; then
-            STATE=initial
-          else
-            STATE=update
-            npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
-          fi
+      - name: Bump package version
+        if: ${{ steps.publish-type.outputs.value == 'update' }}
+        run: |
+          TAG=${{ steps.npm-tag.outputs.value }}
+          npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
 
+      - name: Get git tag name
+        id: git-tag
+        run: |
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
           GIT_TAG_NAME=${{ inputs.package }}@$VERSION
 
-          echo "state=$STATUS" >> $GITHUB_OUTPUT
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "gitTagName=$GIT_TAG_NAME" >> $GITHUB_OUTPUT
+          echo "value=$GIT_TAG_NAME" >> $GITHUB_OUTPUT
 
       # Do not create release commit for initial publishes since nothing has changed.
       - name: Create release commit
-        if: ${{ steps.publish-parameters.outputs.state == 'update' }}
+        if: ${{ steps.publish-type.outputs.value == 'update' }}
         run: |
-          TAG=${{ steps.publish-parameters.outputs.tag }}
-          GIT_TAG_NAME=${{ steps.publish-parameters.outputs.gitTagName }}
+          TAG=${{ steps.npm-tag.outputs.value }}
+          GIT_TAG_NAME=${{ steps.git-tag.outputs.value }}
 
           git add **/package.json package-lock.json
           git commit -m "CI: Release $GIT_TAG_NAME with tag $TAG"
 
       - name: Create tag
         run: |
-          GIT_TAG_NAME=${{ steps.publish-parameters.outputs.gitTagName }}
+          GIT_TAG_NAME=${{ steps.git-tag.outputs.value }}
           git tag -a $GIT_TAG_NAME -m $GIT_TAG_NAME
 
       - name: Publish to npm and push to git
         run: |
-          TAG=${{ steps.publish-parameters.outputs.tag }}
+          TAG=${{ steps.npm-tag.outputs.value }}
 
           npm publish --workspace=${{ inputs.package }} --tag=$TAG
           git push && git push --tags
