@@ -14,7 +14,7 @@ on:
           - '@digabi/testing'
       bump:
         type: choice
-        description: Version bump
+        description: Version bump (if package not in npm registry, current version will be published)
         options:
           - major
           - minor
@@ -46,8 +46,13 @@ jobs:
       - run: npm run lint --workspace=${{ inputs.package }}
       - run: npm run test --workspace=${{ inputs.package }}
       - run: npm run build --workspace=${{ inputs.package }}
-      - name: Publish to npm
+
+      - name: Determine publish parameters
+        id: publish-parameters
         run: |
+          git config --global user.email "ci@ylioppilastutkinto.fi"
+          git config --global user.name "Github CI"
+
           TAG=latest
 
           if [[ "${{ inputs.bump }}" == *pre* ]]; then
@@ -55,36 +60,39 @@ jobs:
             TAG=${branchName//\//-}
           fi
 
-          echo "Using tag: $TAG"
-
-          git config --global user.email "ci@ylioppilastutkinto.fi"
-          git config --global user.name "Github CI"
-
           echo "Check if package exists in npm registry"
           CODE=$(npm view ${{ inputs.package }} --json | jq '.error.code')
 
           if [ "$CODE" = '"E404"' ]; then
-            echo "Package doesn't exist in npm registry. Publishing current version first."
-            npm publish --workspace=${{ inputs.package }} --tag=$TAG
+            STATE=initial
+          else
+            STATE=update
+            npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
           fi
 
-          # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
-          npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
-
-          # get new version
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
           GIT_TAG_NAME=${{ inputs.package }}@$VERSION
 
-          echo "New version: $VERSION"
-          echo "Git tag name: $GIT_TAG_NAME"
+          echo "state=$STATUS" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "gitTagName=$GIT_TAG_NAME" >> $GITHUB_OUTPUT
 
-          echo "Create release commit"
+      # Do not create release commit for initial publishes since nothing has changed.
+      - name: Create release commit
+        if: ${{ steps.publish-parameters.outputs.state == 'update' }}
+        run: |
+          TAG=${{ steps.publish-parameters.outputs.tag }}
+          GIT_TAG_NAME=${{ steps.publish-parameters.outputs.gitTagName }}
+
           git add **/package.json package-lock.json
           git commit -m "CI: Release $GIT_TAG_NAME with tag $TAG"
 
-          echo "Create tag"
+      - name: Create tag
+        run: |
+          GIT_TAG_NAME=${{ steps.publish-parameters.outputs.gitTagName }}
           git tag -a $GIT_TAG_NAME -m $GIT_TAG_NAME
 
-          echo "Push to git and publish to npm"
-          git push --follow-tags
+      - name: Publish to npm and push to git
+        run: |
           npm publish --workspace=${{ inputs.package }} --tag=$TAG
+          git push && git push --tags
