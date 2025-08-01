@@ -65,7 +65,7 @@ jobs:
           CODE=$(npm view ${{ inputs.package }} --json | jq '.error.code')
           VERSION_ARGS=""
 
-          if [ "$CODE" -eq "E404" ]; then
+          if [ "$CODE" = '"E404"' ]; then
             echo "Package doesn't exist in npm registry, force version bump."
             VERSION_ARGS="--force"
           else
