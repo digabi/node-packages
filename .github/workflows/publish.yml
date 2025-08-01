@@ -61,19 +61,16 @@ jobs:
           git config --global user.name "Github CI"
 
           echo "Check if package exists in npm registry"
-
           CODE=$(npm view ${{ inputs.package }} --json | jq '.error.code')
-          VERSION_ARGS=""
 
           if [ "$CODE" = '"E404"' ]; then
-            echo "Package doesn't exist in npm registry, force version bump."
-            VERSION_ARGS="--force"
+            echo "Package doesn't exist in npm registry. publishing current version instead."
           else
             echo "Package found in npm registry"
-          fi
 
-          # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
-          npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }} $VERSION_ARGS
+            # npm version command should automatically do tag and commit but there is a feature that in workspaces it doesnt.
+            npm version ${{ inputs.bump }} --preid="$TAG" --workspace=${{ inputs.package }}
+          fi
 
           # get new version
           VERSION=$(npm version --json --workspace=${{ inputs.package }} | jq -r '."${{ inputs.package }}"')
