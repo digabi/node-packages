@@ -13,11 +13,14 @@
   ],
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json",
-    "test": "node --import tsx ./__tests__/*.test.ts",
+    "test": "node --test --import tsx ./__tests__/*.test.ts",
     "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
     "prepare": "npm run build"
   },
   "publishConfig": {
     "access": "restricted"
+  },
+  "devDependencies": {
+    "@digabi/validation": "^3.0.0"
   }
 }
