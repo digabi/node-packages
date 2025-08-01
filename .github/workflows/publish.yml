@@ -63,7 +63,7 @@ jobs:
             STATE=update
           fi
 
-          echo "value=$STATUS" >> $GITHUB_OUTPUT
+          echo "value=$STATE" >> $GITHUB_OUTPUT
 
       - name: Get NPM tag name
         id: npm-tag
