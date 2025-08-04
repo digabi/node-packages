@@ -7,7 +7,7 @@ import { loadSomeFileToBuffer } from './utils'
 import { CookieJar } from 'tough-cookie'
 import { test, describe, before, after } from 'node:test'
 import assert from 'node:assert/strict'
-import { fileUploadMiddleware, respondWithZip, setupDefaultErrorHandlers, DataError } from '@digabi/express'
+import { fileUploadMiddleware, respondWithZip, setupDefaultErrorHandlers, DataError } from '@digabi/express-utils'
 
 interface Test {
   value: number

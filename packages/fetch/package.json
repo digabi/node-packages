@@ -21,7 +21,7 @@
     "tough-cookie": "^5.1.2"
   },
   "devDependencies": {
-    "@digabi/express": "^0.0.1",
+    "@digabi/express-utils": "^0.0.1",
     "@digabi/testing": "^0.0.1",
     "@types/multer": "^2.0.0",
     "body-parser": "^2.2.0",
