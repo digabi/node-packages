@@ -12,6 +12,8 @@ on:
           - '@digabi/logger'
           - '@digabi/express'
           - '@digabi/testing'
+          - '@digabi/database-utils'
+
       bump:
         type: choice
         description: Version bump (if package not in npm registry, current version will be published)
