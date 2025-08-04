@@ -14,7 +14,8 @@
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json",
     "test": "node --test --import tsx ./__tests__/*.test.ts",
-    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./"
+    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@digabi/testing": "^0.0.1",
