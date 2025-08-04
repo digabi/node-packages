@@ -1,0 +1,29 @@
+{
+  "name": "@digabi/database-utils",
+  "version": "3.0.0",
+  "author": "Matriculation Examination Board, Finland",
+  "license": "EUPL-1.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digabi/node-packages.git"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project ./tsconfig.build.json",
+    "test": "TZ=UTC node --test --import tsx ./__tests__/*.test.ts",
+    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "pg-using-bluebird": "^4.0.1"
+  },
+  "devDependencies": {
+    "winston": "^3.17.0"
+  }
+}

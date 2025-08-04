@@ -9,6 +9,11 @@ This repository contains utility packages for Digabi codebase.
 - If a devDependency is needed in all packages, add it to the root level package.json. Otherwise it should go in the packages own package.json
 - Let’s keep dependencies to a minimum and only add them when they’re truly needed. Try to avoid pulling in a large library just for a single function.
 
+#### Naming convention
+
+No strict naming conventions. Package name should reflect the context and functionality. Feel free to add `-utils` ending if you feel like the package
+is only an extension/helper and it could be confusing to name it only based on the context.
+
 ### Package structure
 
 - `__tests__` contains unit tests for package. Each package should have unit tests that cover the usage.
