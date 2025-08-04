@@ -10,7 +10,7 @@ on:
           - '@digabi/validation'
           - '@digabi/fetch'
           - '@digabi/logger'
-          - '@digabi/express'
+          - '@digabi/express-utils'
           - '@digabi/testing'
           - '@digabi/database-utils'
 

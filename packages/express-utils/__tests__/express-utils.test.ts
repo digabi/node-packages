@@ -17,7 +17,7 @@ const logger = {
   }
 }
 
-describe('express', () => {
+describe('express-utils', () => {
   let app: ReturnType<typeof express>
 
   beforeEach(() => {
