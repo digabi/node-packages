@@ -2,7 +2,6 @@ import test, { after, before, describe } from 'node:test'
 import assert from 'node:assert/strict'
 import { createLogger } from '../src'
 import { Logform } from 'winston'
-import { getBasicAuthUsername } from '../src/utils'
 import { assertNextLogEvent, MyError } from './utils'
 
 describe('logger', () => {
