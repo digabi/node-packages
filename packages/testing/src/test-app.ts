@@ -1,12 +1,12 @@
 import { Server } from 'http'
 import { AddressInfo } from 'net'
-import express from 'express'
+import type { Express } from 'express'
 
 function testAppContext() {
   let serverPrefix: string
   let listeningApp: Server
 
-  function initApp(app: ReturnType<typeof express>) {
+  function initApp(app: Express) {
     return function () {
       return new Promise(resolve => {
         listeningApp = app.listen(0, () => {

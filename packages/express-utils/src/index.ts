@@ -1,15 +1,16 @@
-import basicAuth from 'basic-auth'
-import _ from 'lodash'
-import tls, { PeerCertificate } from 'tls'
-import multer from 'multer'
 import * as fs from 'fs'
 import * as https from 'https'
-import * as json2csv from 'json2csv'
+import tls, { PeerCertificate } from 'tls'
 import { pipeline } from 'stream/promises'
+
+import basicAuth from 'basic-auth'
+import _ from 'lodash'
+import multer from 'multer'
+import * as json2csv from 'json2csv'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders, ResponseType } from 'axios'
-import { Express, Handler, NextFunction, Request, Response } from 'express'
-import { Logger } from 'winston'
-import { FieldInfo } from 'json2csv'
+
+import type { Express, Handler, NextFunction, Request, Response } from 'express'
+import type { Logger } from 'winston'
 
 export const abittiImportExamMaxFileSize = 305 * 1024 * 1024
 
@@ -268,7 +269,7 @@ class ServerCertError extends Error {
 export function sendCsv<T>(
   res: Response,
   data: T | T[],
-  fields: Array<string | FieldInfo<T>>,
+  fields: Array<string | json2csv.FieldInfo<T>>,
   filename: string,
   opts: json2csv.Options<T> = {}
 ) {
@@ -278,7 +279,7 @@ export function sendCsv<T>(
 
 export function createCsvFromJson<T>(
   data: T | T[],
-  fields: Array<string | FieldInfo<T>>,
+  fields: Array<string | json2csv.FieldInfo<T>>,
   opts: json2csv.Options<T> = {}
 ) {
   return json2csv.parse(data, { fields, delimiter: opts.delimiter || ';', ...opts })
