@@ -1,8 +1,8 @@
 import winston, { format, LoggerOptions } from 'winston'
 import process from 'process'
-import { getBasicAuthUsername } from './utils'
 import { awsFormats, localFormats } from './formats'
 import { tracerExpressMiddleware } from './tracer'
+import basicAuth from 'basic-auth'
 
 import type { Handler, Request, Response } from 'express'
 
@@ -52,7 +52,7 @@ interface RequestLoggerOptions {
 export function requestLogger(logger: winston.Logger, options: RequestLoggerOptions = {}): [Handler, Handler] {
   // Store the request processing start times in a WeakMap to avoid modifying the response object.
   const startTimes = new WeakMap<Response, bigint>()
-  const getRemoteUser = options.getRemoteUser || (req => getBasicAuthUsername(req.headers.authorization))
+  const getRemoteUser = options.getRemoteUser || (req => basicAuth(req)?.name)
 
   function onFinished(this: Response) {
     const endTime = process.hrtime.bigint()

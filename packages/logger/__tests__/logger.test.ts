@@ -81,14 +81,4 @@ describe('logger', () => {
       })
     })
   })
-
-  describe('utils', () => {
-    describe('getBasicAuthUsername', () => {
-      test('should return username from authorization header', () => {
-        const username = getBasicAuthUsername('Authorization: Basic am9obkBleGFtcGxlLmNvbTphYmMxMjM=')
-
-        assert.equal(username, 'john@example.com')
-      })
-    })
-  })
 })
