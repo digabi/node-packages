@@ -21,6 +21,7 @@
     "access": "restricted"
   },
   "devDependencies": {
-    "@digabi/validation": "^3.0.0"
+    "@digabi/validation": "^3.0.0",
+    "express": "^5.1.0"
   }
 }

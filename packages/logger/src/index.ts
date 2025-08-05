@@ -1,9 +1,10 @@
 import winston, { format, LoggerOptions } from 'winston'
-import { Handler, Request, Response } from 'express'
 import process from 'process'
 import { getBasicAuthUsername } from './utils'
 import { awsFormats, localFormats } from './formats'
 import { tracerExpressMiddleware } from './tracer'
+
+import type { Handler, Request, Response } from 'express'
 
 const requestFinishedMessage = 'Request finished'
 

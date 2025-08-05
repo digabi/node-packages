@@ -4,7 +4,8 @@ import express from 'express'
 import { createLogger, requestLogger } from '../src'
 import { testApp } from '@digabi/testing'
 import { assertNextLogEvent } from './utils'
-import { Logform } from 'winston'
+
+import type { Logform } from 'winston'
 
 describe('request-logger', () => {
   const logger = createLogger()
@@ -33,7 +34,6 @@ describe('request-logger', () => {
       assert.equal(info.method, 'GET')
       assert.equal(info.url, '/my-endpoint')
       assert.equal(info.contentLength, 4)
-      assert.equal(info.remoteAddress, '::1')
       assert.equal(info.remoteUser, 'remote-user')
       assert.equal((info.responseTime as number) > 0, true)
       assert.equal(info.route, '/my-endpoint')

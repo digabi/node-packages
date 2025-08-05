@@ -1,7 +1,7 @@
 import { test, describe, afterEach, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { testApp } from '@digabi/testing'
-import express from 'express'
+import express, { Express } from 'express'
 import { AppError, DataError, setupDefaultErrorHandlers } from '../src'
 import _ from 'lodash'
 
@@ -18,7 +18,7 @@ const logger = {
 }
 
 describe('express-utils', () => {
-  let app: ReturnType<typeof express>
+  let app: Express
 
   beforeEach(() => {
     errorMessages.length = 0
