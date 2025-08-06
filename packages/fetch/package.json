@@ -29,6 +29,6 @@
     "multer": "^2.0.2"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

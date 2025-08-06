@@ -33,15 +33,3 @@ Publishing should be done only via github actions by triggering the `Publish new
 3. Select package to update
 4. Select what kind of version bump would you like to do. If doing a `pre` type release, the version will be
    tagged with the branch name for example `feature-add-sort-function`. If normal release then it will be tagged as `latest`.
-
-### Set package access
-
-https://docs.npmjs.com/cli/v11/using-npm/config#access
-
-package.json
-
-```
-  "publishConfig": {
-    "access": "restricted" | "public"
-  }
-```

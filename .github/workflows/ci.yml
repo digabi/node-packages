@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > $PWD/.npmrc
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
@@ -26,7 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > $PWD/.npmrc
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
