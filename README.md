@@ -29,10 +29,10 @@ is only an extension/helper and it could be confusing to name it only based on t
 Publishing should be done only via github actions by triggering the `Publish new version` workflow.
 
 1. Go to https://github.com/digabi/node-packages/actions/workflows/publish.yml and choose `Run workflow`.
-2. If you want to create an alpha release from a feature branch, select that as the branch to run workflow from.
+2. If you want to create a pre release from a feature branch, select that as the branch to run workflow from.
 3. Select package to update
 4. Select what kind of version bump would you like to do. If doing a `pre` type release, the version will be
-   tagged as `alpha`. If normal release then it will be tagged as `latest`.
+   tagged with the branch name for example `feature-add-sort-function`. If normal release then it will be tagged as `latest`.
 
 ### Set package access
 
