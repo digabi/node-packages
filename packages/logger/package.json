@@ -29,6 +29,6 @@
     "winston": "^3.17.0"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

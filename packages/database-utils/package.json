@@ -18,7 +18,7 @@
     "prepare": "npm run build"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
