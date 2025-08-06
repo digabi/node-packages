@@ -33,7 +33,7 @@ concurrency:
 
 permissions:
   id-token: write # Required for NPM Trusted publishing
-  contents: read
+  contents: write
 
 jobs:
   publish:
