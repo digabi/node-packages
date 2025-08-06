@@ -23,8 +23,12 @@ is only an extension/helper and it could be confusing to name it only based on t
 
 1. Copy existing package as a template and modify relevant parts.
 2. Add entry to `.github/workflows/publish.yml`.
+3. Create package in npm registry with the workflow `publish-new-package.yml`
+4. Sign into npmjs.com and navigate to new package settings
+5. Setup "Trusted publisher"
+6. Ensure connection works by creating a new version with `publish.yml`
 
-### Publishing
+### Updating a package
 
 Publishing should be done only via github actions by triggering the `Publish new version` workflow.
 
