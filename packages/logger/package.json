@@ -2,7 +2,7 @@
   "name": "@digabi/logger",
   "version": "2.0.2",
   "author": "Matriculation Examination Board, Finland",
-  "license": "EUPL-1.1",
+  "license": "EUPL-1.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/digabi/node-packages.git"
