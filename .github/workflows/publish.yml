@@ -13,6 +13,7 @@ on:
           - '@digabi/express-utils'
           - '@digabi/testing'
           - '@digabi/database-utils'
+          - '@digabi/passphrase-generator'
 
       bump:
         type: choice
