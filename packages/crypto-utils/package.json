@@ -1,0 +1,28 @@
+{
+  "name": "@digabi/crypto-utils",
+  "version": "1.0.5",
+  "author": "Matriculation Examination Board, Finland",
+  "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digabi/node-packages.git"
+  },
+  "description": "Node-based crypto utils for Digabi, written in Typescript",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project ./tsconfig.build.json",
+    "test": "node --test --import tsx ./__tests__/*.test.ts",
+    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "crypto",
+    "digabi"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
