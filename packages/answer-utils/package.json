@@ -1,0 +1,30 @@
+{
+  "name": "@digabi/answer-utils",
+  "version": "0.0.1",
+  "author": "Matriculation Examination Board, Finland",
+  "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digabi/node-packages.git"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project ./tsconfig.build.json",
+    "test": "node --test --import tsx ./__tests__/*.test.ts",
+    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "sanitize-html": "^2.17.0"
+  },
+  "devDependencies": {
+    "@types/sanitize-html": "^2.16.0",
+    "winston": "^3.17.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
