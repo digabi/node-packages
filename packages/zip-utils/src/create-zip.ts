@@ -3,16 +3,10 @@ import * as yazl from 'yazl'
 const MAX_ZIP_NAME_LENGTH = 72
 
 type FilenameAndContent = {
+  name: string
   content?: Buffer
   contentStream?: NodeJS.ReadableStream
-  name: string
-  options?: {
-    mtime?: Date
-    mode?: number
-    compress?: boolean
-    forceZip64Format?: boolean
-    fileComment?: string
-  }
+  options?: Partial<yazl.Options>
 }
 
 function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {

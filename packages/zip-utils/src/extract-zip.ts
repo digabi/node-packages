@@ -4,10 +4,10 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 export type ExtractedZip = { [key: string]: Buffer }
-export type ExtratedZipWithMetadata = {
+export type ExtractedZipWithMetadata = {
   [key: string]: {
-    uncompressedSize: number
-    crc32: number
+    uncompressedSize: yauzl.Entry['uncompressedSize']
+    crc32: yauzl.Entry['crc32']
     mtime: Date
     contents: Buffer
   }
@@ -17,10 +17,10 @@ export const extractZip = (data: Buffer, maxEntrySize?: number) =>
   _extractZip({ data, maxEntrySize, includeMetaData: false, extractData: true }) as Promise<ExtractedZip>
 
 export const extractZipWithMetadata = (data: Buffer, maxEntrySize?: number) =>
-  _extractZip({ data, maxEntrySize, includeMetaData: true, extractData: true }) as Promise<ExtratedZipWithMetadata>
+  _extractZip({ data, maxEntrySize, includeMetaData: true, extractData: true }) as Promise<ExtractedZipWithMetadata>
 
 export const extractZipMetadataOnly = (data: Buffer, maxEntrySize?: number) =>
-  _extractZip({ data, maxEntrySize, includeMetaData: true, extractData: false }) as Promise<ExtratedZipWithMetadata>
+  _extractZip({ data, maxEntrySize, includeMetaData: true, extractData: false }) as Promise<ExtractedZipWithMetadata>
 
 export const extractFilesMatching = (data: Buffer, filePattern: string, maxEntrySize?: number) =>
   _extractZip({
@@ -29,7 +29,7 @@ export const extractFilesMatching = (data: Buffer, filePattern: string, maxEntry
     includeMetaData: true,
     extractData: true,
     filePattern
-  }) as Promise<ExtratedZipWithMetadata>
+  }) as Promise<ExtractedZipWithMetadata>
 
 function _extractZip({
   data,
@@ -43,9 +43,9 @@ function _extractZip({
   includeMetaData: boolean
   extractData: boolean
   filePattern?: string
-}): Promise<ExtractedZip | ExtratedZipWithMetadata> {
+}): Promise<ExtractedZip | ExtractedZipWithMetadata> {
   return new Promise((resolve, reject) => {
-    const entries: ExtractedZip | ExtratedZipWithMetadata = {}
+    const entries: ExtractedZip | ExtractedZipWithMetadata = {}
     let entriesDone = 0
 
     yauzl.fromBuffer(data, { lazyEntries: true }, (err, zipFile) => {
