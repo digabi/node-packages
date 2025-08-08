@@ -14,6 +14,7 @@ on:
           - '@digabi/testing'
           - '@digabi/database-utils'
           - '@digabi/crypto-utils'
+          - '@digabi/answer-utils'
 
       bump:
         type: choice
