@@ -1,0 +1,693 @@
+{
+  "title": "Monimutkainen generoitu otsikko",
+  "instruction": "Monimutkaiset ohjeet tulisivat tähän",
+  "sections": [
+    {
+      "questions": [
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "1",
+          "id": 1,
+          "type": "text",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "2",
+          "id": 2,
+          "type": "text",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "3",
+          "id": 3,
+          "type": "subtext",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "4",
+          "id": 4,
+          "type": "subtext",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "5",
+          "id": 5,
+          "type": "text",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "6",
+          "id": 6,
+          "type": "text",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "7",
+          "id": 7,
+          "type": "subtext",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "8",
+          "id": 8,
+          "type": "subtext",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "9",
+          "id": 9,
+          "type": "text",
+          "level": 1,
+          "screenshotExpected": true
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "10",
+          "id": 10,
+          "type": "text",
+          "level": 1,
+          "screenshotExpected": true
+        },
+        {
+          "text": "Test-serverin luoma <i>choice group</i> jossa pari kysymystä.",
+          "displayNumber": "11",
+          "id": 11,
+          "type": "choicegroup",
+          "level": 1,
+          "choices": [
+            {
+              "id": 12,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "11.1",
+              "type": "choice",
+              "breakAfter": true,
+              "options": [
+                {
+                  "id": 13,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 14,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 15,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            {
+              "id": 16,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "11.2",
+              "type": "choice",
+              "breakAfter": false,
+              "options": [
+                {
+                  "id": 17,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 18,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 19,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            }
+          ],
+          "maxScore": 4
+        },
+        {
+          "text": "Test-serverin luoma <i>choice group</i> jossa pari kysymystä.",
+          "displayNumber": "12",
+          "id": 20,
+          "type": "choicegroup",
+          "level": 1,
+          "choices": [
+            {
+              "id": 21,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "12.1",
+              "type": "choice",
+              "breakAfter": true,
+              "options": [
+                {
+                  "id": 22,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 23,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 24,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            {
+              "id": 25,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "12.2",
+              "type": "choice",
+              "breakAfter": false,
+              "options": [
+                {
+                  "id": 26,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 27,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 28,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            }
+          ],
+          "maxScore": 4
+        },
+        {
+          "maxScore": 8,
+          "text": "Test-serverin luoma <i>multichoicegap</i> jossa pari aukkoa.",
+          "displayNumber": "13",
+          "id": 29,
+          "type": "multichoicegap",
+          "level": 1,
+          "content": [
+            {
+              "type": "text",
+              "text": "Ensimmäisen aukon edeltävä teksti "
+            },
+            {
+              "id": 30,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 31,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 32,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 33,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": ", välissä oleva teksti \\(x^2\\)" },
+            {
+              "id": 34,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 35,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 36,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 37,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": " ja lopetus." }
+          ]
+        },
+        {
+          "maxScore": 8,
+          "text": "Test-serverin luoma <i>multichoicegap</i> jossa pari aukkoa.",
+          "displayNumber": "14",
+          "id": 38,
+          "type": "multichoicegap",
+          "level": 1,
+          "content": [
+            {
+              "type": "text",
+              "text": "Ensimmäisen aukon edeltävä teksti "
+            },
+            {
+              "id": 39,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 40,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 41,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 42,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": ", välissä oleva teksti \\(x^2\\)" },
+            {
+              "id": 43,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 44,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 45,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 46,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": " ja lopetus." }
+          ]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "15",
+          "id": 47,
+          "type": "text",
+          "level": 1,
+          "restrictedMedia": [{ "file": "0-0", "text": "kysymys 0 media 0" }]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "16",
+          "id": 48,
+          "type": "text",
+          "level": 1,
+          "restrictedMedia": [
+            { "file": "1-0", "text": "kysymys 1 media 0" },
+            { "file": "1-1", "text": "kysymys 1 media 1" }
+          ]
+        }
+      ],
+      "casForbidden": true
+    },
+    {
+      "questions": [
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "17",
+          "id": 49,
+          "type": "text",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "18",
+          "id": 50,
+          "type": "text",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "19",
+          "id": 51,
+          "type": "subtext",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "20",
+          "id": 52,
+          "type": "subtext",
+          "level": 1
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "21",
+          "id": 53,
+          "type": "text",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "22",
+          "id": 54,
+          "type": "text",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "23",
+          "id": 55,
+          "type": "subtext",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "24",
+          "id": 56,
+          "type": "subtext",
+          "level": 1,
+          "correctAnswers": ["lol"]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "25",
+          "id": 57,
+          "type": "text",
+          "level": 1,
+          "screenshotExpected": true
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "26",
+          "id": 58,
+          "type": "text",
+          "level": 1,
+          "screenshotExpected": true
+        },
+        {
+          "text": "Test-serverin luoma <i>choice group</i> jossa pari kysymystä.",
+          "displayNumber": "27",
+          "id": 59,
+          "type": "choicegroup",
+          "level": 1,
+          "choices": [
+            {
+              "id": 60,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "27.1",
+              "type": "choice",
+              "breakAfter": true,
+              "options": [
+                {
+                  "id": 61,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 62,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 63,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            {
+              "id": 64,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "27.2",
+              "type": "choice",
+              "breakAfter": false,
+              "options": [
+                {
+                  "id": 65,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 66,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 67,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            }
+          ],
+          "maxScore": 4
+        },
+        {
+          "text": "Test-serverin luoma <i>choice group</i> jossa pari kysymystä.",
+          "displayNumber": "28",
+          "id": 68,
+          "type": "choicegroup",
+          "level": 1,
+          "choices": [
+            {
+              "id": 69,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "28.1",
+              "type": "choice",
+              "breakAfter": true,
+              "options": [
+                {
+                  "id": 70,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 71,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 72,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            {
+              "id": 73,
+              "text": "Choice jossa muutama vaihtoehto",
+              "displayNumber": "28.2",
+              "type": "choice",
+              "breakAfter": false,
+              "options": [
+                {
+                  "id": 74,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 75,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 76,
+                  "text": "<img src=\"attachments/choice.png\" /> Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            }
+          ],
+          "maxScore": 4
+        },
+        {
+          "maxScore": 8,
+          "text": "Test-serverin luoma <i>multichoicegap</i> jossa pari aukkoa.",
+          "displayNumber": "29",
+          "id": 77,
+          "type": "multichoicegap",
+          "level": 1,
+          "content": [
+            {
+              "type": "text",
+              "text": "Ensimmäisen aukon edeltävä teksti "
+            },
+            {
+              "id": 78,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 79,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 80,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 81,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": ", välissä oleva teksti \\(x^2\\)" },
+            {
+              "id": 82,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 83,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 84,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 85,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": " ja lopetus." }
+          ]
+        },
+        {
+          "maxScore": 8,
+          "text": "Test-serverin luoma <i>multichoicegap</i> jossa pari aukkoa.",
+          "displayNumber": "30",
+          "id": 86,
+          "type": "multichoicegap",
+          "level": 1,
+          "content": [
+            {
+              "type": "text",
+              "text": "Ensimmäisen aukon edeltävä teksti "
+            },
+            {
+              "id": 87,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 88,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 89,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 90,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": ", välissä oleva teksti \\(x^2\\)" },
+            {
+              "id": 91,
+              "type": "gap",
+              "options": [
+                {
+                  "id": 92,
+                  "text": "Tässä vaihtoehto numero 1",
+                  "correct": true
+                },
+                {
+                  "id": 93,
+                  "text": "Tässä vaihtoehto numero 2",
+                  "correct": false
+                },
+                {
+                  "id": 94,
+                  "text": "Tässä vaihtoehto numero 3",
+                  "correct": false
+                }
+              ]
+            },
+            { "type": "text", "text": " ja lopetus." }
+          ]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "31",
+          "id": 95,
+          "type": "text",
+          "level": 1,
+          "restrictedMedia": [{ "file": "0-0", "text": "kysymys 0 media 0" }]
+        },
+        {
+          "maxScore": 6,
+          "text": "Test-serverin luoma <b>koekysymys</b> jossa ei ole juuri lainkaan tekstiä.",
+          "displayNumber": "32",
+          "id": 96,
+          "type": "text",
+          "level": 1,
+          "restrictedMedia": [
+            { "file": "1-0", "text": "kysymys 1 media 0" },
+            { "file": "1-1", "text": "kysymys 1 media 1" }
+          ]
+        }
+      ]
+    }
+  ]
+}
