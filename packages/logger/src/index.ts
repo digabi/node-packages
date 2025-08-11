@@ -1,10 +1,14 @@
-import winston, { format, LoggerOptions } from 'winston'
+import winston, { format, LoggerOptions, LeveledLogMethod } from 'winston'
 import process from 'process'
 import { awsFormats, localFormats } from './formats'
 import { tracerExpressMiddleware } from './tracer'
 import basicAuth from 'basic-auth'
 
 import type { Handler, Request, Response } from 'express'
+
+export type DigabiLogger = winston.Logger & {
+  audit: LeveledLogMethod
+}
 
 const requestFinishedMessage = 'Request finished'
 
@@ -40,7 +44,7 @@ export function createLogger(options: LoggerOptions = {}) {
     ],
     handleExceptions: true,
     ...options
-  })
+  }) as DigabiLogger
 }
 
 interface RequestLoggerOptions {
