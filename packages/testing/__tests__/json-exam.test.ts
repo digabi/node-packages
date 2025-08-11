@@ -1,12 +1,12 @@
-import { createExamContent } from '../src/test-data/json-exam'
+import { createJsonExamContent } from '../src/test-data/json-exam'
 import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
 import defaultJsonExam from './resources/json-exam-default.json'
 import complexJsonExam from './resources/json-exam-complex.json'
 
-describe('createExamContent', () => {
+describe('createJsonExamContent', () => {
   test('generates json with default content', () => {
-    const content = createExamContent()
+    const content = createJsonExamContent()
     assert.deepEqual(content, defaultJsonExam)
   })
 
@@ -29,7 +29,7 @@ describe('createExamContent', () => {
       casForbiddenSectionIndexes: [0]
     }
 
-    const content = createExamContent(complexConfig)
+    const content = createJsonExamContent(complexConfig)
     assert.deepEqual(content, complexJsonExam)
   })
 })

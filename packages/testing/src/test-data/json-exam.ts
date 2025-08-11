@@ -4,7 +4,7 @@ import _ from 'lodash'
 /**
  * @deprecated generator for legacy json exams. Remove after json exams are no longer supported.
  */
-export function createExamContent(overrides?: unknown) {
+export function createJsonExamContent(overrides?: unknown) {
   const defaults = {
     title: 'Generoitu otsikko',
     instruction: 'Ohjeet tulisivat tähän',
