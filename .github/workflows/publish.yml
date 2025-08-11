@@ -16,6 +16,7 @@ on:
           - '@digabi/passphrase-generator'
           - '@digabi/crypto-utils'
           - '@digabi/zip-utils'
+          - '@digabi/answer-utils'
 
       bump:
         type: choice
