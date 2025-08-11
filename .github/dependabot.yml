@@ -6,8 +6,6 @@
 version: 2
 updates:
   - package-ecosystem: 'npm'
-    registries:
-      - 'npm-npmjs'
     directory: '/'
     schedule:
       interval: 'daily'
