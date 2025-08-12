@@ -17,6 +17,7 @@ on:
           - '@digabi/crypto-utils'
           - '@digabi/zip-utils'
           - '@digabi/answer-utils'
+          - '@digabi/eslint-config'
 
       bump:
         type: choice
