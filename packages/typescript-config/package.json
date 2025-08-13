@@ -7,7 +7,6 @@
     "type": "git",
     "url": "git+https://github.com/digabi/node-packages.git"
   },
-  "main": "src/index.js",
   "files": [
     "common-tsconfig.json",
     "root/tsconfig.json",
