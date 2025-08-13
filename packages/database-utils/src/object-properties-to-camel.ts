@@ -14,7 +14,7 @@ function stringToCamel(str: string) {
   return words.map((word, i) => (i > 0 ? capitalizeFirstLetter(word) : word)).join('')
 }
 
-export function objectPropertiesToCamel(obj: Record<string, unknown>) {
+export function objectPropertiesToCamel<T>(obj: Record<string, unknown>): T {
   for (const prop in obj) {
     // eslint-disable-next-line no-prototype-builtins
     if (!obj.hasOwnProperty(prop)) {
@@ -23,5 +23,5 @@ export function objectPropertiesToCamel(obj: Record<string, unknown>) {
     renameProperty(obj, prop, stringToCamel(prop))
   }
 
-  return obj
+  return obj as T
 }
