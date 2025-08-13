@@ -1,0 +1,10 @@
+{
+  "extends": "../common-tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es2021"],
+    "module": "commonjs",
+    "noEmit": false,
+    "resolveJsonModule": true,
+    "target": "es2022"
+  }
+}

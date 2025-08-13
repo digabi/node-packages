@@ -1,0 +1,11 @@
+{
+  "extends": "../common-tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "module": "es2022",
+    "noEmit": true,
+    "target": "es6",
+    "noErrorTruncation": true
+  }
+}
