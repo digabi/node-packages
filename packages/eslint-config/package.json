@@ -1,0 +1,41 @@
+{
+  "name": "@digabi/eslint-config",
+  "version": "3.3.0",
+  "author": "Matriculation Examination Board, Finland",
+  "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digabi/node-packages.git"
+  },
+  "main": "src/index.js",
+  "files": [
+    "src/index.js"
+  ],
+  "scripts": {
+    "build": "echo 'No build needed'",
+    "test": "echo 'No tests'",
+    "lint": "eslint -c ./src/index.js --ignore-path ../../.eslintignore ./src/index.js",
+    "prepare": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": ">= 2",
+    "@typescript-eslint/parser": ">= 2",
+    "eslint": ">= 6",
+    "eslint-config-prettier": ">= 6",
+    "eslint-plugin-import": ">= 2",
+    "eslint-plugin-prettier": ">= 3",
+    "eslint-plugin-promise": ">= 4"
+  },
+  "devDependencies": {
+    "eslint-plugin-jest": "^29.0.1",
+    "jest": "^30.0.5",
+    "eslint-plugin-mocha": "^10.5.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-promise": "7.2.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0"
+  }
+}
