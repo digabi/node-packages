@@ -19,6 +19,7 @@ on:
           - '@digabi/answer-utils'
           - '@digabi/eslint-config'
           - '@digabi/typescript-config'
+          - '@digabi/examination-utils'
 
       bump:
         type: choice
