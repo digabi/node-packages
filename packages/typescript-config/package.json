@@ -13,6 +13,12 @@
     "root/tsconfig.json",
     "public/tsconfig.json"
   ],
+  "scripts": {
+    "build": "echo 'No build'",
+    "test": "echo 'No tests'",
+    "lint": "echo 'No lint'",
+    "prepare": "npm run build"
+  },
   "publishConfig": {
     "access": "public"
   }
