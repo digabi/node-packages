@@ -20,6 +20,7 @@ on:
           - '@digabi/eslint-config'
           - '@digabi/typescript-config'
           - '@digabi/async-utils'
+          - '@digabi/examination-utils'
 
       bump:
         type: choice
