@@ -18,6 +18,7 @@ on:
           - '@digabi/zip-utils'
           - '@digabi/answer-utils'
           - '@digabi/eslint-config'
+          - '@digabi/typescript-config'
 
       bump:
         type: choice
