@@ -21,6 +21,7 @@ on:
           - '@digabi/typescript-config'
           - '@digabi/async-utils'
           - '@digabi/examination-utils'
+          - '@digabi/json-exam-utils'
 
       bump:
         type: choice
