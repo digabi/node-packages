@@ -7,6 +7,73 @@ import {
 } from '../src/autograding/exam-autograding'
 
 describe('exam-autograding-test.js', () => {
+  test('should not mutate exam object', () => {
+    const exam = {
+      title: 'Title',
+      instruction: 'test',
+      sections: [
+        {
+          questions: [
+            {
+              text: 'asd',
+              displayNumber: '2',
+              id: 1,
+              type: 'choicegroup',
+              level: 1,
+              maxScore: 2,
+              choices: [
+                {
+                  id: 2,
+                  text: 'asd',
+                  displayNumber: '1',
+                  type: 'choice',
+                  breakAfter: true,
+                  options: [{ id: 3, text: 'They strictly control their manner of speaking', correct: false, score: 1 }]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+
+    const examCopy = JSON.parse(JSON.stringify(exam)) as unknown
+
+    const res = removeCorrectAnswersAndScores(exam)
+
+    const expected = {
+      title: 'Title',
+      instruction: 'test',
+      sections: [
+        {
+          questions: [
+            {
+              text: 'asd',
+              displayNumber: '2',
+              id: 1,
+              type: 'choicegroup',
+              level: 1,
+              maxScore: 2,
+              choices: [
+                {
+                  id: 2,
+                  text: 'asd',
+                  displayNumber: '1',
+                  type: 'choice',
+                  breakAfter: true,
+                  options: [{ id: 3, text: 'They strictly control their manner of speaking' }]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+
+    assert.deepEqual(res, expected)
+    assert.deepEqual(examCopy, exam)
+  })
+
   test('removes correct answers in choicegroup', () => {
     const res = removeCorrectAnswersAndScores({
       title: 'Title',
