@@ -100,7 +100,9 @@ export function closeServer(server: Server) {
         reject(err)
       }
 
-      resolve(true)
+      setTimeout(() => {
+        resolve(true)
+      }, 0)
     })
   })
 }
