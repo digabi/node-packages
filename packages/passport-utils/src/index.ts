@@ -8,7 +8,7 @@ type SessionStorage = {
 }
 
 export type SamlCredentials = {
-  ssnFromVetuma: string
+  ssnFromSaml: string
 } & ProfilePassThroughFields &
   ProfileNames
 
@@ -21,7 +21,7 @@ let samlStrategy: MultiSamlStrategy
 
 function checkUserCredentialsFromSamlProfile(profile: Profile): SamlCredentials {
   return _.merge(
-    { ssnFromVetuma: getId(profile) },
+    { ssnFromSaml: getId(profile) },
     _.pick(profile, passThroughFields),
     getNames(profile)
   ) as SamlCredentials

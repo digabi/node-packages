@@ -2,7 +2,7 @@ import express, { Express } from 'express'
 import bodyParser from 'body-parser'
 import { createSamlMockRouter, getSamlMockCertificates, SamlMockOverrides } from '@digabi/saml-mock'
 import { TestCacheProvider } from './test-cache-provider'
-import { GetSamlOptions, initAndGetVetumaStrategy, SamlCredentials } from '../../src'
+import { GetSamlOptions, initAndGetSamlStrategy, SamlCredentials } from '../../src'
 import type { Server } from 'node:http'
 
 export const SAML_MOCK_PORT = 54068
@@ -66,15 +66,15 @@ async function passportSetup(
     }
   }
 
-  const strategy = initAndGetVetumaStrategy(samlStrategyOptions, mockSessionStorage)
+  const strategy = initAndGetSamlStrategy(samlStrategyOptions, mockSessionStorage)
   passport.use(strategy)
 
   passport.serializeUser((user, done) => {
-    done(null, { ...user, id: (user as SamlCredentials).ssnFromVetuma, hetu: (user as SamlCredentials).ssnFromVetuma })
+    done(null, { ...user, id: (user as SamlCredentials).ssnFromSaml, hetu: (user as SamlCredentials).ssnFromSaml })
   })
 
   passport.deserializeUser((user: SamlCredentials, done) => {
-    done(null, { ...user, id: user.ssnFromVetuma, hetu: user.ssnFromVetuma })
+    done(null, { ...user, id: user.ssnFromSaml, hetu: user.ssnFromSaml })
   })
 
   app.use('/saml', samlMockRouter)

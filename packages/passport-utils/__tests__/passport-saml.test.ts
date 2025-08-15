@@ -44,7 +44,7 @@ async function samlLogin(customSamlResponse?: string) {
   return samlAcsResponse
 }
 
-describe('vetuma-passport-test.js', () => {
+describe('passport-utils', () => {
   describe('Login', () => {
     let server: Server
 
