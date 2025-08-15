@@ -91,21 +91,24 @@ export const generateAutogradingJson = (examContent: ExamContent) => {
 
 export function removeCorrectAnswersAndScores<T>(obj: T): T {
   if (Array.isArray(obj)) {
-    for (let i = 0; i < obj.length; i++) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      obj[i] = removeCorrectAnswersAndScores(obj[i])
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return obj.map(item => removeCorrectAnswersAndScores(item)) as any
   } else if (obj && typeof obj === 'object') {
+    const result: any = {}
+
     for (const key in obj) {
       if (key === 'correct' || key === 'score') {
-        delete obj[key]
+        continue
       } else if (key === 'correctAnswers') {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        obj[key] = [] as any
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        result[key] = []
       } else {
-        obj[key] = removeCorrectAnswersAndScores(obj[key])
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        result[key] = removeCorrectAnswersAndScores((obj as any)[key])
       }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return result
   }
 
   return obj
