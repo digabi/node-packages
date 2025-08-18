@@ -22,6 +22,8 @@ on:
           - '@digabi/async-utils'
           - '@digabi/examination-utils'
           - '@digabi/json-exam-utils'
+          - '@digabi/passport-utils'
+          - '@digabi/saml-mock'
 
       bump:
         type: choice
