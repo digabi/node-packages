@@ -89,24 +89,24 @@ export const generateAutogradingJson = (examContent: ExamContent) => {
   return result
 }
 
-export function removeCorrectAnswersAndScores<T>(obj: T): T {
-  if (Array.isArray(obj)) {
-    for (let i = 0; i < obj.length; i++) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      obj[i] = removeCorrectAnswersAndScores(obj[i])
-    }
-  } else if (obj && typeof obj === 'object') {
-    for (const key in obj) {
+export function removeCorrectAnswersAndScores<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map(item => removeCorrectAnswersAndScores(item) as T) as T
+  } else if (value && typeof value === 'object') {
+    const result: Record<string, unknown> = {}
+
+    for (const key in value) {
       if (key === 'correct' || key === 'score') {
-        delete obj[key]
+        continue
       } else if (key === 'correctAnswers') {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        obj[key] = [] as any
+        result[key] = []
       } else {
-        obj[key] = removeCorrectAnswersAndScores(obj[key])
+        result[key] = removeCorrectAnswersAndScores((value as Record<string, unknown>)[key])
       }
     }
+
+    return result as T
   }
 
-  return obj
+  return value
 }
