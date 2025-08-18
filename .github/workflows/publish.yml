@@ -7,23 +7,23 @@ on:
         type: choice
         description: Package
         options:
-          - '@digabi/validation'
-          - '@digabi/fetch'
-          - '@digabi/logger'
-          - '@digabi/express-utils'
-          - '@digabi/testing'
-          - '@digabi/database-utils'
-          - '@digabi/passphrase-generator'
-          - '@digabi/crypto-utils'
-          - '@digabi/zip-utils'
           - '@digabi/answer-utils'
-          - '@digabi/eslint-config'
-          - '@digabi/typescript-config'
           - '@digabi/async-utils'
+          - '@digabi/crypto-utils'
+          - '@digabi/database-utils'
+          - '@digabi/eslint-config'
           - '@digabi/examination-utils'
+          - '@digabi/express-utils'
+          - '@digabi/fetch'
           - '@digabi/json-exam-utils'
+          - '@digabi/logger'
+          - '@digabi/passphrase-generator'
           - '@digabi/passport-utils'
           - '@digabi/saml-mock'
+          - '@digabi/testing'
+          - '@digabi/typescript-config'
+          - '@digabi/validation'
+          - '@digabi/zip-utils'
 
       bump:
         type: choice
