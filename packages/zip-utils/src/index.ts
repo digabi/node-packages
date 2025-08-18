@@ -5,7 +5,8 @@ import {
   extractZipMetadataOnly,
   extractFilesMatching,
   extractZipFromDisk,
-  extractZipToDisk
+  extractZipToDisk,
+  ExtractedZip
 } from './extract-zip'
 
 export {
@@ -16,5 +17,6 @@ export {
   extractZipMetadataOnly,
   extractFilesMatching,
   extractZipFromDisk,
-  extractZipToDisk
+  extractZipToDisk,
+  ExtractedZip
 }
