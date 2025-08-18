@@ -74,6 +74,7 @@ export function createSamlMockRouter(
       validTo: tenMinutesLater.toISOString(),
       requestId: generateID(),
       assertionId: generateID(),
+      responseId: generateID(),
       // Allow override of inResponseTo with samlOptions for testing purposes
       inResponseTo: invalidateInResponseTo ? 'invalidResponse' : session
     }
@@ -86,7 +87,13 @@ export function createSamlMockRouter(
     const xmlWithProps = responseTemplate(merge)
 
     // Allow skipping of assertion signature
-    let signedAssertion = signXml(xmlWithProps, 'Assertion', sigAlg, invalidateAssertionSignature)
+    let signedAssertion = signXml(
+      xmlWithProps,
+      'Assertion',
+      sigAlg,
+      invalidateAssertionSignature,
+      responseObject.responseId
+    )
     if (skipAssertionSignature) {
       signedAssertion = xmlWithProps
     }
@@ -98,7 +105,13 @@ export function createSamlMockRouter(
     }
 
     // Allow skipping top level signature for testing purposes
-    let signedResponse = signXml(encryptedAssertion, 'Response', sigAlg, invalidateTopLevelSignature)
+    let signedResponse = signXml(
+      encryptedAssertion,
+      'Response',
+      sigAlg,
+      invalidateTopLevelSignature,
+      responseObject.responseId
+    )
     if (skipTopLevelSignature) {
       signedResponse = encryptedAssertion
     }
@@ -127,7 +140,7 @@ function generateID() {
   return `_${randomId}`
 }
 
-function signXml(xml: string, localName: string, sigAlg: string, createInvalidSignature: boolean) {
+function signXml(xml: string, localName: string, sigAlg: string, createInvalidSignature: boolean, id: string) {
   const signed = new SignedXml()
 
   signed.privateKey = privateKey
@@ -149,7 +162,8 @@ function signXml(xml: string, localName: string, sigAlg: string, createInvalidSi
   signed.addReference({
     xpath: `//*[local-name(.)='${localName}']`,
     digestAlgorithm: 'http://www.w3.org/2000/09/xmldsig#sha1',
-    transforms: referenceTransforms
+    transforms: referenceTransforms,
+    uri: id
   })
 
   signed.computeSignature(xml, {

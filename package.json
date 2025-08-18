@@ -27,8 +27,7 @@
   },
   "overrides": {
     "@node-saml/passport-saml": {
-      "@types/express": "5.0.3",
-      "@node-saml/node-saml": "5.0.1"
+      "@types/express": "5.0.3"
     }
   }
 }
