@@ -21,11 +21,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@node-saml/passport-saml": "5.0.1",
+    "@node-saml/passport-saml": "^5.1.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@digabi/saml-mock": "^0.0.1",
+    "@digabi/saml-mock": "^0.0.2",
     "@types/express": "^5.0.3",
     "body-parser": "^2.2.0",
     "express": "^5.1.0",

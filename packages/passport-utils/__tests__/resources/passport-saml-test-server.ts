@@ -67,6 +67,8 @@ async function passportSetup(
   }
 
   const strategy = initAndGetSamlStrategy(samlStrategyOptions, mockSessionStorage)
+
+  // @ts-expect-error passport-saml still uses express 4 types
   passport.use(strategy)
 
   passport.serializeUser((user, done) => {

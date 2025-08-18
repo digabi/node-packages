@@ -30,6 +30,6 @@
     "xml-encryption": "^3.1.0"
   },
   "devDependencies": {
-    "@node-saml/passport-saml": "5.0.1"
+    "@node-saml/passport-saml": "^5.1.0"
   }
 }
