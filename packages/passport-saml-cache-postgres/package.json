@@ -1,6 +1,6 @@
 {
-  "name": "@digabi/passport-utils",
-  "version": "0.1.0",
+  "name": "@digabi/passport-saml-cache-postgres",
+  "version": "1.0.0",
   "author": "Matriculation Examination Board, Finland",
   "license": "EUPL-1.2",
   "repository": {
@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --project ./tsconfig.build.json",
+    "build": "tsc --project ./tsconfig.build.json && cp ./schema.sql ./dist/.",
     "test": "node --test --test-concurrency=1 --import tsx ./__tests__/*.test.ts",
     "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
     "prepare": "npm run build"
@@ -20,20 +20,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@node-saml/passport-saml": "^5.1.0",
-    "lodash": "^4.17.21"
-  },
   "devDependencies": {
-    "@digabi/saml-mock": "^0.0.3",
-    "@types/express": "^5.0.3",
-    "body-parser": "^2.2.0",
-    "express": "^5.1.0",
-    "passport": "^0.7.0"
-  },
-  "overrides": {
-    "@node-saml/passport-saml": {
-      "@types/express": "5.0.3"
-    }
+    "@node-saml/passport-saml": "^5.1.0",
+    "@testcontainers/postgresql": "^11.5.1",
+    "pg": "^8.16.3",
+    "testcontainers": "^11.5.1"
   }
 }

@@ -19,6 +19,7 @@ on:
           - '@digabi/logger'
           - '@digabi/passphrase-generator'
           - '@digabi/passport-utils'
+          - '@digabi/passport-saml-cache-postgres'
           - '@digabi/saml-mock'
           - '@digabi/testing'
           - '@digabi/typescript-config'
