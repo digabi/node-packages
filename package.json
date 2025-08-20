@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "lerna run build",
-    "test": "lerna run test",
+    "test": "lerna run --concurrency 1 test",
     "lint": "lerna run lint"
   }
 }
