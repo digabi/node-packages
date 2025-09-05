@@ -2,11 +2,12 @@ import { createZip, createZipName } from './create-zip'
 import {
   extractZip,
   extractZipWithMetadata,
-  extractZipMetadataOnly,
-  extractFilesMatching,
   extractZipFromDisk,
   extractZipToDisk,
-  ExtractedZip
+  ExtractedZip,
+  ExtractedZipWithMetadata,
+  ZipEntry,
+  ZipEntryWithMetadata
 } from './extract-zip'
 
 export {
@@ -14,9 +15,10 @@ export {
   createZipName,
   extractZip,
   extractZipWithMetadata,
-  extractZipMetadataOnly,
-  extractFilesMatching,
   extractZipFromDisk,
   extractZipToDisk,
-  ExtractedZip
+  ExtractedZip,
+  ExtractedZipWithMetadata,
+  ZipEntry,
+  ZipEntryWithMetadata
 }

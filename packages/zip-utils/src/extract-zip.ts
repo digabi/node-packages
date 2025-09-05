@@ -1,48 +1,38 @@
+import * as fs from 'node:fs'
+import * as path from 'node:path'
+import { Readable } from 'node:stream'
 import * as yauzl from 'yauzl'
 import { DataError } from '@digabi/express-utils'
-import * as fs from 'fs'
-import * as path from 'path'
 
-export type ExtractedZip = { [key: string]: Buffer }
+export type ExtractedZip = { [key: string]: ZipEntry }
+export type ZipEntry = {
+  open: () => Promise<Readable>
+  readIntoBuffer: () => Promise<Buffer>
+}
+
 export type ExtractedZipWithMetadata = {
-  [key: string]: {
-    uncompressedSize: yauzl.Entry['uncompressedSize']
-    crc32: yauzl.Entry['crc32']
-    mtime: Date
-    contents: Buffer
-  }
+  [key: string]: ZipEntryWithMetadata
+}
+export type ZipEntryWithMetadata = ZipEntry & {
+  uncompressedSize: number
+  crc32: number
+  mtime: Date
 }
 
 export const extractZip = (data: Buffer, maxEntrySize?: number) =>
-  _extractZip({ data, maxEntrySize, includeMetaData: false, extractData: true }) as Promise<ExtractedZip>
+  _extractZip({ data, maxEntrySize, includeMetaData: false }) as Promise<ExtractedZip>
 
 export const extractZipWithMetadata = (data: Buffer, maxEntrySize?: number) =>
-  _extractZip({ data, maxEntrySize, includeMetaData: true, extractData: true }) as Promise<ExtractedZipWithMetadata>
-
-export const extractZipMetadataOnly = (data: Buffer, maxEntrySize?: number) =>
-  _extractZip({ data, maxEntrySize, includeMetaData: true, extractData: false }) as Promise<ExtractedZipWithMetadata>
-
-export const extractFilesMatching = (data: Buffer, filePattern: string, maxEntrySize?: number) =>
-  _extractZip({
-    data,
-    maxEntrySize,
-    includeMetaData: true,
-    extractData: true,
-    filePattern
-  }) as Promise<ExtractedZipWithMetadata>
+  _extractZip({ data, maxEntrySize, includeMetaData: true }) as Promise<ExtractedZipWithMetadata>
 
 function _extractZip({
   data,
   maxEntrySize,
-  includeMetaData,
-  extractData,
-  filePattern
+  includeMetaData
 }: {
   data: Buffer
   maxEntrySize?: number
   includeMetaData: boolean
-  extractData: boolean
-  filePattern?: string
 }): Promise<ExtractedZip | ExtractedZipWithMetadata> {
   return new Promise((resolve, reject) => {
     const entries: ExtractedZip | ExtractedZipWithMetadata = {}
@@ -58,52 +48,59 @@ function _extractZip({
 
       zipFile.readEntry()
       zipFile.on('entry', handleEntry)
-      zipFile.on('error', err => {
-        zipFile.close()
-        return reject(new DataError(err as string))
-      })
+      zipFile.on('error', (err: Error) => reject(new DataError(err.message)))
 
       function handleEntry(entry: yauzl.Entry) {
         if (maxEntrySize && entry.uncompressedSize > maxEntrySize) {
           return reject(new DataError(`Zip entry too large: ${entry.uncompressedSize} max allowed: ${maxEntrySize}`))
         }
 
-        function entryDone(chunks: Buffer[]) {
-          entriesDone++
-          entries[entry.fileName] = includeMetaData
-            ? {
-                uncompressedSize: entry.uncompressedSize,
-                crc32: entry.crc32,
-                mtime: entry.getLastModDate(),
-                contents: Buffer.concat(chunks)
-              }
-            : Buffer.concat(chunks)
-          if (entriesDone === zipFile.entryCount) {
-            return resolve(entries)
-          }
-          zipFile.readEntry()
-        }
+        const contents: ZipEntry = zipEntryContents(zipFile, entry)
+        entries[entry.fileName] = includeMetaData
+          ? {
+              uncompressedSize: entry.uncompressedSize,
+              crc32: entry.crc32,
+              mtime: entry.getLastModDate(),
+              ...contents
+            }
+          : contents
 
-        if (!extractData) {
-          return entryDone([])
+        entriesDone++
+        if (entriesDone === zipFile.entryCount) {
+          return resolve(entries)
         }
-
-        if (filePattern && !entry.fileName.match(filePattern)) {
-          return entryDone([])
-        }
-
-        zipFile.openReadStream(entry, (err, readStream) => {
-          const chunks: Buffer[] = []
-          if (err) {
-            return reject(new DataError(err.message))
-          }
-          readStream.on('error', err => reject(new DataError(err.message)))
-          readStream.on('data', (chunk: Buffer) => chunks.push(chunk))
-          readStream.on('end', () => entryDone(chunks))
-        })
+        zipFile.readEntry()
       }
     })
   })
+}
+
+function zipEntryContents(zip: yauzl.ZipFile, entry: yauzl.Entry): ZipEntry {
+  return {
+    open() {
+      return new Promise<Readable>((resolve, reject) => {
+        zip.openReadStream(entry, (err, stream) => {
+          if (err) {
+            return reject(new DataError(err.message))
+          }
+          resolve(stream)
+        })
+      })
+    },
+    readIntoBuffer() {
+      return new Promise<Buffer>((resolve, reject) => {
+        zip.openReadStream(entry, (err, stream) => {
+          if (err) {
+            return reject(new DataError(err.message))
+          }
+          const chunks: Buffer[] = []
+          stream.on('error', err => reject(new DataError(err.message)))
+          stream.on('data', (chunk: Buffer) => chunks.push(chunk))
+          stream.on('end', () => resolve(Buffer.concat(chunks)))
+        })
+      })
+    }
+  }
 }
 
 export function extractZipFromDisk(
@@ -184,8 +181,8 @@ export async function extractZipToDisk(zipBuffer: Buffer, targetPath: string, ma
         await fs.promises.mkdir(path.join(targetPath, entryPath), { recursive: true })
         const fullPath = path.join(targetPath, entry.name)
 
-        if (!isDir && entry.content) {
-          await fs.promises.writeFile(fullPath, entry.content)
+        if (!isDir) {
+          await fs.promises.writeFile(fullPath, await entry.content.open())
         }
       })
     )

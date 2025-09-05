@@ -4,10 +4,8 @@ import * as fs from 'fs'
 import { readFile as readFileAsync } from 'fs/promises'
 import crc32 from 'buffer-crc32'
 import {
-  extractFilesMatching,
   extractZip,
   extractZipFromDisk,
-  extractZipMetadataOnly,
   extractZipToDisk,
   extractZipWithMetadata,
   createZip,
@@ -48,8 +46,8 @@ describe('zip-test.js', () => {
     const zipBuffer = await doCreateZip()
     const extracted = await extractZip(zipBuffer)
 
-    assert.deepEqual(extracted[indexName], indexContent)
-    assert.deepEqual(extracted[otherName], otherContent)
+    assert.deepEqual(await extracted[indexName].readIntoBuffer(), indexContent)
+    assert.deepEqual(await extracted[otherName].readIntoBuffer(), otherContent)
   })
 
   test('extracts metadata from zip', async () => {
@@ -60,32 +58,8 @@ describe('zip-test.js', () => {
     assert.equal(extracted[indexName].crc32, crc32.unsigned(indexContent))
     assert.equal(extracted[otherName].uncompressedSize, otherContent.length)
     assert.equal(extracted[otherName].crc32, crc32.unsigned(otherContent))
-    assert.deepEqual(extracted[indexName].contents, indexContent)
-    assert.deepEqual(extracted[otherName].contents, otherContent)
-  })
-
-  test('extracts only metadata from zip', async () => {
-    const zipBuffer = await doCreateZip()
-    const extracted = await extractZipMetadataOnly(zipBuffer)
-
-    assert.equal(extracted[indexName].uncompressedSize, indexContent.length)
-    assert.equal(extracted[indexName].crc32, crc32.unsigned(indexContent))
-    assert.equal(extracted[otherName].uncompressedSize, otherContent.length)
-    assert.equal(extracted[otherName].crc32, crc32.unsigned(otherContent))
-    assert.equal(extracted[indexName].contents.toString('utf-8'), '')
-    assert.equal(extracted[otherName].contents.toString('utf-8'), '')
-  })
-
-  test('extracts only requested file', async () => {
-    const zipBuffer = await doCreateZip()
-    const extracted = await extractFilesMatching(zipBuffer, '^index.*')
-
-    assert.equal(extracted[indexName].uncompressedSize, indexContent.length)
-    assert.equal(extracted[indexName].crc32, crc32.unsigned(indexContent))
-    assert.equal(extracted[otherName].uncompressedSize, otherContent.length)
-    assert.equal(extracted[otherName].crc32, crc32.unsigned(otherContent))
-    assert.deepEqual(extracted[indexName].contents, indexContent)
-    assert.equal(extracted[otherName].contents.toString('utf-8'), '')
+    assert.deepEqual(await extracted[indexName].readIntoBuffer(), indexContent)
+    assert.deepEqual(await extracted[otherName].readIntoBuffer(), otherContent)
   })
 
   test("throws if passed strings as content because they end up creating zip files with errors in uncompressedSize's", () =>
