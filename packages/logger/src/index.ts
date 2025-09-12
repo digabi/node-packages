@@ -75,6 +75,7 @@ export function requestLogger(logger: winston.Logger, options: RequestLoggerOpti
       method: req.method,
       url: req.originalUrl,
       contentLength: Number(this.get('content-length')),
+      requestContentLength: Number(req.get('content-length')),
       remoteAddress: req.ip,
       remoteUser: getRemoteUser(req),
       responseTime: responseTime,
