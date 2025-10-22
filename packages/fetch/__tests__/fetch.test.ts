@@ -225,6 +225,15 @@ describe('fetch-wrappers-test', () => {
         assert.equal(error.statusCode, expectedStatusCode)
         assert.equal(status, expectedStatusCode)
         assert.equal(errorType, expectedErrorType)
+        assert.equal((error as Error).message, `Error 409 POSTing to ${testApp.getServerPrefix()}/error`)
+      }
+    })
+
+    test('should be able to see url and method if generic fetch failed error', async () => {
+      try {
+        await requestWrappers.postJsonAsync(`http://test/error`)
+      } catch (error: any) {
+        assert.equal((error as Error).message, 'POST http://test/error fetch failed')
       }
     })
 
