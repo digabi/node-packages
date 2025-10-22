@@ -160,50 +160,59 @@ async function requestJsonAsync<T>(
   responseType: 'json' | 'buffer'
 ): Promise<T | Response | Buffer> {
   const baseUrl = options.url ? options.url : url
-  const res = await fetch(`${baseUrl}${getQueryString(options)}`, {
-    ...options,
-    method,
-    headers: {
-      ...options.headers,
-      ...(options.jar && {
-        Cookie: await getCookieString(options, baseUrl)
-      }),
-      ...(options.auth && {
-        Authorization: basicAuthenticationHeader(options.auth.username, options.auth.password)
-      })
+
+  try {
+    const res = await fetch(`${baseUrl}${getQueryString(options)}`, {
+      ...options,
+      method,
+      headers: {
+        ...options.headers,
+        ...(options.jar && {
+          Cookie: await getCookieString(options, baseUrl)
+        }),
+        ...(options.auth && {
+          Authorization: basicAuthenticationHeader(options.auth.username, options.auth.password)
+        })
+      }
+    })
+
+    if (res.status >= 400) {
+      throw new RequestJsonError(
+        `Error ${res.status} ${method}ing to ${url}`,
+        res.status,
+        isContentTypeApplicationJson(res) ? await res.json() : undefined
+      )
     }
-  })
 
-  if (res.status >= 400) {
-    throw new RequestJsonError(
-      `Error ${res.status} ${method}ing to ${url}`,
-      res.status,
-      isContentTypeApplicationJson(res) ? await res.json() : undefined
-    )
+    if (options.jar) {
+      await setCookie(res, baseUrl, options)
+    }
+
+    if (fullResponse) {
+      return res
+    }
+
+    if (responseType === 'buffer') {
+      const arrayBuffer = await res.arrayBuffer()
+      return Buffer.from(arrayBuffer)
+    }
+
+    if (isContentTypeApplicationJson(res)) {
+      return res.json() as T
+    }
+
+    if (!res.body) {
+      return undefined as T
+    }
+
+    return res.text() as T
+  } catch (e) {
+    if (e instanceof Error) {
+      e.message = `${method} ${url} ${e.message}`
+    }
+
+    throw e
   }
-
-  if (options.jar) {
-    await setCookie(res, baseUrl, options)
-  }
-
-  if (fullResponse) {
-    return res
-  }
-
-  if (responseType === 'buffer') {
-    const arrayBuffer = await res.arrayBuffer()
-    return Buffer.from(arrayBuffer)
-  }
-
-  if (isContentTypeApplicationJson(res)) {
-    return res.json() as T
-  }
-
-  if (!res.body) {
-    return undefined as T
-  }
-
-  return res.text() as T
 }
 
 export class RequestJsonError extends Error {
