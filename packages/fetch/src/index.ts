@@ -207,7 +207,7 @@ async function requestJsonAsync<T>(
 
     return res.text() as T
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof Error && !(e instanceof RequestJsonError)) {
       e.message = `${method} ${url} ${e.message}`
     }
 

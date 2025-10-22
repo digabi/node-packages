@@ -225,6 +225,7 @@ describe('fetch-wrappers-test', () => {
         assert.equal(error.statusCode, expectedStatusCode)
         assert.equal(status, expectedStatusCode)
         assert.equal(errorType, expectedErrorType)
+        assert.equal((error as Error).message, `Error 409 POSTing to ${testApp.getServerPrefix()}/error`)
       }
     })
 
