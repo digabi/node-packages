@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json",
     "test": "TZ=UTC node --test --import tsx ./__tests__/*.test.ts",
-    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
+    "lint": "tsc --noEmit && eslint  ./",
     "prepare": "npm run build"
   },
   "publishConfig": {
