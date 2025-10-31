@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json",
     "test": "node --test --test-concurrency=1 --import tsx ./__tests__/*.test.ts",
-    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
+    "lint": "tsc --noEmit && eslint  ./",
     "prepare": "npm run build"
   },
   "publishConfig": {
