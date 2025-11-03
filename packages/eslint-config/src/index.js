@@ -5,7 +5,7 @@ function hasDependency(mod) {
   try {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
-    require.resolve(mod, { paths: [__dirname] })
+    import.meta.resolve(mod, `file://${__dirname}/`)
     return true
   } catch {
     return false
