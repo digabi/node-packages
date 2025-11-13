@@ -1,0 +1,59 @@
+import assert from 'node:assert/strict'
+import { test, describe } from 'node:test'
+
+import { toBase32, toBuffer } from '../src/base32'
+
+const TEST_BUFFERS: [string, number[]][] =
+  // prettier-ignore
+  [
+    ['PAISTETTUTURSKA', [0x78, 0x11, 0x29, 0x92, 0x73, 0xa4, 0xe9, 0x19, 0x28]],
+
+    // Cases from GO src: https://go.dev/src/encoding/base32/base32_test.go
+
+    // RFC-4648 Examples
+    ['MY',         [0x66]],
+    ['MZXQ',       [0x66, 0x6f]],
+    ['MZXW6',      [0x66, 0x6f, 0x6f]],
+    ['MZXW6YQ',    [0x66, 0x6f, 0x6f, 0x62]],
+    ['MZXW6YTB',   [0x66, 0x6f, 0x6f, 0x62, 0x61]],
+    ['MZXW6YTBOI', [0x66, 0x6f, 0x6f, 0x62, 0x61, 0x72]],
+    // Wikipedia examples, converted to base32
+    ["ON2XEZJO",      [0x73, 0x75, 0x72, 0x65, 0x2e]],
+    ["ON2XEZI",       [0x73, 0x75, 0x72, 0x65]],
+    ["ON2XE",         [0x73, 0x75, 0x72]],
+    ["ON2Q",          [0x73, 0x75]],
+    ["NRSWC43VOJSS4", [0x6c, 0x65, 0x61, 0x73, 0x75, 0x72, 0x65, 0x2e]],
+    ["MVQXG5LSMUXA",  [0x65, 0x61, 0x73, 0x75, 0x72, 0x65, 0x2e]],
+    ["MFZXK4TFFY",    [0x61, 0x73, 0x75, 0x72, 0x65, 0x2e]],
+    ["ON2XEZJO",      [0x73, 0x75, 0x72, 0x65, 0x2e]],
+
+    [
+      "KR3WC4ZAMJZGS3DMNFTSYIDBNZSCA5DIMUQHG3DJORUHSIDUN53GK4Y",
+      [0x54,0x77,0x61,0x73,0x20,0x62,0x72,0x69,0x6c,0x6c,0x69,0x67,0x2c,0x20,0x61,0x6e,0x64,0x20,0x74,0x68,0x65,0x20,0x73,0x6c,0x69,0x74,0x68,0x79,0x20,0x74,0x6f,0x76,0x65,0x73]
+    ],
+
+    ["", []]
+  ]
+
+const testBuffers = TEST_BUFFERS.map(([str, buf]) => [str, Uint8Array.from(buf)] as const)
+
+describe('base 32', () => {
+  describe('encoding', () => {
+    for (const [str, buf] of testBuffers) {
+      test(`encodes sample string correctly: "${str}"`, () => {
+        assert.deepStrictEqual(toBuffer(str), buf)
+      })
+    }
+  })
+  describe('decoding', () => {
+    for (const [str, buf] of testBuffers) {
+      test(`decodes sample buffer correctly: "${str}"`, () => {
+        assert.deepStrictEqual(toBase32(buf), str)
+      })
+    }
+
+    test('refuses to decode bad characters', () => {
+      assert.equal(toBuffer('X1'), null)
+    })
+  })
+})
