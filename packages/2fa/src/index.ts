@@ -1,5 +1,6 @@
 import * as crypto from 'crypto'
 import { toBase32, toBuffer } from './base32'
+import encodeQR from 'qr'
 
 /** Algorithm to use with `crypto.createHmac` */
 const ALGO = 'sha1' // ATTOW MS-Authenticator is SHA1 only (tested on iOS)
@@ -87,4 +88,25 @@ export function genKey() {
   const key = crypto.randomBytes(KEY_SIZE)
   const enc = toBase32(key)
   return enc
+}
+
+/**
+ * Returns an `otpauth` URL for the given key along with a QR code (svg).
+ *
+ * The `issuer` should be both machine and human-friendly, e.g. "ytl-rekisteri", not "YTL:n rekisteri".
+ *
+ * The account should probably look like `matti.meikalainen@example.com` or `mmeikalainen`.
+ */
+export function getUrl(key: string, issuer: string, account: string) {
+  const url = new URL('otpauth://totp')
+  url.searchParams.set('secret', key)
+  url.searchParams.set('issuer', `${issuer}`)
+  url.searchParams.set('label', `${issuer}:${account}`) // Prefix must match issuer
+  url.searchParams.set('algorithm', ALGO)
+  url.searchParams.set('digits', '6')
+  url.searchParams.set('period', '30')
+
+  const qr = encodeQR(url.toString(), 'svg', { border: 0 })
+
+  return { url, qr }
 }
