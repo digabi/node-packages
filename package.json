@@ -24,5 +24,8 @@
     "build": "lerna run build",
     "test": "lerna run --concurrency 1 test",
     "lint": "lerna run lint"
+  },
+  "dependencies": {
+    "qr": "^0.5.2"
   }
 }

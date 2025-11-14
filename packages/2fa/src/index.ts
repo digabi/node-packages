@@ -1,4 +1,5 @@
 import * as crypto from 'crypto'
+import encodeQR from 'qr'
 import { toBase32, toBuffer } from './base32'
 
 /** Algorithm to use with `crypto.createHmac` */
@@ -90,19 +91,27 @@ export function genKey() {
 }
 
 /**
- * Returns an `otpauth` URL for the given key.
+ * Returns an `otpauth` URL for the given key along with a QR code as a
+ * string of `<svg />`. This can then be displayed as a data url with the
+ * prefix `data:image/svg+xml;utf8,`.
  *
- * The `issuer` should be both machine and human-friendly, e.g. "ytl-rekisteri", not "YTL:n rekisteri".
+ * The `issuer` field should be both machine and human-friendly; use e.g.
+ * "YTL-rekisteri" instead of "YTL:n rekisteri". MS Authenticator seems to
+ * swap spaces for pluses here at least, along with other weirdness.
  *
- * The account should probably look like `matti.meikalainen@example.com` or `mmeikalainen`.
+ * The label should most probably be the user account name; spaces apparently
+ * render correctly here, so labels like "Mikko Mallikas", "mmallikas", and
+ * "mikko@example.com" are all ok.
  */
-export function getUrl(key: string, issuer: string, account: string) {
+export function getUrl(key: string, issuer: string, label: string) {
   const url = new URL('otpauth://totp')
+
+  url.pathname = label
   url.searchParams.set('secret', key)
-  url.searchParams.set('issuer', `${issuer}`)
-  url.searchParams.set('label', `${issuer}:${account}`) // Prefix must match issuer
+  url.searchParams.set('issuer', issuer)
   url.searchParams.set('algorithm', ALGO)
   url.searchParams.set('digits', '6')
   url.searchParams.set('period', '30')
-  return url
+
+  return { url, qr: encodeQR(url.toString(), 'svg', { border: 0 }) }
 }
