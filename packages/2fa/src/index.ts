@@ -1,4 +1,5 @@
 import * as crypto from 'crypto'
+import encodeQR from 'qr'
 import { toBase32, toBuffer } from './base32'
 
 /** Algorithm to use with `crypto.createHmac` */
@@ -61,7 +62,7 @@ export type TotpResult =
  * **NB**:
  * The caller is responsible for resisting TOTP-reuse!
  * This means that you should save the _last two successfully used TOTPs_
- * and refuse to accept them again. In practice, when you succesfully
+ * and refuse to accept them again. In practice, when you successfully
  * log a user in, you should save the used TOTP in a database (shared
  * across application instances) and disallow using that TOTP and the
  * previous successful one in the next log in attempt.
@@ -87,4 +88,30 @@ export function genKey() {
   const key = crypto.randomBytes(KEY_SIZE)
   const enc = toBase32(key)
   return enc
+}
+
+/**
+ * Returns an `otpauth` URL for the given key along with a QR code as a
+ * string of `<svg />`. This can then be displayed as a data url with the
+ * prefix `data:image/svg+xml;utf8,`.
+ *
+ * The `issuer` field should be both machine and human-friendly; use e.g.
+ * "YTL-rekisteri" instead of "YTL:n rekisteri". MS Authenticator seems to
+ * swap spaces for pluses here at least, along with other weirdness.
+ *
+ * The label should most probably be the user account name; spaces apparently
+ * render correctly here, so labels like "Mikko Mallikas", "mmallikas", and
+ * "mikko@example.com" are all ok.
+ */
+export function getUrl(key: string, issuer: string, label: string) {
+  const url = new URL('otpauth://totp')
+
+  url.pathname = label
+  url.searchParams.set('secret', key)
+  url.searchParams.set('issuer', issuer)
+  url.searchParams.set('algorithm', ALGO)
+  url.searchParams.set('digits', '6')
+  url.searchParams.set('period', '30')
+
+  return { url, qr: encodeQR(url.toString(), 'svg', { border: 0 }) }
 }
