@@ -23,6 +23,13 @@ const PERIOD_SECS = 30n
  * @param date - Date object to anchor generation to, defaults to current current time.
  */
 export function get(key: Uint8Array, delta = 0, date?: Date) {
+  if (typeof key === 'string')
+    throw Error(
+      'Passed a string as a key for TOTP generation.' +
+        ' This makes the generation fail in subtle ways as the key should be a typed byte array.' +
+        ' This function is not meant for end use; did you mean to use `check` instead?'
+    )
+
   const d = BigInt(delta)
   const t = BigInt(date?.getTime() ?? Date.now())
 
@@ -47,9 +54,13 @@ export type TotpResult =
   /** The checked TOTP was correct */
   | { ok: true }
   /** The checked TOTP was incorrect */
-  | { ok: false; reason: 'BAD_TOTP' }
+  | { ok: false; reason: 'WRONG_TOTP' }
+  /** The given TOTP was in the list of already used TOTPs */
+  | { ok: false; reason: 'SPENT_TOTP' }
+  /** The given TOTP was not a string of six digits */
+  | { ok: false; reason: 'MALFORMED_TOTP' }
   /** The key could not be decoded */
-  | { ok: false; reason: 'BAD_KEY' }
+  | { ok: false; reason: 'MALFORMED_KEY' }
 
 /**
  * Check whether the given TOTP is valid for the key at call time.
@@ -69,18 +80,28 @@ export type TotpResult =
  *
  * @param key - The base 32 encoded shared secret key.
  * @param totp - The TOTP to check.
+ * @param spentTotps - List of used TOTPs to refuse. Should include the latest and the one before that _successfully used_ TOTPs.
  */
-export function check(key: string, totp: string, date?: Date): TotpResult {
+export function check(key: string, totp: string, spentTotps: string[], date?: Date): TotpResult {
+  if (spentTotps.length < 2)
+    throw Error(
+      'Tried to check TOTP without excluding the two last successfully used TOTPs.' +
+        ' This is dangerous as it subverts the "one-time" part of the OTP system.' +
+        ' Please pass in at least two passwords to exclude from the check.'
+    )
+
   const k = toBuffer(key)
 
-  if (k === null) return { ok: false, reason: 'BAD_KEY' }
+  if (k === null) return { ok: false, reason: 'MALFORMED_KEY' }
+  if (!/^\d{6}$/.test(totp)) return { ok: false, reason: 'MALFORMED_TOTP' }
+  if (spentTotps.includes(totp)) return { ok: false, reason: 'SPENT_TOTP' }
 
   const curr = get(k, +0, date)
   const prev = get(k, -1, date)
 
   return totp === curr || totp === prev
     ? { ok: true } // prettier-ignore
-    : { ok: false, reason: 'BAD_TOTP' }
+    : { ok: false, reason: 'WRONG_TOTP' }
 }
 
 /** Returns a new TOTP shared secret key. */
