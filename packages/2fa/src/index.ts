@@ -62,7 +62,7 @@ export type TotpResult =
  * **NB**:
  * The caller is responsible for resisting TOTP-reuse!
  * This means that you should save the _last two successfully used TOTPs_
- * and refuse to accept them again. In practice, when you succesfully
+ * and refuse to accept them again. In practice, when you successfully
  * log a user in, you should save the used TOTP in a database (shared
  * across application instances) and disallow using that TOTP and the
  * previous successful one in the next log in attempt.
