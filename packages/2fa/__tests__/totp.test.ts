@@ -29,7 +29,7 @@ describe('totp', () => {
   describe('accepts current totp', () => {
     for (const [key, totp, ts] of cases) {
       test(`accepts totp: ${totp}`, () => {
-        assert.deepStrictEqual(check(key, totp, new Date(ts)), { ok: true })
+        assert.deepStrictEqual(check(key, totp, ['000000', '999999'], new Date(ts)), { ok: true })
       })
     }
   })
@@ -39,7 +39,7 @@ describe('totp', () => {
       const [key, totp, _ts] = prev
       const [_key, _totp, ts] = curr
       test(`accepts totp: ${totp}`, () => {
-        assert.deepStrictEqual(check(key, totp, new Date(ts)), { ok: true })
+        assert.deepStrictEqual(check(key, totp, ['000000', '999999'], new Date(ts)), { ok: true })
       })
     }
   })
@@ -49,7 +49,10 @@ describe('totp', () => {
       const [key, totp, _ts] = prev
       const [_key, _totp, ts] = curr
       test(`does not accept totp: ${totp}`, () => {
-        assert.deepStrictEqual(check(key, totp, new Date(ts)), { ok: false, reason: 'BAD_TOTP' })
+        assert.deepStrictEqual(check(key, totp, ['000000', '999999'], new Date(ts)), {
+          ok: false,
+          reason: 'WRONG_TOTP'
+        })
       })
     }
   })
@@ -59,8 +62,16 @@ describe('totp', () => {
       const [_key, _totp, ts] = curr
       const [key, totp, _ts] = next
       test(`does not accept totp: ${totp}`, () => {
-        assert.deepStrictEqual(check(key, totp, new Date(ts)), { ok: false, reason: 'BAD_TOTP' })
+        assert.deepStrictEqual(check(key, totp, ['000000', '999999'], new Date(ts)), {
+          ok: false,
+          reason: 'WRONG_TOTP'
+        })
       })
     }
+  })
+
+  test('does not accept totps from the spent list', () => {
+    const [key, totp, ts] = cases[0]
+    assert.deepStrictEqual(check(key, totp, [totp, '999999'], new Date(ts)), { ok: false, reason: 'SPENT_TOTP' })
   })
 })
