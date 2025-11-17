@@ -25,5 +25,8 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "qr": "^0.5.2"
   }
 }
