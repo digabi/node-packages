@@ -113,8 +113,8 @@ export function genKey() {
 
 /**
  * Returns an `otpauth` URL for the given key along with a QR code as a
- * string of `<svg />`. This can then be displayed as a data url with the
- * prefix `data:image/svg+xml;utf8,`.
+ * data URL. This can then be shown in an `<img />` tag as the value of
+ * its `src` attribute.
  *
  * The `issuer` field should be both machine and human-friendly; use e.g.
  * "YTL-rekisteri" instead of "YTL:n rekisteri". MS Authenticator seems to
@@ -134,5 +134,7 @@ export function getUrl(key: string, issuer: string, label: string) {
   url.searchParams.set('digits', '6')
   url.searchParams.set('period', '30')
 
-  return { url, qr: encodeQR(url.toString(), 'svg', { border: 0 }) }
+  const qrSvg = encodeQR(url.toString(), 'svg', { border: 0 })
+
+  return { url, qr: `data:image/svg+xml;utf8,${qrSvg}` }
 }
