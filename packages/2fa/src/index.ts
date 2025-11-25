@@ -2,6 +2,12 @@ import * as crypto from 'crypto'
 import encodeQR from 'qr'
 import { toBase32, toBuffer } from './base32'
 
+// NOTE:
+// Do not change these parameters if you're not sure what you're doing!
+// In testing, many authenticators silently fail if nonstandard settings
+// for e.g. the algorithm are used, even if the settings are included
+// in the activation URL/QR-code.
+
 /** Algorithm to use with `crypto.createHmac` */
 const ALGO = 'sha1' // ATTOW MS-Authenticator is SHA1 only (tested on iOS)
 
@@ -130,9 +136,6 @@ export function getUrl(key: string, issuer: string, label: string) {
   url.pathname = label
   url.searchParams.set('secret', key)
   url.searchParams.set('issuer', issuer)
-  url.searchParams.set('algorithm', ALGO)
-  url.searchParams.set('digits', '6')
-  url.searchParams.set('period', '30')
 
   const qrSvg = encodeQR(url.toString(), 'svg', { border: 0 })
 
