@@ -15,7 +15,7 @@ describe('request-logger', () => {
 
     app.use(requestLogger(logger, { getRemoteUser: () => 'remote-user' }))
 
-    app.get('/my-endpoint', (req, res) => {
+    app.post('/my-endpoint', (req, res) => {
       res.send('test')
     })
 
@@ -26,12 +26,20 @@ describe('request-logger', () => {
     testApp.closeApp()
   })
 
-  test('should log request info', async () => {
-    fetch(`${testApp.getServerPrefix()}/my-endpoint`)
+  test('should log request info', { timeout: 5000 }, async () => {
+    fetch(`${testApp.getServerPrefix()}/my-endpoint`, { method: 'POST', body: 'abcdefghij' })
+
+    await assertNextLogEvent(logger, (info: Logform.TransformableInfo) => {
+      assert.equal(info.message, 'Request received')
+      assert.equal(info.method, 'POST')
+      assert.equal(info.url, '/my-endpoint')
+      assert.equal(info.requestContentLength, 10)
+      assert.equal(info.remoteUser, 'remote-user')
+    })
 
     await assertNextLogEvent(logger, (info: Logform.TransformableInfo) => {
       assert.equal(info.message, 'Request finished')
-      assert.equal(info.method, 'GET')
+      assert.equal(info.method, 'POST')
       assert.equal(info.url, '/my-endpoint')
       assert.equal(info.contentLength, 4)
       assert.equal(info.remoteUser, 'remote-user')

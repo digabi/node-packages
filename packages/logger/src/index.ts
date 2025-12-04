@@ -11,6 +11,7 @@ export type DigabiLogger = winston.Logger & {
 }
 
 const requestFinishedMessage = 'Request finished'
+const requestReceivedMessage = 'Request received'
 
 /**
  * Create a winston logger with sane defaults for most of our projects.
@@ -89,6 +90,16 @@ export function requestLogger(logger: winston.Logger, options: RequestLoggerOpti
   const tracerMiddleware = tracerExpressMiddleware()
 
   const loggingMiddleware: Handler = (req, res, next) => {
+    logger.http(requestReceivedMessage, {
+      method: req.method,
+      url: req.originalUrl,
+      remoteAddress: req.ip,
+      remoteUser: getRemoteUser(req),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      userAgent: req.headers['user-agent'],
+      requestContentLength: Number(req.get('content-length')) || undefined
+    })
+
     startTimes.set(res, process.hrtime.bigint())
     res.on('finish', onFinished).on('error', onFinished)
     next()

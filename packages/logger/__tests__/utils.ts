@@ -15,10 +15,14 @@ export class MyError extends Error {
 export function assertNextLogEvent(logger: Logger, assertFn: (x: any) => void) {
   const transport = logger.transports[0]
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     transport.once('logged', info => {
-      assertFn(info)
-      resolve(true)
+      try {
+        assertFn(info)
+        resolve(true)
+      } catch (error) {
+        reject(error instanceof Error ? error : new Error(String(error)))
+      }
     })
   })
 }
