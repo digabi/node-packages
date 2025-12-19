@@ -21,15 +21,10 @@ is only an extension/helper and it could be confusing to name it only based on t
 
 ### Creating a new package
 
-1. Copy an existing package under `packages/` as a template and modify relevant parts.
-   - Try `crypto-utils` or `2fa` as pretty minimal examples.
-2. Add an entry for your package to `.github/workflows/publish.yml`.
-3. Run `just new-package foobar` where `foobar` is the package's name.
+1. Run `just create-package foobar` where `foobar` is the package's name and follow instuctions.
    - The prefix `@digabi/` will be added automatically.
-4. Sign into npmjs.com and navigate to the new package's settings.
-5. Setup "Trusted publisher".
-   - Set "publishing access" to "require two-factor authentication and disallow tokens".
-6. Ensure connection works by creating a new version with `publish.yml`.
+   - This creates the package structure from the template in `.template/`
+   - The package is automatically added to `.github/workflows/publish.yml`
 
 ### Updating a package
 

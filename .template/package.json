@@ -1,0 +1,28 @@
+{
+  "name": "@digabi/__PACKAGE_NAME__",
+  "version": "0.0.0",
+  "author": "Matriculation Examination Board, Finland",
+  "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digabi/node-packages.git"
+  },
+  "description": "TODO: Add description",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project ./tsconfig.build.json",
+    "test": "node --test --import tsx ./__tests__/*.test.ts",
+    "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "__PACKAGE_NAME__",
+    "digabi"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
