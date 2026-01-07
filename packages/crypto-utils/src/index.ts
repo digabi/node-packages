@@ -17,12 +17,12 @@ function isBuffer(bufferOrStream: BufferOrStream): bufferOrStream is Buffer {
   return Buffer.isBuffer(bufferOrStream)
 }
 
-export function createAES256EncryptStreamWithIv(key: BufferOrString, iv: BufferOrString): crypto.Cipheriv {
+export function createAES256EncryptStreamWithIv(key: BufferOrString, iv: BufferOrString): crypto.Cipher {
   return crypto.createCipheriv(symmetricAlgo, asBuffer(key), asBuffer(iv))
 }
 
 // crypto.Cipher -> String
-export function createAES256DecryptStreamWithIv(key: BufferOrString, iv: BufferOrString): crypto.Decipheriv {
+export function createAES256DecryptStreamWithIv(key: BufferOrString, iv: BufferOrString): crypto.Decipher {
   return crypto.createDecipheriv(symmetricAlgo, asBuffer(key), asBuffer(iv))
 }
 

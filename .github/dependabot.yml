@@ -19,3 +19,6 @@ updates:
       - dependency-name: 'eslint'
       - dependency-name: '*'
         update-types: ['version-update:semver-patch', 'version-update:semver-minor']
+      - dependency-name: '@types/node'
+        update-types:
+          - version-update:semver-major
