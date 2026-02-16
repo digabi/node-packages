@@ -203,14 +203,17 @@ function proxyErrorHandling(next: NextFunction, err: ProxyErrorError, params: Pr
   // ERR_STREAM_PREMATURE_CLOSE and ECONNRESET happens when the user's browser cancels the request when data is sent to browser
   if (err && err.code === 'ECONNRESET') {
     next(new ProxyError(err, params, errorPrefix, 400, 'notice'))
-  } else if (err && (err.code === 'ECONNABORTED' || err.code === 'ERR_STREAM_PREMATURE_CLOSE')) {
+  } else if (
+    (err && (err.code === 'ECONNABORTED' || err.code === 'ERR_STREAM_PREMATURE_CLOSE')) ||
+    err.code === 'ERR_STREAM_UNABLE_TO_PIPE' // Happens when response stream is already closed (e.g. client disconnects) and pipeline tries to pipe more data to it
+  ) {
     next(new ProxyError(err, params, errorPrefix, 400, 'warning'))
   } else {
     next(new ProxyError(err, params, errorPrefix, 500, 'error'))
   }
 }
 
-class ProxyError extends Error {
+export class ProxyError extends Error {
   url: string | undefined
   method: string | undefined
   status: number
