@@ -26,7 +26,8 @@ export class FetchWithCookies {
       ...options,
       headers: {
         ...headers,
-        Cookie: this.getCookieHeader()
+        Cookie: this.getCookieHeader(),
+        Connection: 'close'
       }
     }
 
