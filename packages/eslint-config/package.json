@@ -14,7 +14,7 @@
   "scripts": {
     "build": "echo 'No build needed'",
     "test": "echo 'No tests'",
-    "lint": "eslint -c ./src/index.js --ignore-path ../../.eslintignore ./src/index.js",
+    "lint": "eslint -c ./src/index.js  ./src/index.js",
     "prepare": "npm run build"
   },
   "publishConfig": {

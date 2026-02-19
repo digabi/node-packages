@@ -6,7 +6,7 @@ import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
 import { randomString } from '@digabi/testing'
 
-const readStreamToBuffer = async (outputStream: Readable): Promise<Buffer> =>
+const readStreamToBuffer = (outputStream: Readable): Promise<Buffer> =>
   new Promise((resolve, reject) => {
     const bufs: Buffer[] = []
     outputStream.on('data', (d: Buffer) => bufs.push(d))
