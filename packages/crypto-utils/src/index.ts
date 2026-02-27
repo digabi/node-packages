@@ -26,7 +26,7 @@ export function createAES256DecryptStreamWithIv(key: BufferOrString, iv: BufferO
   return crypto.createDecipheriv(symmetricAlgo, asBuffer(key), asBuffer(iv))
 }
 
-export async function signWithSHA256AndRSA(input: BufferOrStream, privateKeyPem: string): Promise<Buffer> {
+export function signWithSHA256AndRSA(input: BufferOrStream, privateKeyPem: string): Promise<Buffer> {
   const signer = crypto.createSign(signAlgo)
 
   let inputStream
