@@ -103,7 +103,7 @@ function fileUpload(config: multer.Options, fieldName: string, errorCode: number
     void examUpload(req, res, err => {
       if (err instanceof multer.MulterError && _.includes(err.message, 'File too large')) {
         return res.status(errorCode || 413).send(errorMessage || 'Uploaded file was too big')
-      } else if (err instanceof multer.MulterError && _.includes(err.message, 'Request aborted')) {
+      } else if (err instanceof Error && _.includes(err.message, 'Request aborted')) {
         return res.sendStatus(499) // Nonstandard but nginx uses this for "client closed connection"
       } else {
         return next(err)
