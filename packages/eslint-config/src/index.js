@@ -1,11 +1,6 @@
-import { fileURLToPath } from 'node:url'
-import path from 'node:path'
-
-function hasDependency(mod) {
+function hasDependency(module) {
   try {
-    const __filename = fileURLToPath(import.meta.url)
-    const __dirname = path.dirname(__filename)
-    import.meta.resolve(mod, `file://${__dirname}/`)
+    require.resolve(module)
     return true
   } catch {
     return false
@@ -22,19 +17,6 @@ import pluginPromise from 'eslint-plugin-promise'
 import pluginPrettier from 'eslint-plugin-prettier'
 import tsParser from '@typescript-eslint/parser'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
-
-const pluginMocha = hasMocha
-  ? ((await import('eslint-plugin-mocha')).default ?? (await import('eslint-plugin-mocha')))
-  : null
-const pluginJest = hasJest
-  ? ((await import('eslint-plugin-jest')).default ?? (await import('eslint-plugin-jest')))
-  : null
-const pluginReact = hasReact
-  ? ((await import('eslint-plugin-react')).default ?? (await import('eslint-plugin-react')))
-  : null
-const pluginReactHooks = hasReactHooks
-  ? ((await import('eslint-plugin-react-hooks')).default ?? (await import('eslint-plugin-react-hooks')))
-  : null
 
 const sharedRules = {
   'array-callback-return': 'error',
@@ -92,13 +74,13 @@ const sharedPlugins = {
   import: pluginImport,
   promise: pluginPromise,
   prettier: pluginPrettier,
-  ...(hasMocha && { mocha: pluginMocha }),
-  ...(hasJest && { jest: pluginJest }),
-  ...(hasReact && { react: pluginReact }),
-  ...(hasReactHooks && { 'react-hooks': pluginReactHooks })
+  ...(hasMocha && { mocha: require('eslint-plugin-mocha') }),
+  ...(hasJest && { jest: require('eslint-plugin-jest') }),
+  ...(hasReact && { react: require('eslint-plugin-react') }),
+  ...(hasReactHooks && { 'react-hooks': require('eslint-plugin-react-hooks') })
 }
 
-export default [
+module.exports = [
   {
     name: 'shared',
     plugins: sharedPlugins,
@@ -118,15 +100,6 @@ export default [
     },
     rules: sharedRules
   },
-
-  {
-    name: 'javascript',
-    files: ['**/*.{js,cjs,mjs}'],
-    rules: {
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }]
-    }
-  },
-
   {
     name: 'typescript',
     files: ['**/*.{ts,tsx}'],
