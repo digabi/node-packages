@@ -25,6 +25,7 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@eslint/js": ">= 9",
     "eslint": ">= 9",
     "eslint-plugin-import-x": ">= 4",
     "eslint-plugin-prettier": ">= 5",
