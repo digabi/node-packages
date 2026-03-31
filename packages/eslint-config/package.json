@@ -17,8 +17,8 @@
   ],
   "scripts": {
     "build": "echo 'No build needed'",
-    "test": "echo 'No tests'",
-    "lint": "eslint ./src/index.mjs",
+    "test": "node --test --import tsx ./__tests__/*.test.ts",
+    "lint": "tsc --noEmit && eslint --ignore-pattern '__tests__/fixtures/' ./src/index.mjs ./__tests__/",
     "prepare": "npm run build"
   },
   "publishConfig": {
@@ -33,5 +33,8 @@
     "globals": ">= 15",
     "typescript-eslint": ">= 8"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^24.10.9",
+    "tsx": "^4.20.3"
+  }
 }
