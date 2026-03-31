@@ -5,20 +5,20 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@digabi/eslint-config": "^3.3.0",
+    "@digabi/eslint-config": "^4.0.0",
     "@digabi/typescript-config": "^1.0.2",
     "@types/node": "^24.10.9",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "@typescript-eslint/parser": "^8.38.0",
-    "eslint": "^8.45.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-import-x": "^4.6.0",
     "eslint-plugin-prettier": "^5.5.3",
     "eslint-plugin-promise": "^7.2.1",
+    "globals": "^16.0.0",
     "lerna": "^9.0.0",
     "prettier": "^3.6.2",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.58.0"
   },
   "scripts": {
     "build": "lerna run build",
