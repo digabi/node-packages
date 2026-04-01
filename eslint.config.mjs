@@ -1,6 +1,9 @@
 import digabiConfig from '@digabi/eslint-config'
 
 export default [
+  {
+    ignores: ['**/*.snapshot']
+  },
   ...digabiConfig(),
   {
     files: ['**/*.test.ts'],
