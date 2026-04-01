@@ -49,21 +49,21 @@ export default function digabiConfig() {
   configs.push(promise.configs['flat/recommended'])
 
   if (hasMocha) {
-    const mocha = require('eslint-plugin-mocha')
+    const mocha = require('eslint-plugin-mocha').default
 
-    if (mocha.configs?.flat?.recommended) {
-      configs.push(mocha.configs.flat.recommended)
+    if (mocha.configs.recommended) {
+      configs.push({
+        ...mocha.configs.recommended,
+        rules: {
+          ...mocha.configs.recommended.rules,
+          'mocha/no-mocha-arrows': 'off',
+          'mocha/no-setup-in-describe': 'off',
+          'mocha/no-sibling-hooks': 'off',
+          'mocha/no-hooks-for-single-case': 'off',
+          'mocha/no-exclusive-tests': 'error'
+        }
+      })
     }
-
-    configs.push({
-      rules: {
-        'mocha/no-mocha-arrows': 'off',
-        'mocha/no-setup-in-describe': 'off',
-        'mocha/no-sibling-hooks': 'off',
-        'mocha/no-hooks-for-single-case': 'off',
-        'mocha/no-exclusive-tests': 'error'
-      }
-    })
   }
 
   if (hasJest) {
