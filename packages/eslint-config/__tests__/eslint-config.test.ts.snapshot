@@ -610,7 +610,12 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     0
   ],
   "array-callback-return": [
-    2
+    2,
+    {
+      "allowImplicit": false,
+      "allowVoid": false,
+      "checkForEach": false
+    }
   ],
   "array-element-newline": [
     0
@@ -656,7 +661,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     2
   ],
   "curly": [
-    0
+    0,
+    "all"
   ],
   "dot-location": [
     0
@@ -716,27 +722,39 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     0
   ],
   "getter-return": [
-    2
+    2,
+    {
+      "allowImplicit": false
+    }
   ],
   "implicit-arrow-linebreak": [
     0
   ],
-  "import/default": [
+  "import-x/default": [
     0
   ],
-  "import/export": [
+  "import-x/export": [
     2
   ],
-  "import/named": [
+  "import-x/named": [
     0
   ],
-  "import/namespace": [
+  "import-x/namespace": [
     0
   ],
-  "import/no-commonjs": [
+  "import-x/no-commonjs": [
     1
   ],
-  "import/no-unresolved": [
+  "import-x/no-duplicates": [
+    1
+  ],
+  "import-x/no-named-as-default": [
+    0
+  ],
+  "import-x/no-named-as-default-member": [
+    0
+  ],
+  "import-x/no-unresolved": [
     0
   ],
   "indent": [
@@ -744,77 +762,6 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
   ],
   "indent-legacy": [
     0
-  ],
-  "jest/expect-expect": [
-    2,
-    {
-      "assertFunctionNames": [
-        "expect*"
-      ]
-    }
-  ],
-  "jest/no-alias-methods": [
-    2
-  ],
-  "jest/no-commented-out-tests": [
-    1
-  ],
-  "jest/no-conditional-expect": [
-    2
-  ],
-  "jest/no-deprecated-functions": [
-    2
-  ],
-  "jest/no-disabled-tests": [
-    1
-  ],
-  "jest/no-done-callback": [
-    2
-  ],
-  "jest/no-export": [
-    2
-  ],
-  "jest/no-focused-tests": [
-    2
-  ],
-  "jest/no-identical-title": [
-    2
-  ],
-  "jest/no-interpolation-in-snapshots": [
-    2
-  ],
-  "jest/no-jasmine-globals": [
-    2
-  ],
-  "jest/no-mocks-import": [
-    2
-  ],
-  "jest/no-standalone-expect": [
-    2
-  ],
-  "jest/no-test-prefixes": [
-    2
-  ],
-  "jest/prefer-to-be": [
-    2
-  ],
-  "jest/prefer-to-contain": [
-    2
-  ],
-  "jest/prefer-to-have-length": [
-    2
-  ],
-  "jest/valid-describe-callback": [
-    2
-  ],
-  "jest/valid-expect": [
-    2
-  ],
-  "jest/valid-expect-in-promise": [
-    2
-  ],
-  "jest/valid-title": [
-    2
   ],
   "jsx-quotes": [
     0
@@ -849,10 +796,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
       "limit": 1
     }
   ],
-  "mocha/no-async-describe": [
+  "mocha/no-async-suite": [
     2
   ],
-  "mocha/no-empty-description": [
+  "mocha/no-empty-title": [
     2
   ],
   "mocha/no-exclusive-tests": [
@@ -894,9 +841,6 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
   "mocha/no-sibling-hooks": [
     0
   ],
-  "mocha/no-skipped-tests": [
-    1
-  ],
   "mocha/no-synchronous-tests": [
     0
   ],
@@ -906,10 +850,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
   "mocha/prefer-arrow-callback": [
     0
   ],
-  "mocha/valid-suite-description": [
+  "mocha/valid-suite-title": [
     0
   ],
-  "mocha/valid-test-description": [
+  "mocha/valid-test-title": [
     0
   ],
   "multiline-ternary": [
@@ -940,7 +884,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     2
   ],
   "no-cond-assign": [
-    2
+    2,
+    "except-parens"
   ],
   "no-confusing-arrow": [
     0
@@ -948,8 +893,14 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
   "no-const-assign": [
     2
   ],
-  "no-constant-condition": [
+  "no-constant-binary-expression": [
     2
+  ],
+  "no-constant-condition": [
+    2,
+    {
+      "checkLoops": "allExceptWhileTrue"
+    }
   ],
   "no-control-regex": [
     2
@@ -978,23 +929,34 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
   "no-duplicate-imports": [
     2,
     {
+      "allowSeparateTypeImports": false,
       "includeExports": true
     }
   ],
   "no-empty": [
-    2
+    2,
+    {
+      "allowEmptyCatch": false
+    }
   ],
   "no-empty-character-class": [
     2
   ],
   "no-empty-pattern": [
+    2,
+    {
+      "allowObjectPatternsAsParameters": false
+    }
+  ],
+  "no-empty-static-block": [
     2
   ],
   "no-ex-assign": [
     2
   ],
   "no-extra-boolean-cast": [
-    2
+    2,
+    {}
   ],
   "no-extra-parens": [
     0
@@ -1003,7 +965,11 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     0
   ],
   "no-fallthrough": [
-    2
+    2,
+    {
+      "allowEmptyCase": false,
+      "reportUnusedFallthroughComment": false
+    }
   ],
   "no-floating-decimal": [
     0
@@ -1012,25 +978,36 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     2
   ],
   "no-global-assign": [
-    2
+    2,
+    {
+      "exceptions": []
+    }
   ],
   "no-import-assign": [
     2
   ],
-  "no-inner-declarations": [
-    2
-  ],
   "no-invalid-regexp": [
-    2
+    2,
+    {}
   ],
   "no-irregular-whitespace": [
-    2
+    2,
+    {
+      "skipComments": false,
+      "skipJSXText": false,
+      "skipRegExps": false,
+      "skipStrings": true,
+      "skipTemplates": false
+    }
   ],
   "no-loss-of-precision": [
     2
   ],
   "no-misleading-character-class": [
-    2
+    2,
+    {
+      "allowEscape": false
+    }
   ],
   "no-mixed-operators": [
     0
@@ -1044,7 +1021,7 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
   "no-multiple-empty-lines": [
     0
   ],
-  "no-new-symbol": [
+  "no-new-native-nonconstructor": [
     2
   ],
   "no-nonoctal-decimal-escape": [
@@ -1060,7 +1037,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     2
   ],
   "no-redeclare": [
-    2
+    2,
+    {
+      "builtinGlobals": true
+    }
   ],
   "no-regex-spaces": [
     2
@@ -1088,13 +1068,19 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     }
   ],
   "no-self-assign": [
-    2
+    2,
+    {
+      "props": true
+    }
   ],
   "no-setter-return": [
     2
   ],
   "no-shadow-restricted-names": [
-    2
+    2,
+    {
+      "reportGlobalThis": false
+    }
   ],
   "no-space-before-semi": [
     0
@@ -1115,7 +1101,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     0
   ],
   "no-undef": [
-    2
+    2,
+    {
+      "typeof": false
+    }
   ],
   "no-unexpected-multiline": [
     0
@@ -1127,12 +1116,21 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     2
   ],
   "no-unsafe-negation": [
-    2
+    2,
+    {
+      "enforceForOrderingRelations": false
+    }
   ],
   "no-unsafe-optional-chaining": [
-    2
+    2,
+    {
+      "disallowArithmeticOperators": false
+    }
   ],
   "no-unused-labels": [
+    2
+  ],
+  "no-unused-private-class-members": [
     2
   ],
   "no-unused-vars": [
@@ -1148,7 +1146,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     2
   ],
   "no-useless-escape": [
-    2
+    2,
+    {
+      "allowRegexCharacters": []
+    }
   ],
   "no-whitespace-before-property": [
     0
@@ -1185,7 +1186,11 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     0
   ],
   "prefer-arrow-callback": [
-    2
+    2,
+    {
+      "allowNamedFunctions": false,
+      "allowUnboundThis": true
+    }
   ],
   "prefer-destructuring": [
     2,
@@ -1500,10 +1505,17 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.js 1`] =
     0
   ],
   "use-isnan": [
-    2
+    2,
+    {
+      "enforceForIndexOf": false,
+      "enforceForSwitchCase": true
+    }
   ],
   "valid-typeof": [
-    2
+    2,
+    {
+      "requireStringLiterals": false
+    }
   ],
   "vue/array-bracket-newline": [
     0
@@ -2318,15 +2330,17 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     2
   ],
   "@typescript-eslint/no-unused-expressions": [
-    2
+    2,
+    {
+      "allowShortCircuit": false,
+      "allowTaggedTemplates": false,
+      "allowTernary": false
+    }
   ],
   "@typescript-eslint/no-unused-vars": [
     0
   ],
   "@typescript-eslint/no-use-before-define": [
-    0
-  ],
-  "@typescript-eslint/no-var-requires": [
     0
   ],
   "@typescript-eslint/no-wrapper-object-types": [
@@ -2387,7 +2401,12 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "array-callback-return": [
-    2
+    2,
+    {
+      "allowImplicit": false,
+      "allowVoid": false,
+      "checkForEach": false
+    }
   ],
   "array-element-newline": [
     0
@@ -2433,7 +2452,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "curly": [
-    0
+    0,
+    "all"
   ],
   "dot-location": [
     0
@@ -2493,27 +2513,39 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "getter-return": [
-    0
+    0,
+    {
+      "allowImplicit": false
+    }
   ],
   "implicit-arrow-linebreak": [
     0
   ],
-  "import/default": [
+  "import-x/default": [
     0
   ],
-  "import/export": [
+  "import-x/export": [
     2
   ],
-  "import/named": [
+  "import-x/named": [
     0
   ],
-  "import/namespace": [
+  "import-x/namespace": [
     0
   ],
-  "import/no-commonjs": [
+  "import-x/no-commonjs": [
     1
   ],
-  "import/no-unresolved": [
+  "import-x/no-duplicates": [
+    1
+  ],
+  "import-x/no-named-as-default": [
+    0
+  ],
+  "import-x/no-named-as-default-member": [
+    0
+  ],
+  "import-x/no-unresolved": [
     0
   ],
   "indent": [
@@ -2626,10 +2658,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
       "limit": 1
     }
   ],
-  "mocha/no-async-describe": [
+  "mocha/no-async-suite": [
     2
   ],
-  "mocha/no-empty-description": [
+  "mocha/no-empty-title": [
     2
   ],
   "mocha/no-exclusive-tests": [
@@ -2671,9 +2703,6 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
   "mocha/no-sibling-hooks": [
     0
   ],
-  "mocha/no-skipped-tests": [
-    1
-  ],
   "mocha/no-synchronous-tests": [
     0
   ],
@@ -2683,10 +2712,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
   "mocha/prefer-arrow-callback": [
     0
   ],
-  "mocha/valid-suite-description": [
+  "mocha/valid-suite-title": [
     0
   ],
-  "mocha/valid-test-description": [
+  "mocha/valid-test-title": [
     0
   ],
   "multiline-ternary": [
@@ -2720,7 +2749,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     2
   ],
   "no-cond-assign": [
-    2
+    2,
+    "except-parens"
   ],
   "no-confusing-arrow": [
     0
@@ -2728,8 +2758,14 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
   "no-const-assign": [
     0
   ],
-  "no-constant-condition": [
+  "no-constant-binary-expression": [
     2
+  ],
+  "no-constant-condition": [
+    2,
+    {
+      "checkLoops": "allExceptWhileTrue"
+    }
   ],
   "no-control-regex": [
     2
@@ -2758,23 +2794,34 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
   "no-duplicate-imports": [
     2,
     {
+      "allowSeparateTypeImports": false,
       "includeExports": true
     }
   ],
   "no-empty": [
-    2
+    2,
+    {
+      "allowEmptyCatch": false
+    }
   ],
   "no-empty-character-class": [
     2
   ],
   "no-empty-pattern": [
+    2,
+    {
+      "allowObjectPatternsAsParameters": false
+    }
+  ],
+  "no-empty-static-block": [
     2
   ],
   "no-ex-assign": [
     2
   ],
   "no-extra-boolean-cast": [
-    2
+    2,
+    {}
   ],
   "no-extra-parens": [
     0
@@ -2783,7 +2830,11 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "no-fallthrough": [
-    2
+    2,
+    {
+      "allowEmptyCase": false,
+      "reportUnusedFallthroughComment": false
+    }
   ],
   "no-floating-decimal": [
     0
@@ -2792,7 +2843,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "no-global-assign": [
-    2
+    2,
+    {
+      "exceptions": []
+    }
   ],
   "no-implied-eval": [
     0
@@ -2800,20 +2854,28 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
   "no-import-assign": [
     0
   ],
-  "no-inner-declarations": [
-    2
-  ],
   "no-invalid-regexp": [
-    2
+    2,
+    {}
   ],
   "no-irregular-whitespace": [
-    2
+    2,
+    {
+      "skipComments": false,
+      "skipJSXText": false,
+      "skipRegExps": false,
+      "skipStrings": true,
+      "skipTemplates": false
+    }
   ],
   "no-loss-of-precision": [
     2
   ],
   "no-misleading-character-class": [
-    2
+    2,
+    {
+      "allowEscape": false
+    }
   ],
   "no-mixed-operators": [
     0
@@ -2846,7 +2908,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     2
   ],
   "no-redeclare": [
-    0
+    0,
+    {
+      "builtinGlobals": true
+    }
   ],
   "no-regex-spaces": [
     2
@@ -2874,13 +2939,19 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     }
   ],
   "no-self-assign": [
-    2
+    2,
+    {
+      "props": true
+    }
   ],
   "no-setter-return": [
     0
   ],
   "no-shadow-restricted-names": [
-    2
+    2,
+    {
+      "reportGlobalThis": false
+    }
   ],
   "no-space-before-semi": [
     0
@@ -2904,7 +2975,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "no-undef": [
-    0
+    0,
+    {
+      "typeof": false
+    }
   ],
   "no-unexpected-multiline": [
     0
@@ -2916,15 +2990,31 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     2
   ],
   "no-unsafe-negation": [
-    0
+    0,
+    {
+      "enforceForOrderingRelations": false
+    }
   ],
   "no-unsafe-optional-chaining": [
-    2
+    2,
+    {
+      "disallowArithmeticOperators": false
+    }
   ],
   "no-unused-expressions": [
-    0
+    0,
+    {
+      "allowShortCircuit": false,
+      "allowTaggedTemplates": false,
+      "allowTernary": false,
+      "enforceForJSX": false,
+      "ignoreDirectives": false
+    }
   ],
   "no-unused-labels": [
+    2
+  ],
+  "no-unused-private-class-members": [
     2
   ],
   "no-unused-vars": [
@@ -2940,7 +3030,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     2
   ],
   "no-useless-escape": [
-    2
+    2,
+    {
+      "allowRegexCharacters": []
+    }
   ],
   "no-var": [
     2
@@ -2980,10 +3073,18 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "prefer-arrow-callback": [
-    2
+    2,
+    {
+      "allowNamedFunctions": false,
+      "allowUnboundThis": true
+    }
   ],
   "prefer-const": [
-    2
+    2,
+    {
+      "destructuring": "any",
+      "ignoreReadBeforeAssign": false
+    }
   ],
   "prefer-destructuring": [
     2,
@@ -2995,7 +3096,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     2
   ],
   "prefer-promise-reject-errors": [
-    0
+    0,
+    {
+      "allowEmptyReject": false
+    }
   ],
   "prefer-rest-params": [
     2
@@ -3307,10 +3411,17 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.spec.ts 
     0
   ],
   "use-isnan": [
-    2
+    2,
+    {
+      "enforceForIndexOf": false,
+      "enforceForSwitchCase": true
+    }
   ],
   "valid-typeof": [
-    2
+    2,
+    {
+      "requireStringLiterals": false
+    }
   ],
   "vue/array-bracket-newline": [
     0
@@ -4125,15 +4236,17 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     2
   ],
   "@typescript-eslint/no-unused-expressions": [
-    2
+    2,
+    {
+      "allowShortCircuit": false,
+      "allowTaggedTemplates": false,
+      "allowTernary": false
+    }
   ],
   "@typescript-eslint/no-unused-vars": [
     0
   ],
   "@typescript-eslint/no-use-before-define": [
-    0
-  ],
-  "@typescript-eslint/no-var-requires": [
     0
   ],
   "@typescript-eslint/no-wrapper-object-types": [
@@ -4194,7 +4307,12 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "array-callback-return": [
-    2
+    2,
+    {
+      "allowImplicit": false,
+      "allowVoid": false,
+      "checkForEach": false
+    }
   ],
   "array-element-newline": [
     0
@@ -4240,7 +4358,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "curly": [
-    0
+    0,
+    "all"
   ],
   "dot-location": [
     0
@@ -4300,27 +4419,39 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "getter-return": [
-    0
+    0,
+    {
+      "allowImplicit": false
+    }
   ],
   "implicit-arrow-linebreak": [
     0
   ],
-  "import/default": [
+  "import-x/default": [
     0
   ],
-  "import/export": [
+  "import-x/export": [
     2
   ],
-  "import/named": [
+  "import-x/named": [
     0
   ],
-  "import/namespace": [
+  "import-x/namespace": [
     0
   ],
-  "import/no-commonjs": [
+  "import-x/no-commonjs": [
     1
   ],
-  "import/no-unresolved": [
+  "import-x/no-duplicates": [
+    1
+  ],
+  "import-x/no-named-as-default": [
+    0
+  ],
+  "import-x/no-named-as-default-member": [
+    0
+  ],
+  "import-x/no-unresolved": [
     0
   ],
   "indent": [
@@ -4328,77 +4459,6 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
   ],
   "indent-legacy": [
     0
-  ],
-  "jest/expect-expect": [
-    2,
-    {
-      "assertFunctionNames": [
-        "expect*"
-      ]
-    }
-  ],
-  "jest/no-alias-methods": [
-    2
-  ],
-  "jest/no-commented-out-tests": [
-    1
-  ],
-  "jest/no-conditional-expect": [
-    2
-  ],
-  "jest/no-deprecated-functions": [
-    2
-  ],
-  "jest/no-disabled-tests": [
-    1
-  ],
-  "jest/no-done-callback": [
-    2
-  ],
-  "jest/no-export": [
-    2
-  ],
-  "jest/no-focused-tests": [
-    2
-  ],
-  "jest/no-identical-title": [
-    2
-  ],
-  "jest/no-interpolation-in-snapshots": [
-    2
-  ],
-  "jest/no-jasmine-globals": [
-    2
-  ],
-  "jest/no-mocks-import": [
-    2
-  ],
-  "jest/no-standalone-expect": [
-    2
-  ],
-  "jest/no-test-prefixes": [
-    2
-  ],
-  "jest/prefer-to-be": [
-    2
-  ],
-  "jest/prefer-to-contain": [
-    2
-  ],
-  "jest/prefer-to-have-length": [
-    2
-  ],
-  "jest/valid-describe-callback": [
-    2
-  ],
-  "jest/valid-expect": [
-    2
-  ],
-  "jest/valid-expect-in-promise": [
-    2
-  ],
-  "jest/valid-title": [
-    2
   ],
   "jsx-quotes": [
     0
@@ -4433,10 +4493,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
       "limit": 1
     }
   ],
-  "mocha/no-async-describe": [
+  "mocha/no-async-suite": [
     2
   ],
-  "mocha/no-empty-description": [
+  "mocha/no-empty-title": [
     2
   ],
   "mocha/no-exclusive-tests": [
@@ -4478,9 +4538,6 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
   "mocha/no-sibling-hooks": [
     0
   ],
-  "mocha/no-skipped-tests": [
-    1
-  ],
   "mocha/no-synchronous-tests": [
     0
   ],
@@ -4490,10 +4547,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
   "mocha/prefer-arrow-callback": [
     0
   ],
-  "mocha/valid-suite-description": [
+  "mocha/valid-suite-title": [
     0
   ],
-  "mocha/valid-test-description": [
+  "mocha/valid-test-title": [
     0
   ],
   "multiline-ternary": [
@@ -4527,7 +4584,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     2
   ],
   "no-cond-assign": [
-    2
+    2,
+    "except-parens"
   ],
   "no-confusing-arrow": [
     0
@@ -4535,8 +4593,14 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
   "no-const-assign": [
     0
   ],
-  "no-constant-condition": [
+  "no-constant-binary-expression": [
     2
+  ],
+  "no-constant-condition": [
+    2,
+    {
+      "checkLoops": "allExceptWhileTrue"
+    }
   ],
   "no-control-regex": [
     2
@@ -4565,23 +4629,34 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
   "no-duplicate-imports": [
     2,
     {
+      "allowSeparateTypeImports": false,
       "includeExports": true
     }
   ],
   "no-empty": [
-    2
+    2,
+    {
+      "allowEmptyCatch": false
+    }
   ],
   "no-empty-character-class": [
     2
   ],
   "no-empty-pattern": [
+    2,
+    {
+      "allowObjectPatternsAsParameters": false
+    }
+  ],
+  "no-empty-static-block": [
     2
   ],
   "no-ex-assign": [
     2
   ],
   "no-extra-boolean-cast": [
-    2
+    2,
+    {}
   ],
   "no-extra-parens": [
     0
@@ -4590,7 +4665,11 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "no-fallthrough": [
-    2
+    2,
+    {
+      "allowEmptyCase": false,
+      "reportUnusedFallthroughComment": false
+    }
   ],
   "no-floating-decimal": [
     0
@@ -4599,7 +4678,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "no-global-assign": [
-    2
+    2,
+    {
+      "exceptions": []
+    }
   ],
   "no-implied-eval": [
     0
@@ -4607,20 +4689,28 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
   "no-import-assign": [
     0
   ],
-  "no-inner-declarations": [
-    2
-  ],
   "no-invalid-regexp": [
-    2
+    2,
+    {}
   ],
   "no-irregular-whitespace": [
-    2
+    2,
+    {
+      "skipComments": false,
+      "skipJSXText": false,
+      "skipRegExps": false,
+      "skipStrings": true,
+      "skipTemplates": false
+    }
   ],
   "no-loss-of-precision": [
     2
   ],
   "no-misleading-character-class": [
-    2
+    2,
+    {
+      "allowEscape": false
+    }
   ],
   "no-mixed-operators": [
     0
@@ -4653,7 +4743,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     2
   ],
   "no-redeclare": [
-    0
+    0,
+    {
+      "builtinGlobals": true
+    }
   ],
   "no-regex-spaces": [
     2
@@ -4681,13 +4774,19 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     }
   ],
   "no-self-assign": [
-    2
+    2,
+    {
+      "props": true
+    }
   ],
   "no-setter-return": [
     0
   ],
   "no-shadow-restricted-names": [
-    2
+    2,
+    {
+      "reportGlobalThis": false
+    }
   ],
   "no-space-before-semi": [
     0
@@ -4711,7 +4810,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "no-undef": [
-    0
+    0,
+    {
+      "typeof": false
+    }
   ],
   "no-unexpected-multiline": [
     0
@@ -4723,15 +4825,31 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     2
   ],
   "no-unsafe-negation": [
-    0
+    0,
+    {
+      "enforceForOrderingRelations": false
+    }
   ],
   "no-unsafe-optional-chaining": [
-    2
+    2,
+    {
+      "disallowArithmeticOperators": false
+    }
   ],
   "no-unused-expressions": [
-    0
+    0,
+    {
+      "allowShortCircuit": false,
+      "allowTaggedTemplates": false,
+      "allowTernary": false,
+      "enforceForJSX": false,
+      "ignoreDirectives": false
+    }
   ],
   "no-unused-labels": [
+    2
+  ],
+  "no-unused-private-class-members": [
     2
   ],
   "no-unused-vars": [
@@ -4747,7 +4865,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     2
   ],
   "no-useless-escape": [
-    2
+    2,
+    {
+      "allowRegexCharacters": []
+    }
   ],
   "no-var": [
     2
@@ -4787,10 +4908,18 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "prefer-arrow-callback": [
-    2
+    2,
+    {
+      "allowNamedFunctions": false,
+      "allowUnboundThis": true
+    }
   ],
   "prefer-const": [
-    2
+    2,
+    {
+      "destructuring": "any",
+      "ignoreReadBeforeAssign": false
+    }
   ],
   "prefer-destructuring": [
     2,
@@ -4802,7 +4931,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     2
   ],
   "prefer-promise-reject-errors": [
-    0
+    0,
+    {
+      "allowEmptyReject": false
+    }
   ],
   "prefer-rest-params": [
     2
@@ -5114,10 +5246,17 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.ts 1`] =
     0
   ],
   "use-isnan": [
-    2
+    2,
+    {
+      "enforceForIndexOf": false,
+      "enforceForSwitchCase": true
+    }
   ],
   "valid-typeof": [
-    2
+    2,
+    {
+      "requireStringLiterals": false
+    }
   ],
   "vue/array-bracket-newline": [
     0
@@ -5932,15 +6071,17 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     2
   ],
   "@typescript-eslint/no-unused-expressions": [
-    2
+    2,
+    {
+      "allowShortCircuit": false,
+      "allowTaggedTemplates": false,
+      "allowTernary": false
+    }
   ],
   "@typescript-eslint/no-unused-vars": [
     0
   ],
   "@typescript-eslint/no-use-before-define": [
-    0
-  ],
-  "@typescript-eslint/no-var-requires": [
     0
   ],
   "@typescript-eslint/no-wrapper-object-types": [
@@ -6001,7 +6142,12 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "array-callback-return": [
-    2
+    2,
+    {
+      "allowImplicit": false,
+      "allowVoid": false,
+      "checkForEach": false
+    }
   ],
   "array-element-newline": [
     0
@@ -6047,7 +6193,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "curly": [
-    0
+    0,
+    "all"
   ],
   "dot-location": [
     0
@@ -6107,27 +6254,39 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "getter-return": [
-    0
+    0,
+    {
+      "allowImplicit": false
+    }
   ],
   "implicit-arrow-linebreak": [
     0
   ],
-  "import/default": [
+  "import-x/default": [
     0
   ],
-  "import/export": [
+  "import-x/export": [
     2
   ],
-  "import/named": [
+  "import-x/named": [
     0
   ],
-  "import/namespace": [
+  "import-x/namespace": [
     0
   ],
-  "import/no-commonjs": [
+  "import-x/no-commonjs": [
     1
   ],
-  "import/no-unresolved": [
+  "import-x/no-duplicates": [
+    1
+  ],
+  "import-x/no-named-as-default": [
+    0
+  ],
+  "import-x/no-named-as-default-member": [
+    0
+  ],
+  "import-x/no-unresolved": [
     0
   ],
   "indent": [
@@ -6135,77 +6294,6 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
   ],
   "indent-legacy": [
     0
-  ],
-  "jest/expect-expect": [
-    2,
-    {
-      "assertFunctionNames": [
-        "expect*"
-      ]
-    }
-  ],
-  "jest/no-alias-methods": [
-    2
-  ],
-  "jest/no-commented-out-tests": [
-    1
-  ],
-  "jest/no-conditional-expect": [
-    2
-  ],
-  "jest/no-deprecated-functions": [
-    2
-  ],
-  "jest/no-disabled-tests": [
-    1
-  ],
-  "jest/no-done-callback": [
-    2
-  ],
-  "jest/no-export": [
-    2
-  ],
-  "jest/no-focused-tests": [
-    2
-  ],
-  "jest/no-identical-title": [
-    2
-  ],
-  "jest/no-interpolation-in-snapshots": [
-    2
-  ],
-  "jest/no-jasmine-globals": [
-    2
-  ],
-  "jest/no-mocks-import": [
-    2
-  ],
-  "jest/no-standalone-expect": [
-    2
-  ],
-  "jest/no-test-prefixes": [
-    2
-  ],
-  "jest/prefer-to-be": [
-    2
-  ],
-  "jest/prefer-to-contain": [
-    2
-  ],
-  "jest/prefer-to-have-length": [
-    2
-  ],
-  "jest/valid-describe-callback": [
-    2
-  ],
-  "jest/valid-expect": [
-    2
-  ],
-  "jest/valid-expect-in-promise": [
-    2
-  ],
-  "jest/valid-title": [
-    2
   ],
   "jsx-quotes": [
     0
@@ -6240,10 +6328,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
       "limit": 1
     }
   ],
-  "mocha/no-async-describe": [
+  "mocha/no-async-suite": [
     2
   ],
-  "mocha/no-empty-description": [
+  "mocha/no-empty-title": [
     2
   ],
   "mocha/no-exclusive-tests": [
@@ -6285,9 +6373,6 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
   "mocha/no-sibling-hooks": [
     0
   ],
-  "mocha/no-skipped-tests": [
-    1
-  ],
   "mocha/no-synchronous-tests": [
     0
   ],
@@ -6297,10 +6382,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
   "mocha/prefer-arrow-callback": [
     0
   ],
-  "mocha/valid-suite-description": [
+  "mocha/valid-suite-title": [
     0
   ],
-  "mocha/valid-test-description": [
+  "mocha/valid-test-title": [
     0
   ],
   "multiline-ternary": [
@@ -6334,7 +6419,8 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     2
   ],
   "no-cond-assign": [
-    2
+    2,
+    "except-parens"
   ],
   "no-confusing-arrow": [
     0
@@ -6342,8 +6428,14 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
   "no-const-assign": [
     0
   ],
-  "no-constant-condition": [
+  "no-constant-binary-expression": [
     2
+  ],
+  "no-constant-condition": [
+    2,
+    {
+      "checkLoops": "allExceptWhileTrue"
+    }
   ],
   "no-control-regex": [
     2
@@ -6372,23 +6464,34 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
   "no-duplicate-imports": [
     2,
     {
+      "allowSeparateTypeImports": false,
       "includeExports": true
     }
   ],
   "no-empty": [
-    2
+    2,
+    {
+      "allowEmptyCatch": false
+    }
   ],
   "no-empty-character-class": [
     2
   ],
   "no-empty-pattern": [
+    2,
+    {
+      "allowObjectPatternsAsParameters": false
+    }
+  ],
+  "no-empty-static-block": [
     2
   ],
   "no-ex-assign": [
     2
   ],
   "no-extra-boolean-cast": [
-    2
+    2,
+    {}
   ],
   "no-extra-parens": [
     0
@@ -6397,7 +6500,11 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "no-fallthrough": [
-    2
+    2,
+    {
+      "allowEmptyCase": false,
+      "reportUnusedFallthroughComment": false
+    }
   ],
   "no-floating-decimal": [
     0
@@ -6406,7 +6513,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "no-global-assign": [
-    2
+    2,
+    {
+      "exceptions": []
+    }
   ],
   "no-implied-eval": [
     0
@@ -6414,20 +6524,28 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
   "no-import-assign": [
     0
   ],
-  "no-inner-declarations": [
-    2
-  ],
   "no-invalid-regexp": [
-    2
+    2,
+    {}
   ],
   "no-irregular-whitespace": [
-    2
+    2,
+    {
+      "skipComments": false,
+      "skipJSXText": false,
+      "skipRegExps": false,
+      "skipStrings": true,
+      "skipTemplates": false
+    }
   ],
   "no-loss-of-precision": [
     2
   ],
   "no-misleading-character-class": [
-    2
+    2,
+    {
+      "allowEscape": false
+    }
   ],
   "no-mixed-operators": [
     0
@@ -6460,7 +6578,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     2
   ],
   "no-redeclare": [
-    0
+    0,
+    {
+      "builtinGlobals": true
+    }
   ],
   "no-regex-spaces": [
     2
@@ -6488,13 +6609,19 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     }
   ],
   "no-self-assign": [
-    2
+    2,
+    {
+      "props": true
+    }
   ],
   "no-setter-return": [
     0
   ],
   "no-shadow-restricted-names": [
-    2
+    2,
+    {
+      "reportGlobalThis": false
+    }
   ],
   "no-space-before-semi": [
     0
@@ -6518,7 +6645,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "no-undef": [
-    0
+    0,
+    {
+      "typeof": false
+    }
   ],
   "no-unexpected-multiline": [
     0
@@ -6530,15 +6660,31 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     2
   ],
   "no-unsafe-negation": [
-    0
+    0,
+    {
+      "enforceForOrderingRelations": false
+    }
   ],
   "no-unsafe-optional-chaining": [
-    2
+    2,
+    {
+      "disallowArithmeticOperators": false
+    }
   ],
   "no-unused-expressions": [
-    0
+    0,
+    {
+      "allowShortCircuit": false,
+      "allowTaggedTemplates": false,
+      "allowTernary": false,
+      "enforceForJSX": false,
+      "ignoreDirectives": false
+    }
   ],
   "no-unused-labels": [
+    2
+  ],
+  "no-unused-private-class-members": [
     2
   ],
   "no-unused-vars": [
@@ -6554,7 +6700,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     2
   ],
   "no-useless-escape": [
-    2
+    2,
+    {
+      "allowRegexCharacters": []
+    }
   ],
   "no-var": [
     2
@@ -6594,10 +6743,18 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "prefer-arrow-callback": [
-    2
+    2,
+    {
+      "allowNamedFunctions": false,
+      "allowUnboundThis": true
+    }
   ],
   "prefer-const": [
-    2
+    2,
+    {
+      "destructuring": "any",
+      "ignoreReadBeforeAssign": false
+    }
   ],
   "prefer-destructuring": [
     2,
@@ -6609,7 +6766,10 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     2
   ],
   "prefer-promise-reject-errors": [
-    0
+    0,
+    {
+      "allowEmptyReject": false
+    }
   ],
   "prefer-rest-params": [
     2
@@ -6921,10 +7081,17 @@ exports[`eslint-config (all plugins enabled) > resolved config for test.tsx 1`] 
     0
   ],
   "use-isnan": [
-    2
+    2,
+    {
+      "enforceForIndexOf": false,
+      "enforceForSwitchCase": true
+    }
   ],
   "valid-typeof": [
-    2
+    2,
+    {
+      "requireStringLiterals": false
+    }
   ],
   "vue/array-bracket-newline": [
     0
