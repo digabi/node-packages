@@ -18,6 +18,7 @@
   "scripts": {
     "build": "echo 'No build needed'",
     "test": "node --test --import tsx ./__tests__/*.test.ts",
+    "test:update": "node --test-update-snapshots --import tsx ./__tests__/*.test.ts",
     "lint": "tsc --noEmit && eslint --ignore-pattern '__tests__/fixtures/' ./src/index.mjs ./__tests__/",
     "prepare": "npm run build"
   },
