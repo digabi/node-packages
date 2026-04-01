@@ -1,5 +1,24 @@
 {
   "extends": "@digabi/eslint-config",
+  "rules": {
+    // Mocha is not used for testing in these packages, but eslint-plugin-mocha is installed into node_modules
+    // because @digabi/eslint-config snapshot tests require it
+    // to verify the "all plugins enabled" configuration.
+    "mocha/handle-done-callback": "off",
+    "mocha/max-top-level-suites": "off",
+    "mocha/no-async-describe": "off",
+    "mocha/no-exclusive-tests": "off",
+    "mocha/no-exports": "off",
+    "mocha/no-global-tests": "off",
+    "mocha/no-identical-title": "off",
+    "mocha/no-nested-tests": "off",
+    "mocha/no-pending-tests": "off",
+    "mocha/no-return-and-callback": "off",
+    "mocha/no-skipped-tests": "off",
+    "mocha/no-top-level-hooks": "off",
+    "mocha/no-empty-description": "off",
+    "mocha/consistent-spacing-between-blocks": "off"
+  },
   "overrides": [
     {
       "files": ["*.test.ts"],
