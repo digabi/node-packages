@@ -15,10 +15,11 @@ updates:
     cooldown:
       default-days: 7
     ignore:
-      # eslint-plugin-import does not support yet eslint 9. Disable update for now
-      - dependency-name: 'eslint'
       - dependency-name: '*'
         update-types: ['version-update:semver-patch', 'version-update:semver-minor']
       - dependency-name: '@types/node'
+        update-types:
+          - version-update:semver-major
+      - dependency-name: 'eslint'
         update-types:
           - version-update:semver-major
