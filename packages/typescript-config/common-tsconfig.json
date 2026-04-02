@@ -2,7 +2,6 @@
   "compilerOptions": {
     "allowJs": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "sourceMap": true,

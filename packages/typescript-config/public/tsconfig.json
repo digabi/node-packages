@@ -2,10 +2,11 @@
   "extends": "../common-tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
-    "lib": ["es2022", "DOM", "DOM.Iterable"],
-    "module": "es2022",
+    "lib": ["es2024", "DOM", "DOM.Iterable"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "noEmit": true,
-    "target": "es6",
+    "target": "es2020",
     "noErrorTruncation": true
   }
 }
