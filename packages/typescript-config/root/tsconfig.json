@@ -1,7 +1,7 @@
 {
   "extends": "../common-tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2024"],
+    "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Error", "ESNext.Iterator", "ESNext.Promise"],
     "module": "nodenext",
     "noEmit": false,
     "target": "es2024",
