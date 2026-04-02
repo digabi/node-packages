@@ -1,40 +1,48 @@
 {
   "name": "@digabi/eslint-config",
   "version": "3.4.0",
+  "type": "module",
   "author": "Matriculation Examination Board, Finland",
   "license": "EUPL-1.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/digabi/node-packages.git"
   },
-  "main": "src/index.js",
+  "main": "src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
   "files": [
-    "src/index.js"
+    "src/index.mjs"
   ],
   "scripts": {
     "build": "echo 'No build needed'",
-    "test": "echo 'No tests'",
-    "lint": "eslint -c ./src/index.js --ignore-path ../../.eslintignore ./src/index.js",
+    "test": "node --test --import tsx ./__tests__/*.test.ts",
+    "test:update": "node --test-update-snapshots --import tsx ./__tests__/*.test.ts",
+    "lint": "tsc --noEmit && eslint --ignore-pattern '__tests__/fixtures/' ./src/index.mjs ./__tests__/",
     "prepare": "npm run build"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": ">= 2",
-    "@typescript-eslint/parser": ">= 2",
-    "eslint": ">= 6",
-    "eslint-config-prettier": ">= 6",
-    "eslint-plugin-import": ">= 2",
-    "eslint-plugin-prettier": ">= 3",
-    "eslint-plugin-promise": ">= 4"
+    "@eslint/js": ">= 9",
+    "eslint": ">= 9",
+    "eslint-plugin-import-x": ">= 4",
+    "eslint-plugin-prettier": ">= 5",
+    "eslint-plugin-promise": ">= 7",
+    "globals": ">= 15",
+    "typescript-eslint": ">= 8"
   },
   "devDependencies": {
-    "eslint-plugin-jest": "^29.0.1",
-    "jest": "^30.0.5",
-    "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-promise": "7.2.1",
+    "@types/node": "^24.10.9",
+    "eslint-plugin-jest": "^29.15.1",
+    "eslint-plugin-mocha": "^11.2.0",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.0"
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "jest": "^30.3.0",
+    "mocha": "^11.7.5",
+    "react": "^19.2.4",
+    "tsx": "^4.20.3"
   }
 }
