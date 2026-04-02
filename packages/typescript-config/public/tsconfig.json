@@ -1,7 +1,7 @@
 {
   "extends": "../common-tsconfig.json",
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "lib": ["es2024", "DOM", "DOM.Iterable"],
     "module": "preserve",
     "moduleResolution": "bundler",
