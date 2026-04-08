@@ -1,10 +1,10 @@
 {
   "extends": "../common-tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2022"],
-    "module": "commonjs",
+    "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Error", "ESNext.Iterator", "ESNext.Promise"],
+    "module": "nodenext",
     "noEmit": false,
-    "resolveJsonModule": true,
-    "target": "es2022"
+    "target": "es2024",
+    "types": ["node"]
   }
 }

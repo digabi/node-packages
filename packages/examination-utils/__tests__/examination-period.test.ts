@@ -6,14 +6,14 @@ describe('examination-period', () => {
     test('should expose period as constant', async context => {
       context.mock.timers.enable({ apis: ['Date'], now: new Date(2012, 0, 15) })
 
-      const { currentExaminationPeriod } = await import('../src/index')
+      const { currentExaminationPeriod } = await import('../src/index.js')
       assert.equal(currentExaminationPeriod, '2012K')
     })
 
     test('should return current period for spring', async context => {
       context.mock.timers.enable({ apis: ['Date'], now: new Date(2012, 0, 15) })
 
-      const { getCurrentExaminationPeriod } = await import('../src/examination-period')
+      const { getCurrentExaminationPeriod } = await import('../src/examination-period.js')
       const currentExaminationPeriod = getCurrentExaminationPeriod()
       assert.equal(currentExaminationPeriod, '2012K')
     })
@@ -21,7 +21,7 @@ describe('examination-period', () => {
     test('should return current period for fall', async context => {
       context.mock.timers.enable({ apis: ['Date'], now: new Date(2012, 7, 15) })
 
-      const { getCurrentExaminationPeriod } = await import('../src/examination-period')
+      const { getCurrentExaminationPeriod } = await import('../src/examination-period.js')
       const currentExaminationPeriod = getCurrentExaminationPeriod()
       assert.equal(currentExaminationPeriod, '2012S')
     })
