@@ -18,7 +18,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "sanitize-html": "^2.17.0"
+    "sanitize-html": "^2.17.3"
   },
   "devDependencies": {
     "@types/sanitize-html": "^2.16.0",
