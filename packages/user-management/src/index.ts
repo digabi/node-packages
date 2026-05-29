@@ -1,5 +1,8 @@
+import { userPermissions, isPrincipal, hasPermission, hasApplicationPermission } from './permissions'
+
 /** Table of user permission strings */
 export const perm = {
+  any: '*',
   specialArrangements: 'special-arrangements',
   observations: 'observations',
   registrations: { send: 'registrations::send' },
@@ -24,7 +27,9 @@ export const perm = {
   },
 
   application: {
-    technicalFault: 'application-technical-fault',
+    technicalFault: {
+      all: 'application-technical-fault'
+    },
     dyslexia: {
       all: 'application-dyslexia',
       viewDecision: 'application-dyslexia::view-decision'
@@ -49,11 +54,69 @@ export const perm = {
       all: 'application-late-registration',
       viewDecision: 'application-late-registration::view-decision'
     }
+  },
+
+  grading: {
+    censor: 'grading-censor'
   }
 } as const
 
 /** Helper to get the union of the types of the leaves of a nested object */
-type Leaves<Tree, Node = Tree[keyof Tree]> = Node extends Record<string, any> ? Leaves<Node> : Node
+type Leaves<Tree, Node = Tree[keyof Tree]> = Node extends Record<string, unknown> ? Leaves<Node> : Node
 
 /** A user permission string */
 export type Perm = Leaves<typeof perm>
+
+type AllPerms<T> = T extends { all: infer A } ? A : T extends Record<string, unknown> ? AllPerms<T[keyof T]> : never
+
+export type AppPerm = AllPerms<typeof perm.application | typeof perm.notification>
+
+function collectApplicationPermissions(obj: Record<string, unknown>): Perm[] {
+  const result: Perm[] = []
+
+  for (const value of Object.values(obj)) {
+    if (value && typeof value === 'object') {
+      if ('all' in value) {
+        result.push(value.all as Perm)
+      }
+
+      result.push(...collectApplicationPermissions(value as Record<string, unknown>))
+    }
+  }
+  return result
+}
+
+export const applicationPermissions = [
+  ...collectApplicationPermissions(perm.application),
+  ...collectApplicationPermissions(perm.notification)
+]
+
+export type User = UserDetails & {
+  ssn: string
+  userAccountId: string
+  schools: UserSchool[]
+}
+
+export type UserDetails = {
+  email?: string
+  firstnames?: string
+  lastname?: string
+  address?: string
+  zip?: string
+  postoffice?: string
+  telephones?: string[]
+}
+
+export interface UserSchool {
+  schoolId: string
+  email?: string
+  principal: boolean
+  permissions: Perm[]
+}
+
+export type PermissionOptions = {
+  schoolId?: string
+  ignorePrincipalRight?: boolean
+}
+
+export { userPermissions, isPrincipal, hasPermission, hasApplicationPermission }
