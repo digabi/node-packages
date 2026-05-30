@@ -1,36 +1,95 @@
-import { applicationPermissions, AppPerm, perm, Perm, PermissionOptions, User, UserSchool } from './index'
+/** Table of user permission strings */
+export const perm = {
+  any: '*',
+  specialArrangements: 'special-arrangements',
+  observations: 'observations',
+  registrations: { send: 'registrations::send' },
+  ktpConnection: { open: 'ktp-connection::open' },
+  answerPackages: { send: 'answer-packages::send' },
 
-function userSchools(user: User, options?: PermissionOptions): UserSchool[] {
-  return options?.schoolId ? user.schools.filter(school => school.schoolId === options.schoolId) : user.schools
-}
+  resultList: {
+    view: 'result-list::view',
+    viewWithSsns: 'result-list::view-with-ssns'
+  },
 
-export function userPermissions(user: User, options?: PermissionOptions): Perm[] {
-  return userSchools(user, options).flatMap(school => school.permissions) ?? []
-}
+  notification: {
+    deniedParticipation: {
+      all: 'notification-denied-participation',
+      notify: 'notification-denied-participation::notify',
+      viewDecision: 'notification-denied-participation::view-decision'
+    },
+    includedExams: {
+      all: 'notification-included-exams',
+      viewDecision: 'notification-included-exams::view-decision'
+    }
+  },
 
-export function isPrincipal(user: User, options?: PermissionOptions): boolean {
-  return userSchools(user, options).find(school => school.principal) !== undefined
-}
+  application: {
+    technicalFault: {
+      all: 'application-technical-fault'
+    },
+    dyslexia: {
+      all: 'application-dyslexia',
+      viewDecision: 'application-dyslexia::view-decision'
+    },
+    foreign: {
+      all: 'application-foreign',
+      viewDecision: 'application-foreign::view-decision'
+    },
+    illness: {
+      all: 'application-illness',
+      viewDecision: 'application-illness::view-decision'
+    },
+    nullify: {
+      all: 'application-nullify-registration',
+      viewDecision: 'application-nullify-registration::view-decision'
+    },
+    change: {
+      all: 'application-change-registration',
+      viewDecision: 'application-change-registration::view-decision'
+    },
+    late: {
+      all: 'application-late-registration',
+      viewDecision: 'application-late-registration::view-decision'
+    }
+  },
 
-export function hasPermission(user: User, requiredPermission: Perm, options?: PermissionOptions): boolean {
-  const principal = isPrincipal(user, options)
-  if (principal && !options?.ignorePrincipalRight) {
-    return true
+  grading: {
+    censor: 'grading-censor'
   }
-  const permissions = userPermissions(user, options)
-  if (requiredPermission === perm.any) {
-    return permissions.length > 0 // if required permission is '*', any user permission will do
+} as const
+
+/** Helper to get the union of the types of the leaves of a nested object */
+type Leaves<Tree, Node = Tree[keyof Tree]> = Node extends Record<string, unknown> ? Leaves<Node> : Node
+
+/** A user permission string */
+export type Perm = Leaves<typeof perm>
+
+type AllPerms<T> = T extends { all: infer A } ? A : T extends Record<string, unknown> ? AllPerms<T[keyof T]> : never
+
+export type AppPerm = AllPerms<typeof perm.application | typeof perm.notification>
+
+function collectApplicationPermissions(obj: Record<string, unknown>): Perm[] {
+  const result: Perm[] = []
+
+  for (const value of Object.values(obj)) {
+    if (value && typeof value === 'object') {
+      if ('all' in value) {
+        result.push(value.all as Perm)
+      }
+
+      result.push(...collectApplicationPermissions(value as Record<string, unknown>))
+    }
   }
-  return permissions.includes(requiredPermission)
+  return result
 }
 
-function isApplicationPermission(permission: Perm): permission is AppPerm {
-  return applicationPermissions.includes(permission as AppPerm)
-}
+export const applicationPermissions = [
+  ...collectApplicationPermissions(perm.application),
+  ...collectApplicationPermissions(perm.notification)
+]
 
-export function hasApplicationPermission(user: User, options?: PermissionOptions): boolean {
-  return (
-    isPrincipal(user, options) ||
-    userPermissions(user, options).find(permission => isApplicationPermission(permission)) !== undefined
-  )
+export type PermissionOptions = {
+  schoolId?: string
+  ignorePrincipalRight?: boolean
 }
