@@ -8,7 +8,8 @@ const schoolIds = [randomUUID(), randomUUID(), randomUUID()]
 const user: User = {
   userAccountId: '',
   ssn: '',
-  schools: schoolIds.map(schoolId => ({ schoolId, permissions: [], principal: false }))
+  schools: schoolIds.map(schoolId => ({ schoolId, permissions: [], principal: false, roles: [] })),
+  roles: []
 }
 
 describe('Permissions', () => {
