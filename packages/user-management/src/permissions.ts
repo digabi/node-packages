@@ -1,6 +1,5 @@
 /** Table of user permission strings */
 export const perm = {
-  any: '*',
   specialArrangements: 'special-arrangements',
   observations: 'observations',
   registrations: { send: 'registrations::send' },
