@@ -52,7 +52,8 @@ export const SchoolRoleSchema = z.object({
   startdate: z.iso.date().optional(),
   enddate: z.iso.date().optional(),
   name: z.string().optional(),
-  allowedExams: z.array(z.string()).optional()
+  allowedExams: z.array(z.string()).optional(),
+  disqualifications: z.array(z.uuid()).optional()
 })
 
 export type UserSchoolToUpsert = z.infer<typeof UserSchoolToUpsertSchema>
