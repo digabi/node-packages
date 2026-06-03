@@ -1,161 +1,178 @@
 import z from 'zod'
 import { RoleSchema } from './validations'
-import { Perm } from '.'
+import { isSsnValid } from '@digabi/validation'
+import { allPermissions } from './permissions'
 
-export type MockUser = {
-  username: string
-  lastname: string
-  firstname: string
-  ssn: string
-  henkiloOid: string
-  principalOrganization: PrincipalOrganization[]
-  roles?: { role: string }[]
-}
-
-export type PrincipalOrganization = {
-  oid: string
-  name: string
-  uuid?: string
-  language?: string
-}
-
-export interface Impersonation {
-  id: number
-  realSsn: string
-  impersonatedSsn: string
-  explanation: string
-  validityStart: string
-  validityEnd: string
-  schoolUuid?: string
-}
-
-export type UserForAuthentication =
-  | (User & {
-      impersonation?: Impersonation
-    })
-  | ImpersonatedUser
-
-type ImpersonatedUser = {
-  ssn: 'IMPERSONATED'
-  schools: [
-    {
-      schoolId: string
-      roles: [
-        {
-          role: 'PRINCIPAL'
-          startdate?: never
-          enddate?: never
-          allowedExams?: never
-        }
-      ]
-    }
-  ]
-  impersonation: Impersonation
-  roles?: never
-  userAccountId?: never
-}
-
-export type UserToUpsert = UserDetails & {
-  ssn: string
-  userAccountId?: string
-  schools?: UserSchoolToUpsert[]
-  roles?: CensorRoleToUpsert[]
-}
-
-export type User = UserDetails & {
-  ssn: string
-  userAccountId: string
-  schools: UserSchool[]
-  roles: CensorRole[]
-}
-
-export type UserDetails = {
-  email?: string
-  firstnames?: string
-  lastname?: string
-  address?: string
-  zip?: string
-  postoffice?: string
-  telephones?: string[]
-}
-
-export interface UserSchoolToUpsert {
-  schoolId: string
-  email?: string
-  roles?: SchoolRole[]
-}
-export interface UserSchool {
-  schoolId: string
-  email?: string
-  principal: boolean
-  roles: SchoolRole[]
-  permissions: Perm[]
-}
-
+const zodSsn = z.string().refine(isSsnValid, { message: 'Invalid ssn' })
 export type Role = z.infer<typeof RoleSchema>
 
-export interface SchoolRole {
-  role: Role
-  startdate?: string | null
-  enddate?: string | null
-  allowedExams?: string[]
-}
+export type ExamType = z.infer<typeof ExamTypeSchema>
+export const ExamTypeSchema = z.enum(['paper', 'digital'])
 
-export type ExamType = 'paper' | 'digital'
+export type PrincipalOrganization = z.infer<typeof PrincipalOrganizationSchema>
+export const PrincipalOrganizationSchema = z.object({
+  oid: z.string(),
+  name: z.string(),
+  uuid: z.uuid().optional(),
+  language: z.string().optional()
+})
 
-export interface CensorRoleDivisionToUpsert {
-  censorDivisionUuid: string
-  divisionName?: string
-  divisionExamType?: ExamType
-}
+export type Impersonation = z.infer<typeof ImpersonationSchema>
+export const ImpersonationSchema = z.object({
+  id: z.number(),
+  realSsn: zodSsn,
+  impersonatedSsn: zodSsn,
+  explanation: z.string(),
+  validityStart: z.string(),
+  validityEnd: z.string(),
+  schoolUuid: z.string().optional()
+})
 
-export type CensorRoleToUpsert = Omit<CensorRole, 'divisions'> & {
-  divisions?: CensorRoleDivisionToUpsert[]
-}
+export type MockUser = z.infer<typeof MockUserSchema>
+export const MockUserSchema = z.object({
+  username: z.string(),
+  lastname: z.string(),
+  firstname: z.string(),
+  ssn: zodSsn,
+  henkiloOid: z.string(),
+  principalOrganization: z.array(PrincipalOrganizationSchema),
+  roles: z.array(z.object({ role: z.string() })).optional()
+})
 
-export interface DivisionToAdd {
-  name: string
-  examType?: ExamType
-}
+export type UserDetails = z.infer<typeof UserDetailsSchema>
+export const UserDetailsSchema = z.object({
+  email: z.email().optional(),
+  firstnames: z.string().optional(),
+  lastname: z.string().optional(),
+  address: z.string().optional(),
+  zip: z.string().optional(),
+  postoffice: z.string().optional(),
+  telephones: z.array(z.string()).optional()
+})
 
-export type CensorRole = {
-  role: 'CENSOR'
-  startdate?: string | null
-  enddate?: string | null
-  metadata: { shortCode: string }
-  divisions?: CensorRoleDivision[]
-}
+export type SchoolRole = z.infer<typeof SchoolRoleSchema>
+export const SchoolRoleSchema = z.object({
+  role: RoleSchema,
+  startdate: z.iso.date().optional(),
+  enddate: z.iso.date().optional(),
+  name: z.string().optional(),
+  allowedExams: z.array(z.string()).optional()
+})
 
-export interface CensorRoleDivision {
-  censorDivisionUuid: string
-  divisionName: string
-  divisionExamType: ExamType
-}
+export type UserSchoolToUpsert = z.infer<typeof UserSchoolToUpsertSchema>
+export const UserSchoolToUpsertSchema = z.object({
+  schoolId: z.uuid(),
+  email: z.email().optional(),
+  roles: z.array(SchoolRoleSchema).optional()
+})
 
-export type GradingTeacherSchoolRole = {
-  role: 'GRADING_TEACHER'
-  validityPeriod: string
-  userAccountId: string
-  schoolId: string
-  name?: string
-  disqualifications: string[]
-  allowedExams: string[]
-}
+export type CensorRoleDivision = z.infer<typeof CensorRoleDivisionSchema>
+export const CensorRoleDivisionSchema = z.object({
+  censorDivisionUuid: z.uuid(),
+  divisionName: z.string(),
+  divisionExamType: ExamTypeSchema
+})
 
-export type SchoolRoleToAdd = {
-  schoolId: string
-  role: Role
-  startdate: string
-  enddate?: string
-  name?: string
-  allowedExams?: string[]
-}
+export type CensorRoleDivisionToUpsert = z.infer<typeof CensorRoleDivisionToUpsertSchema>
+export const CensorRoleDivisionToUpsertSchema = z.object({
+  censorDivisionUuid: z.string(),
+  divisionName: z.string().optional(),
+  divisionExamType: ExamTypeSchema.optional()
+})
 
-export type UserWithSchoolRoleAndSchoolId = {
-  userAccountId: string
-  ssn: string
-  userDetails: UserDetails
-  name: string
-  allowedExams: string[]
-  disqualifications: string[]
-}
+export type CensorRole = z.infer<typeof CensorRoleSchema>
+export const CensorRoleSchema = z.object({
+  role: z.literal('CENSOR'),
+  startdate: z.iso.date().nullish(),
+  enddate: z.iso.date().nullish(),
+  metadata: z.object({ shortCode: z.string() }),
+  divisions: z.array(CensorRoleDivisionSchema).optional()
+})
+
+export type CensorRoleToUpsert = z.infer<typeof CensorRoleToUpsertSchema>
+export const CensorRoleToUpsertSchema = z.object({
+  role: z.literal('CENSOR'),
+  startdate: z.iso.date().nullish(),
+  enddate: z.iso.date().nullish(),
+  metadata: z.object({ shortCode: z.string() }).optional(),
+  divisions: z.array(CensorRoleDivisionToUpsertSchema).optional()
+})
+
+export type DivisionToAdd = z.infer<typeof DivisionToAddSchema>
+export const DivisionToAddSchema = z.object({
+  name: z.string(),
+  examType: ExamTypeSchema.optional()
+})
+
+export type SchoolRoleToAdd = z.infer<typeof SchoolRoleToAddSchema>
+export const SchoolRoleToAddSchema = z.object({
+  schoolId: z.string(),
+  role: RoleSchema,
+  startdate: z.iso.date(),
+  enddate: z.iso.date().optional(),
+  name: z.string().optional(),
+  allowedExams: z.array(z.string()).optional()
+})
+
+export type GradingTeacherSchoolRole = z.infer<typeof GradingTeacherSchoolRoleSchema>
+export const GradingTeacherSchoolRoleSchema = z.object({
+  role: z.literal('GRADING_TEACHER'),
+  validityPeriod: z.string(),
+  userAccountId: z.string(),
+  schoolId: z.string(),
+  name: z.string().optional(),
+  disqualifications: z.array(z.string()),
+  allowedExams: z.array(z.string())
+})
+
+export type UserSchool = z.infer<typeof UserSchoolSchema>
+export const UserSchoolSchema = z.object({
+  schoolId: z.string(),
+  email: z.string().optional(),
+  principal: z.boolean(),
+  roles: z.array(SchoolRoleSchema),
+  permissions: z.array(z.enum(allPermissions))
+})
+
+export type User = z.infer<typeof UserSchema>
+export const UserSchema = UserDetailsSchema.extend({
+  ssn: zodSsn,
+  userAccountId: z.string(),
+  schools: z.array(UserSchoolSchema),
+  roles: z.array(CensorRoleSchema)
+})
+
+export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
+export const UserToUpsertSchema = UserDetailsSchema.extend({
+  ssn: zodSsn,
+  userAccountId: z.uuid().optional(),
+  schools: z.array(UserSchoolToUpsertSchema).optional(),
+  roles: z.array(CensorRoleToUpsertSchema).optional()
+})
+
+const ImpersonatedUserSchema = z.object({
+  ssn: z.literal('IMPERSONATED'),
+  schools: z.tuple([
+    z.object({
+      schoolId: z.string(),
+      roles: z.tuple([z.object({ role: z.literal('PRINCIPAL') })])
+    })
+  ]),
+  impersonation: ImpersonationSchema
+})
+
+export type UserForAuthentication = z.infer<typeof UserForAuthenticationSchema>
+export const UserForAuthenticationSchema = z.union([
+  UserSchema.extend({ impersonation: ImpersonationSchema.optional() }),
+  ImpersonatedUserSchema
+])
+
+export type UserWithSchoolRoleAndSchoolId = z.infer<typeof UserWithSchoolRoleAndSchoolIdSchema>
+export const UserWithSchoolRoleAndSchoolIdSchema = z.object({
+  userAccountId: z.string(),
+  ssn: zodSsn,
+  userDetails: UserDetailsSchema,
+  name: z.string(),
+  allowedExams: z.array(z.string()),
+  disqualifications: z.array(z.string())
+})

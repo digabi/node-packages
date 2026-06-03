@@ -68,6 +68,11 @@ type AllPerms<T> = T extends { all: infer A } ? A : T extends Record<string, unk
 
 export type AppPerm = AllPerms<typeof perm.application | typeof perm.notification>
 
+const collectLeaves = (node: unknown): string[] =>
+  typeof node === 'string' ? [node] : node && typeof node === 'object' ? Object.values(node).flatMap(collectLeaves) : []
+
+export const allPermissions = collectLeaves(perm) as unknown as readonly [Perm, ...Perm[]]
+
 function collectApplicationPermissions(obj: Record<string, unknown>): Perm[] {
   const result: Perm[] = []
 
