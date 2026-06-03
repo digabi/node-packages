@@ -43,11 +43,7 @@ export type UserDetails = z.infer<typeof UserDetailsSchema>
 export const UserDetailsSchema = z.object({
   email: z.email().optional(),
   firstnames: z.string().optional(),
-  lastname: z.string().optional(),
-  address: z.string().optional(),
-  zip: z.string().optional(),
-  postoffice: z.string().optional(),
-  telephones: z.array(z.string()).optional()
+  lastname: z.string().optional()
 })
 
 export type SchoolRole = z.infer<typeof SchoolRoleSchema>
