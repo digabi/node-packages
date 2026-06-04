@@ -60,7 +60,7 @@ export type UserSchoolToUpsert = z.infer<typeof UserSchoolToUpsertSchema>
 export const UserSchoolToUpsertSchema = z.object({
   schoolId: z.uuid(),
   email: z.email().optional(),
-  roles: z.array(SchoolRoleSchema).optional()
+  permissions: z.array(z.enum(allPermissions)).optional()
 })
 
 export type CensorRoleDivision = z.infer<typeof CensorRoleDivisionSchema>
