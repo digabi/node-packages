@@ -54,7 +54,7 @@ export const perm = {
   },
 
   grading: {
-    censor: 'grading-censor'
+    pregrading: 'grading-pregrading'
   }
 } as const
 
