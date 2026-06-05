@@ -10,8 +10,7 @@ const user: User = {
   ssn: '',
   firstnames: '',
   lastname: '',
-  schools: schoolIds.map(schoolId => ({ schoolId, permissions: [], principal: false, roles: [] })),
-  roles: []
+  schools: schoolIds.map(schoolId => ({ schoolId, permissions: [], principal: false, roles: [] }))
 }
 
 describe('Permissions', () => {

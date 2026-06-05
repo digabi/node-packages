@@ -65,6 +65,7 @@ jobs:
       - name: Update npm
         run: npm install -g npm@latest
       - run: npm ci
+      - run: npx lerna run build --scope=${{ inputs.package }} --include-dependencies
       - run: npm run lint --workspace=${{ inputs.package }}
       - run: npm run test --workspace=${{ inputs.package }}
 

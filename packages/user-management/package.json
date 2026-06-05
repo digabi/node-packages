@@ -1,6 +1,6 @@
 {
   "name": "@digabi/user-management",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Matriculation Examination Board, Finland",
   "license": "EUPL-1.2",
   "repository": {
@@ -17,7 +17,7 @@
     "watch": "tsc --project ./tsconfig.build.json --watch",
     "test": "node --test --import tsx ./__tests__/*.test.ts",
     "lint": "tsc --noEmit && eslint ./",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "user-management",
