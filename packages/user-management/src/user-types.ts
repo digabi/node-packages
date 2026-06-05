@@ -1,7 +1,7 @@
 import z from 'zod'
 import { RoleSchema } from './validations'
 import { isSsnValid } from '@digabi/validation'
-import { allPermissions } from './permissions'
+import { PermissionGrantSchema } from './permissions'
 
 const zodSsn = z.string().refine(isSsnValid, { message: 'Invalid ssn' })
 export type Role = z.infer<typeof RoleSchema>
@@ -42,6 +42,13 @@ export const MockUserSchema = z.object({
 export type UserDetails = z.infer<typeof UserDetailsSchema>
 export const UserDetailsSchema = z.object({
   email: z.email().optional(),
+  firstnames: z.string(),
+  lastname: z.string()
+})
+
+export type StoredUserDetails = z.infer<typeof StoredUserDetailsSchema>
+export const StoredUserDetailsSchema = z.object({
+  email: z.email().optional(),
   firstnames: z.string().optional(),
   lastname: z.string().optional()
 })
@@ -57,11 +64,13 @@ export const SchoolRoleSchema = z.object({
 })
 
 export type UserSchoolToUpsert = z.infer<typeof UserSchoolToUpsertSchema>
-export const UserSchoolToUpsertSchema = z.object({
-  schoolId: z.uuid(),
-  email: z.email().optional(),
-  permissions: z.array(z.enum(allPermissions)).optional()
-})
+export const UserSchoolToUpsertSchema = z
+  .object({
+    schoolId: z.uuid(),
+    email: z.email().optional(),
+    permissions: z.array(PermissionGrantSchema).optional()
+  })
+  .strict()
 
 export type CensorRoleDivision = z.infer<typeof CensorRoleDivisionSchema>
 export const CensorRoleDivisionSchema = z.object({
@@ -127,25 +136,21 @@ export const UserSchoolSchema = z.object({
   schoolId: z.string(),
   email: z.string().optional(),
   principal: z.boolean(),
-  roles: z.array(SchoolRoleSchema),
-  permissions: z.array(z.enum(allPermissions))
+  permissions: z.array(PermissionGrantSchema)
 })
 
 export type User = z.infer<typeof UserSchema>
-export const UserSchema = UserDetailsSchema.extend({
+export const UserSchema = StoredUserDetailsSchema.extend({
   ssn: zodSsn,
   userAccountId: z.string(),
-  schools: z.array(UserSchoolSchema),
-  roles: z.array(CensorRoleSchema)
+  schools: z.array(UserSchoolSchema)
 })
 
 export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
 export const UserToUpsertSchema = UserDetailsSchema.extend({
   ssn: zodSsn,
-  userAccountId: z.uuid().optional(),
-  schools: z.array(UserSchoolToUpsertSchema).optional(),
-  roles: z.array(CensorRoleToUpsertSchema).optional()
-})
+  schools: z.array(UserSchoolToUpsertSchema)
+}).strict()
 
 const ImpersonatedUserSchema = z.object({
   ssn: z.literal('IMPERSONATED'),

@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
-import { hasApplicationPermission, hasPermission, isPrincipal, Perm, User } from '../src/index'
+import { hasApplicationPermission, hasPermission, isPrincipal, Perm, PermissionGrant, User } from '../src/index'
 import { randomUUID } from 'node:crypto'
 
 const schoolIds = [randomUUID(), randomUUID(), randomUUID()]
@@ -8,6 +8,8 @@ const schoolIds = [randomUUID(), randomUUID(), randomUUID()]
 const user: User = {
   userAccountId: '',
   ssn: '',
+  firstnames: '',
+  lastname: '',
   schools: schoolIds.map(schoolId => ({ schoolId, permissions: [], principal: false, roles: [] })),
   roles: []
 }
@@ -121,10 +123,11 @@ describe('Permissions', () => {
 })
 
 function modifyUser(user: User, schoolIindex: number, permissions: Perm[], principal?: boolean): User {
+  const grants = permissions.map(p => ({ permission: p })) as PermissionGrant[]
   return {
     ...user,
     schools: user.schools.map((school, index) =>
-      index === schoolIindex ? { ...school, principal: principal ?? false, permissions } : school
+      index === schoolIindex ? { ...school, principal: principal ?? false, permissions: grants } : school
     )
   }
 }

@@ -1,3 +1,5 @@
+import z from 'zod'
+
 /** Table of user permission strings */
 export const perm = {
   specialArrangements: 'special-arrangements',
@@ -87,6 +89,23 @@ function collectApplicationPermissions(obj: Record<string, unknown>): Perm[] {
   }
   return result
 }
+
+type SimplePerm = Exclude<Perm, typeof perm.grading.pregrading>
+const simplePermissions = allPermissions.filter(
+  (p): p is SimplePerm => p !== perm.grading.pregrading
+) as unknown as readonly [SimplePerm, ...SimplePerm[]]
+
+export type PermissionGrant = z.infer<typeof PermissionGrantSchema>
+export const PermissionGrantSchema = z.discriminatedUnion('permission', [
+  z.object({
+    permission: z.literal(perm.grading.pregrading),
+    allowedExams: z.array(z.string()),
+    disqualifications: z.array(z.uuid())
+  }),
+  z.object({
+    permission: z.enum(simplePermissions)
+  })
+])
 
 export const applicationPermissions = [
   ...collectApplicationPermissions(perm.application),
