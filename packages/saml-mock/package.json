@@ -15,7 +15,7 @@
     "build": "tsc --project ./tsconfig.build.json && cp -r ./src/certs ./dist/certs && cp -r ./src/templates ./dist/templates",
     "test": "node --test --import tsx ./__tests__/*.test.ts",
     "lint": "tsc --noEmit && eslint ./",
-    "prepare": "npm run build"
+    "prepack": "npm run build"
   },
   "publishConfig": {
     "access": "public"
