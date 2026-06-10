@@ -86,14 +86,16 @@ export function fileUploadMiddleware(
   fileMaxSizeBytes: number,
   errorCodeForTooBigFile: number,
   errorMsgForTooBigFile: string,
-  opts?: Partial<{
-    inMemory: boolean
-  }>
+  opts?: { inMemory: true } | { dest: string }
 ): Handler {
-  const config: multer.Options = {
-    storage: opts?.inMemory ? multer.memoryStorage() : undefined,
-    limits: { fileSize: fileMaxSizeBytes }
-  }
+  const storage = opts
+    ? 'dest' in opts
+      ? multer.diskStorage({ destination: opts.dest })
+      : opts.inMemory
+        ? multer.memoryStorage()
+        : undefined
+    : undefined
+  const config: multer.Options = { storage, limits: { fileSize: fileMaxSizeBytes } }
   return fileUpload(config, fieldName, errorCodeForTooBigFile, errorMsgForTooBigFile)
 }
 

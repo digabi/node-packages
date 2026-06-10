@@ -16,7 +16,7 @@
     "build": "tsc --project ./tsconfig.build.json",
     "test": "node --test --import tsx ./__tests__/*.test.ts",
     "lint": "tsc --noEmit && eslint --ignore-path ../../.eslintignore ./",
-    "prepare": "npm run build"
+    "prepack": "npm run build"
   },
   "keywords": [
     "__PACKAGE_NAME__",
