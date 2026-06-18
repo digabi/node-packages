@@ -67,7 +67,6 @@ export type UserSchoolToUpsert = z.infer<typeof UserSchoolToUpsertSchema>
 export const UserSchoolToUpsertSchema = z
   .object({
     schoolId: z.uuid(),
-    email: z.email().optional(),
     permissions: z.array(PermissionGrantSchema).optional()
   })
   .strict()
@@ -134,7 +133,6 @@ export const GradingTeacherSchoolRoleSchema = z.object({
 export type UserSchool = z.infer<typeof UserSchoolSchema>
 export const UserSchoolSchema = z.object({
   schoolId: z.string(),
-  email: z.string().optional(),
   principal: z.boolean(),
   permissions: z.array(PermissionGrantSchema)
 })
