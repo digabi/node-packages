@@ -1,3 +1,5 @@
+import z from 'zod'
+
 export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean {
   const checkCodes: { [x: number]: string } = {
     0: '0',
@@ -66,6 +68,8 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   const checkCodeIndex = parseInt(birthDate.concat(individualNumber), 10) % 31
   return checkCode === checkCodes[checkCodeIndex]
 }
+
+export const zodSsn = z.string().refine(isSsnValid, { message: 'Invalid ssn' }).toUpperCase()
 
 export function isFakeYtlSsn(ssn: string): boolean {
   const fakeYtlSsnRegEx = /\d{6}(AU|-U)\d{2}\w$/

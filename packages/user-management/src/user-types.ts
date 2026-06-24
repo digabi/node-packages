@@ -1,9 +1,8 @@
 import z from 'zod'
 import { RoleSchema } from './validations'
-import { isSsnValid } from '@digabi/validation'
+import { zodSsn } from '@digabi/validation'
 import { PermissionGrantSchema } from './permissions'
 
-const zodSsn = z.string().refine(isSsnValid, { message: 'Invalid ssn' })
 export type Role = z.infer<typeof RoleSchema>
 
 export type ExamType = z.infer<typeof ExamTypeSchema>
@@ -141,7 +140,8 @@ export type User = z.infer<typeof UserSchema>
 export const UserSchema = StoredUserDetailsSchema.extend({
   ssn: zodSsn,
   userAccountId: z.string(),
-  schools: z.array(UserSchoolSchema)
+  schools: z.array(UserSchoolSchema),
+  censorRole: CensorRoleSchema.optional()
 })
 
 export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
@@ -150,22 +150,16 @@ export const UserToUpsertSchema = UserDetailsSchema.extend({
   schools: z.array(UserSchoolToUpsertSchema)
 }).strict()
 
+export type ImpersonatedUser = z.infer<typeof ImpersonatedUserSchema>
 const ImpersonatedUserSchema = z.object({
-  ssn: z.literal('IMPERSONATED'),
-  schools: z.tuple([
-    z.object({
-      schoolId: z.string(),
-      roles: z.tuple([z.object({ role: z.literal('PRINCIPAL') })])
-    })
-  ]),
-  impersonation: ImpersonationSchema
+  ssn: z.string(),
+  schools: z.array(UserSchoolSchema),
+  impersonation: ImpersonationSchema,
+  censorRole: CensorRoleSchema.optional()
 })
 
 export type UserForAuthentication = z.infer<typeof UserForAuthenticationSchema>
-export const UserForAuthenticationSchema = z.union([
-  UserSchema.extend({ impersonation: ImpersonationSchema.optional() }),
-  ImpersonatedUserSchema
-])
+export const UserForAuthenticationSchema = z.union([UserSchema, ImpersonatedUserSchema])
 
 export type UserWithSchoolRoleAndSchoolId = z.infer<typeof UserWithSchoolRoleAndSchoolIdSchema>
 export const UserWithSchoolRoleAndSchoolIdSchema = z.object({
