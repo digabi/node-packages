@@ -16,7 +16,6 @@ export const perm = {
   notification: {
     deniedParticipation: {
       all: 'notification-denied-participation',
-      notify: 'notification-denied-participation::notify',
       viewDecision: 'notification-denied-participation::view-decision'
     },
     includedExams: {
