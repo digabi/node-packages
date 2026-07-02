@@ -4,13 +4,20 @@ import z from 'zod'
 export const perm = {
   specialArrangements: 'special-arrangements',
   observations: 'observations',
-  registrations: { send: 'registrations::send' },
+  registrations: {
+    view: 'registrations::view',
+    send: 'registrations::send'
+  },
   ktpConnection: { open: 'ktp-connection::open' },
   answerPackages: { send: 'answer-packages::send' },
 
   resultList: {
     view: 'result-list::view',
-    viewWithSsns: 'result-list::view-with-ssns'
+    viewWithSsns: 'result-list::view-with-ssns',
+    downloadReports: 'result-list::download-reports'
+  },
+  examinationPhase: {
+    view: 'examination-phase::view'
   },
 
   notification: {
