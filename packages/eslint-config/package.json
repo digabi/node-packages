@@ -29,8 +29,8 @@
     "globals": ">= 15"
   },
   "peerDependencies": {
-    "@eslint/js": ">= 9",
-    "eslint": ">= 9",
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
     "eslint-plugin-import-x": ">= 4",
     "eslint-plugin-prettier": ">= 5",
     "eslint-plugin-promise": ">= 7",
