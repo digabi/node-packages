@@ -141,7 +141,8 @@ export const UserSchema = StoredUserDetailsSchema.extend({
   ssn: zodSsn,
   userAccountId: z.string(),
   schools: z.array(UserSchoolSchema),
-  censorRole: CensorRoleSchema.optional()
+  censorRole: CensorRoleSchema.optional(),
+  impersonation: z.never().optional()
 })
 
 export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
@@ -151,7 +152,8 @@ export const UserToUpsertSchema = UserDetailsSchema.extend({
 }).strict()
 
 export type ImpersonatedUser = z.infer<typeof ImpersonatedUserSchema>
-const ImpersonatedUserSchema = z.object({
+const ImpersonatedUserSchema = StoredUserDetailsSchema.extend({
+  userAccountId: z.string().optional(),
   ssn: z.string(),
   schools: z.array(UserSchoolSchema),
   impersonation: ImpersonationSchema,
