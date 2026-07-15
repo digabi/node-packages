@@ -143,7 +143,7 @@ export const UserSchema = StoredUserDetailsSchema.extend({
   schools: z.array(UserSchoolSchema),
   censorRole: CensorRoleSchema.optional(),
   impersonation: z.never().optional()
-})
+}).strict()
 
 export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
 export const UserToUpsertSchema = UserDetailsSchema.extend({
@@ -151,17 +151,32 @@ export const UserToUpsertSchema = UserDetailsSchema.extend({
   schools: z.array(UserSchoolToUpsertSchema)
 }).strict()
 
-export type ImpersonatedUser = z.infer<typeof ImpersonatedUserSchema>
-const ImpersonatedUserSchema = StoredUserDetailsSchema.extend({
-  userAccountId: z.string().optional(),
-  ssn: z.string(),
-  schools: z.array(UserSchoolSchema),
-  impersonation: ImpersonationSchema,
-  censorRole: CensorRoleSchema.optional()
-})
+export type PersonalImpersonation = z.infer<typeof personalImpersonationSchema>
+export const personalImpersonationSchema = UserSchema.extend({
+  impersonation: ImpersonationSchema
+}).strict()
 
+export type SchoolImpersonation = z.infer<typeof schoolImpersonationSchema>
+export const schoolImpersonationSchema = z
+  .object({
+    impersonation: ImpersonationSchema,
+    ssn: z.literal('IMPERSONATED'),
+    schools: z
+      .array(
+        z.object({
+          schoolId: z.string(),
+          principal: z.literal(true),
+          permissions: z.array(z.unknown()).max(0, "Impersonated principal doesn't have other permissions")
+        })
+      )
+      .max(1, 'Impersonated principal has one school')
+  })
+  .strict()
+
+export type ImpersonatedUser = z.infer<typeof ImpersonatedUserSchema>
+export const ImpersonatedUserSchema = z.xor([personalImpersonationSchema, schoolImpersonationSchema])
 export type UserForAuthentication = z.infer<typeof UserForAuthenticationSchema>
-export const UserForAuthenticationSchema = z.union([UserSchema, ImpersonatedUserSchema])
+export const UserForAuthenticationSchema = z.xor([UserSchema, ImpersonatedUserSchema])
 
 export type UserWithSchoolRoleAndSchoolId = z.infer<typeof UserWithSchoolRoleAndSchoolIdSchema>
 export const UserWithSchoolRoleAndSchoolIdSchema = z.object({
