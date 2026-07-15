@@ -151,13 +151,13 @@ export const UserToUpsertSchema = UserDetailsSchema.extend({
   schools: z.array(UserSchoolToUpsertSchema)
 }).strict()
 
-export type PersonalImpersonation = z.infer<typeof personalImpersonationSchema>
-export const personalImpersonationSchema = UserSchema.extend({
+export type PersonalImpersonation = z.infer<typeof PersonalImpersonationSchema>
+export const PersonalImpersonationSchema = UserSchema.extend({
   impersonation: ImpersonationSchema
 }).strict()
 
-export type SchoolImpersonation = z.infer<typeof schoolImpersonationSchema>
-export const schoolImpersonationSchema = z
+export type SchoolImpersonation = z.infer<typeof SchoolImpersonationSchema>
+export const SchoolImpersonationSchema = z
   .object({
     impersonation: ImpersonationSchema,
     ssn: z.literal('IMPERSONATED'),
@@ -174,7 +174,7 @@ export const schoolImpersonationSchema = z
   .strict()
 
 export type ImpersonatedUser = z.infer<typeof ImpersonatedUserSchema>
-export const ImpersonatedUserSchema = z.xor([personalImpersonationSchema, schoolImpersonationSchema])
+export const ImpersonatedUserSchema = z.xor([PersonalImpersonationSchema, SchoolImpersonationSchema])
 export type UserForAuthentication = z.infer<typeof UserForAuthenticationSchema>
 export const UserForAuthenticationSchema = z.xor([UserSchema, ImpersonatedUserSchema])
 
