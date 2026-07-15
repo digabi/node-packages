@@ -18,13 +18,13 @@ export const PrincipalOrganizationSchema = z.object({
 
 export type Impersonation = z.infer<typeof ImpersonationSchema>
 export const ImpersonationSchema = z.object({
-  id: z.number(),
+  id: z.uuid(),
   realSsn: zodSsn,
-  impersonatedSsn: zodSsn,
+  impersonatedSsn: zodSsn.or(z.literal('')),
   explanation: z.string(),
   validityStart: z.string(),
   validityEnd: z.string(),
-  schoolUuid: z.string().optional()
+  schoolUuid: z.string().nullish()
 })
 
 export type MockUser = z.infer<typeof MockUserSchema>
