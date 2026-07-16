@@ -70,18 +70,23 @@ export const UserSchoolToUpsertSchema = z
   })
   .strict()
 
-export type CensorRoleDivision = z.infer<typeof CensorRoleDivisionSchema>
-export const CensorRoleDivisionSchema = z.object({
+export type CensorDivision = z.infer<typeof CensorDivisionSchema>
+export const CensorDivisionSchema = z.object({
   censorDivisionUuid: z.uuid(),
-  divisionName: z.string(),
-  divisionExamType: ExamTypeSchema
+  divisionName: z.string()
 })
 
-export type CensorRoleDivisionToUpsert = z.infer<typeof CensorRoleDivisionToUpsertSchema>
-export const CensorRoleDivisionToUpsertSchema = z.object({
+export type CensorDivisionToUpsert = z.infer<typeof CensorDivisionToUpsertSchema>
+export const CensorDivisionToUpsertSchema = z.object({
   censorDivisionUuid: z.string(),
-  divisionName: z.string().optional(),
-  divisionExamType: ExamTypeSchema.optional()
+  divisionName: z.string().optional()
+})
+
+export type Censoring = z.infer<typeof CensoringSchema>
+export const CensoringSchema = z.object({
+  divisions: z.array(CensorDivisionSchema).optional(),
+  shortCode: z.string(),
+  timeFrame: z.object({ from: z.iso.datetime().nullable(), to: z.iso.datetime().nullable() })
 })
 
 export type CensorRole = z.infer<typeof CensorRoleSchema>
@@ -90,7 +95,7 @@ export const CensorRoleSchema = z.object({
   startdate: z.iso.date().nullish(),
   enddate: z.iso.date().nullish(),
   metadata: z.object({ shortCode: z.string() }),
-  divisions: z.array(CensorRoleDivisionSchema).optional()
+  divisions: z.array(CensorDivisionSchema).optional()
 })
 
 export type CensorRoleToUpsert = z.infer<typeof CensorRoleToUpsertSchema>
@@ -99,7 +104,7 @@ export const CensorRoleToUpsertSchema = z.object({
   startdate: z.iso.date().nullish(),
   enddate: z.iso.date().nullish(),
   metadata: z.object({ shortCode: z.string() }).optional(),
-  divisions: z.array(CensorRoleDivisionToUpsertSchema).optional()
+  divisions: z.array(CensorDivisionToUpsertSchema).optional()
 })
 
 export type DivisionToAdd = z.infer<typeof DivisionToAddSchema>
@@ -141,20 +146,19 @@ export const UserSchema = StoredUserDetailsSchema.extend({
   ssn: zodSsn,
   userAccountId: z.string(),
   schools: z.array(UserSchoolSchema),
-  censorRole: CensorRoleSchema.optional(),
+  censoring: CensoringSchema.optional(),
   impersonation: z.never().optional()
 }).strict()
 
 export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
 export const UserToUpsertSchema = UserDetailsSchema.extend({
   ssn: zodSsn,
-  schools: z.array(UserSchoolToUpsertSchema)
+  schools: z.array(UserSchoolToUpsertSchema),
+  censoring: CensoringSchema.optional()
 }).strict()
 
 export type PersonalImpersonation = z.infer<typeof PersonalImpersonationSchema>
-export const PersonalImpersonationSchema = UserSchema.extend({
-  impersonation: ImpersonationSchema
-}).strict()
+export const PersonalImpersonationSchema = UserSchema.extend({ impersonation: ImpersonationSchema }).strict()
 
 export type SchoolImpersonation = z.infer<typeof SchoolImpersonationSchema>
 export const SchoolImpersonationSchema = z
