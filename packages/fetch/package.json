@@ -24,7 +24,7 @@
     "@digabi/express-utils": "^0.0.1",
     "@digabi/testing": "^0.0.1",
     "@types/multer": "^2.0.0",
-    "body-parser": "^2.2.0",
+    "body-parser": "^2.3.0",
     "express": "^5.1.0",
     "multer": "^2.2.0"
   },
