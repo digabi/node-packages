@@ -166,7 +166,13 @@ export const SchoolImpersonationSchema = z
   .object({
     impersonation: ImpersonationSchema,
     ssn: z.literal('IMPERSONATED'),
-    acceptedEulas: z.tuple([z.literal('principal')]),
+    acceptedEulas: z
+      .array(z.string())
+      .max(1, 'only principal eula accepted')
+      .refine(arr => arr.includes('principal'), {
+        message: 'only principal eula accepted'
+      }),
+    censoring: z.undefined(),
     schools: z
       .array(
         z.object({
