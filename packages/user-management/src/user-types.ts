@@ -86,7 +86,7 @@ export type Censoring = z.infer<typeof CensoringSchema>
 export const CensoringSchema = z.object({
   divisions: z.array(CensorDivisionSchema).optional(),
   shortCode: z.string(),
-  timeFrame: z.object({ from: z.iso.datetime().nullable(), to: z.iso.datetime().nullable() })
+  timeFrame: z.object({ from: z.iso.date().nullable(), to: z.iso.date().nullable() })
 })
 
 export type CensorRole = z.infer<typeof CensorRoleSchema>
