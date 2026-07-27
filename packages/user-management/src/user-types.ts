@@ -147,7 +147,8 @@ export const UserSchema = StoredUserDetailsSchema.extend({
   userAccountId: z.string(),
   schools: z.array(UserSchoolSchema),
   censoring: CensoringSchema.optional(),
-  impersonation: z.never().optional()
+  impersonation: z.never().optional(),
+  acceptedEulas: z.array(z.enum(['teacher', 'principal', 'censor']))
 }).strict()
 
 export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
@@ -165,12 +166,19 @@ export const SchoolImpersonationSchema = z
   .object({
     impersonation: ImpersonationSchema,
     ssn: z.literal('IMPERSONATED'),
+    acceptedEulas: z
+      .array(z.string())
+      .max(1, 'only principal eula accepted')
+      .refine(arr => arr.includes('principal'), {
+        message: 'only principal eula accepted'
+      }),
+    censoring: z.undefined(),
     schools: z
       .array(
         z.object({
           schoolId: z.string(),
           principal: z.literal(true),
-          permissions: z.array(z.unknown()).max(0, "Impersonated principal doesn't have other permissions")
+          permissions: z.array(PermissionGrantSchema).max(0, "Impersonated principal doesn't have other permissions")
         })
       )
       .max(1, 'Impersonated principal has one school')
