@@ -59,7 +59,8 @@ describe('Permissions', () => {
       principal: true,
       requiredPermission: 'application-foreign',
       expectedResult: true
-    }
+    },
+    { permissions: ['surveillance-guide::view'], requiredPermission: 'surveillance-guide::view', expectedResult: true }
   ]
 
   test('check variety of permissions', () => {

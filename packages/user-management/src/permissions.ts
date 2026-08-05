@@ -19,6 +19,9 @@ export const perm = {
   examinationPhase: {
     view: 'examination-phase::view'
   },
+  surveillanceGuide: {
+    view: 'surveillance-guide::view'
+  },
 
   notification: {
     deniedParticipation: {
