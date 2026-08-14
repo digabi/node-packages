@@ -65,7 +65,8 @@ export const perm = {
   },
 
   grading: {
-    pregrading: 'grading-pregrading'
+    pregrading: 'grading-pregrading',
+    pregradingViewAll: 'grading-pregrading::view-all'
   }
 } as const
 
