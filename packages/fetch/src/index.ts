@@ -1,3 +1,4 @@
+import NodeFormData from 'form-data'
 import { CookieJar } from 'tough-cookie'
 
 export type FetchOptions = RequestInit & {
@@ -38,24 +39,25 @@ function isFileObjectOrFileObjectArray(
   return Array.isArray(obj) || obj instanceof Object
 }
 
-function addFilesToFormData(formData: FormData, key: string, files: FileObject[]) {
+function addFilesToFormData(formData: NodeFormData, key: string, files: FileObject[]) {
   files.forEach(file => {
-    formData.append(key, new Blob([file.value], { type: file.options.contentType }), file.options.filename)
+    formData.append(key, file.value, { filename: file.options.filename, contentType: file.options.contentType })
   })
 }
 
-function formObjectToFormData(body: FormObject): FormData {
-  const formData = new FormData()
+function formObjectToMultipartBody(body: FormObject): { body: Buffer; headers: Record<string, string> } {
+  const formData = new NodeFormData()
 
   Object.entries(body).forEach(([key, value]) => {
     if (isFileObjectOrFileObjectArray(value)) {
       addFilesToFormData(formData, key, Array.isArray(value) ? value : [value])
     } else {
-      formData.append(key, value)
+      // form-data coerces number/null/undefined itself but not boolean - it'll throw on a raw true/false
+      formData.append(key, String(value))
     }
   })
 
-  return formData
+  return { body: formData.getBuffer(), headers: formData.getHeaders() }
 }
 
 function isContentTypeApplicationJson(res: Response) {
@@ -276,12 +278,15 @@ export function postFormAsync<T>(
   options: FetchOptions | undefined = {},
   fullResponse = false
 ) {
+  const { body: requestBody, headers } = isFormObject(body) ? formObjectToMultipartBody(body) : { body, headers: {} }
+
   return requestJsonAsync<T>(
     url,
     'POST',
     {
       ...options,
-      body: isFormObject(body) ? formObjectToFormData(body) : body
+      headers: { ...options.headers, ...headers },
+      body: requestBody
     },
     fullResponse,
     'json'
