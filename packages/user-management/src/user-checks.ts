@@ -1,11 +1,11 @@
 import { applicationPermissions, AppPerm, Perm, PermissionGrant, PermissionOptions, User, UserSchool } from './index'
 
 function userSchools(user: User, options?: PermissionOptions): UserSchool[] {
-  return options?.schoolId ? user.schools.filter(school => school.schoolId === options.schoolId) : user.schools
+  return options?.schoolId ? user.schools.filter(school => school?.schoolId === options.schoolId) : user.schools
 }
 
 export function userPermissionGrants(user: User, options?: PermissionOptions): PermissionGrant[] {
-  return userSchools(user, options).flatMap(school => school.permissions)
+  return userSchools(user, options).flatMap(school => school?.permissions ?? [])
 }
 
 export function userPermissions(user: User, options?: PermissionOptions): Perm[] {
@@ -13,7 +13,7 @@ export function userPermissions(user: User, options?: PermissionOptions): Perm[]
 }
 
 export function isPrincipal(user: User, options?: PermissionOptions): boolean {
-  return userSchools(user, options).find(school => school.principal) !== undefined
+  return userSchools(user, options).find(school => school?.principal) !== undefined
 }
 
 export function hasPermission(user: User, requiredPermission: Perm | '*', options?: PermissionOptions): boolean {
