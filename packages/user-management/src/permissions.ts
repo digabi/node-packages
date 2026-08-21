@@ -67,6 +67,10 @@ export const perm = {
   grading: {
     pregrading: 'grading-pregrading',
     pregradingViewAll: 'grading-pregrading::view-all'
+  },
+
+  userManagement: {
+    manage: 'user-management::manage'
   }
 } as const
 
