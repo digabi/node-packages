@@ -71,6 +71,10 @@ export const perm = {
 
   minutes: {
     view: 'minutes::view'
+  },
+
+  userManagement: {
+    manage: 'user-management::manage'
   }
 } as const
 
