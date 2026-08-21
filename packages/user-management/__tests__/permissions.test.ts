@@ -82,6 +82,22 @@ describe('Permissions', () => {
     assert.equal(isPrincipal(testCaseUser, { schoolId: user.schools[1].schoolId }), false)
   })
 
+  test('check if principal with undefined school', () => {
+    const invalidTestCaseUser1 = { ...modifyUser(user, 0, [], true), schools: [...user.schools, undefined] }
+    // @ts-expect-error testing with invalid data in user schools
+    assert.equal(isPrincipal(invalidTestCaseUser1, { schoolId: user.schools[0].schoolId }), false)
+
+    const invalidTestCaseUser2 = { ...modifyUser(user, 0, [], true), schools: [...user.schools, undefined] }
+    // @ts-expect-error testing with invalid data in user schools
+    assert.equal(isPrincipal(invalidTestCaseUser2, { schoolId: undefined }), false)
+  })
+
+  test.only('check if principal with undefined schools', () => {
+    const invalidTestCaseUser1 = { ...modifyUser(user, 0, [], true), schools: undefined }
+    // @ts-expect-error testing with invalid data in user schools
+    assert.equal(isPrincipal(invalidTestCaseUser1, { schoolId: user.schools[0].schoolId }), false)
+  })
+
   test('check if a user has a permission in given school', () => {
     const testCaseUser = modifyUser(user, 0, ['observations'])
     assert.equal(hasPermission(testCaseUser, 'observations', { schoolId: testCaseUser.schools[0].schoolId }), true)
