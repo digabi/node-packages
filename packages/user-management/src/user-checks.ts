@@ -1,7 +1,11 @@
 import { applicationPermissions, AppPerm, Perm, PermissionGrant, PermissionOptions, User, UserSchool } from './index'
 
 function userSchools(user: User, options?: PermissionOptions): UserSchool[] {
-  return options?.schoolId ? user.schools.filter(school => school?.schoolId === options.schoolId) : user.schools
+  return user.schools
+    ? options?.schoolId
+      ? user.schools.filter(school => school?.schoolId === options.schoolId)
+      : user.schools
+    : []
 }
 
 export function userPermissionGrants(user: User, options?: PermissionOptions): PermissionGrant[] {
