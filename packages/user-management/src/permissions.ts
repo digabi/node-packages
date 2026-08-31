@@ -19,6 +19,9 @@ export const perm = {
   examinationPhase: {
     view: 'examination-phase::view'
   },
+  exams: {
+    view: 'exams::view'
+  },
   surveillanceGuide: {
     view: 'surveillance-guide::view'
   },
