@@ -1,6 +1,7 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { Readable } from 'node:stream'
+import { pipeline } from 'node:stream/promises'
 import * as yauzl from 'yauzl'
 import { DataError } from '@digabi/express-utils'
 
@@ -117,12 +118,14 @@ export function extractZipFromDisk(
         return reject(new DataError(err.message))
       }
 
+      const onError = (err: Error) => {
+        zipFile.close()
+        reject(new DataError(err.message))
+      }
+
       zipFile.readEntry()
       zipFile.on('entry', handleEntry)
-      zipFile.on('error', err => {
-        zipFile.close()
-        return reject(new DataError(err as string))
-      })
+      zipFile.on('error', onError)
       zipFile.on('end', () => resolve(fileNames))
 
       function handleEntry(entry: yauzl.Entry) {
@@ -132,30 +135,28 @@ export function extractZipFromDisk(
             fs.promises
               .mkdir(path.join(targetPath, entry.fileName), { recursive: true })
               .then(() => zipFile.readEntry())
-              .catch(err => reject(new DataError(err as string)))
+              .catch(onError)
           } else {
             fileNames.push(entry.fileName)
 
             zipFile.openReadStream(entry, (err, readStream) => {
               if (err) {
-                return reject(new DataError(err.message))
+                return onError(err)
               }
+              readStream.on('error', onError)
 
               // eslint-disable-next-line promise/no-promise-in-callback
               fs.promises
                 .mkdir(path.join(targetPath, path.dirname(entry.fileName)), { recursive: true })
-                .then(() => {
+                .then(async () => {
                   const entryFilePath = path.join(targetPath, entry.fileName)
-                  const out = fs.createWriteStream(entryFilePath)
-                  out.on('finish', () => {
-                    const mtime = entry.getLastModDate()
-                    fs.utimesSync(entryFilePath, mtime, mtime)
-                    return zipFile.readEntry()
-                  })
-                  readStream.pipe(out)
+                  await pipeline(readStream, fs.createWriteStream(entryFilePath))
+                  const mtime = entry.getLastModDate()
+                  await fs.promises.utimes(entryFilePath, mtime, mtime)
+                  zipFile.readEntry()
                   return
                 })
-                .catch(err => reject(new DataError(err as string)))
+                .catch(onError)
             })
           }
         } else {
