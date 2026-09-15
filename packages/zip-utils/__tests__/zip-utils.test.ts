@@ -103,6 +103,14 @@ describe('zip-test.js', () => {
       assertExtractedZip()
     })
 
+    test('rejects a zip with a corrupted entry', async () => {
+      await assert.rejects(extractZipFromDisk(`${__dirname}/corrupt1.zip`, targetPath), /invalid stored block lengths/)
+    })
+
+    test('rejects a zip with a corrupted entry after a valid entry', async () => {
+      await assert.rejects(extractZipFromDisk(`${__dirname}/corrupt2.zip`, targetPath), /invalid stored block lengths/)
+    })
+
     function assertExtractedZip() {
       assertFile(`${targetPath}/hello.txt`, 12)
       assertFile(`${targetPath}/.empty_file`, 0)
