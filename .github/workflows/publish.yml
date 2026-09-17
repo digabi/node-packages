@@ -26,6 +26,7 @@ on:
           - '@digabi/typescript-config'
           - '@digabi/user-management'
           - '@digabi/validation'
+          - '@digabi/verified-access'
           - '@digabi/zip-utils'
 
       bump:
