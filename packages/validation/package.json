@@ -1,6 +1,6 @@
 {
   "name": "@digabi/validation",
-  "version": "3.2.0",
+  "version": "4.0.0-feature-ssn-schemas-with-input-trimming.0",
   "author": "Matriculation Examination Board, Finland",
   "license": "EUPL-1.2",
   "repository": {
