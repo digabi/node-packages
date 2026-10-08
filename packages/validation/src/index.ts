@@ -36,7 +36,6 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   }
 
   const centurySeparator21st = ['A', 'B', 'C', 'D', 'E', 'F']
-  const specialFakeSsnToBeAllowed = '010101-0101'
   const matched = ssn
     .trim()
     .match(/^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])([\d]{3}|U[\d]{2})([\dA-Ya-y])$/)
@@ -56,7 +55,8 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   // We don't want to always do these checks, for example if we validate
   // data which is not related to current matricular exams
   if (ageSanityCheckForExams) {
-    if (ssn.trim() === specialFakeSsnToBeAllowed) return true
+    const specialFakeSsnToBeAllowed = '010101-0101'
+    if (specialFakeSsnToBeAllowed === ssn.trim().toUpperCase()) return true
     // Do not allow people over hundred years old (accidental use of - instead of A)
     if (centurySeparator === '+') return false
     if (centurySeparator === '-' && birthDateYear < currentYear) return false
@@ -69,13 +69,21 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   return checkCode === checkCodes[checkCodeIndex]
 }
 
-export const zodSsn = z.string().refine(isSsnValid, { message: 'Invalid ssn' }).toUpperCase()
+export const ssnSchema = z.string().trim().refine(isSsnValid, { message: 'Invalid ssn' }).toUpperCase()
+
+export const ssnSchemaWithAgeChecks = z
+  .string()
+  .trim()
+  .refine(ssn => isSsnValid(ssn, true), { message: 'Invalid ssn' })
+  .toUpperCase()
 
 export function isFakeYtlSsn(ssn: string): boolean {
   const fakeYtlSsnRegEx = /\d{6}(AU|-U)\d{2}\w$/
 
   return fakeYtlSsnRegEx.test(ssn)
 }
+
+export const fakeYtlSsnSchema = z.string().trim().refine(isFakeYtlSsn, { message: 'Invalid fake ssn' }).toUpperCase()
 
 export function isValidEmail(email: string): boolean {
   const emailRegex =

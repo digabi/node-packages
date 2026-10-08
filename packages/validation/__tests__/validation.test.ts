@@ -124,12 +124,60 @@ describe('validation-test', () => {
     })
   })
 
+  describe('ssn schemas', () => {
+    // Over hundred years old: valid without age checks, rejected with them
+    const over100 = '231194+246W'
+
+    describe('ssnSchema', () => {
+      test('trims and uppercases', () => {
+        const result = validation.ssnSchema.safeParse(' 231194-246w\t\n')
+        assert.deepEqual(result, { success: true, data: '231194-246W' })
+      })
+
+      test('rejects invalid ssn with message', () => {
+        const result = validation.ssnSchema.safeParse('231194-246X')
+        assert.equal(result.success, false)
+        assert.equal(result.error?.issues[0].message, 'Invalid ssn')
+      })
+
+      test('accepts person over hundred years old', () => {
+        assert.equal(validation.ssnSchema.safeParse(over100).success, true)
+      })
+    })
+
+    describe('ssnSchemaWithAgeChecks', () => {
+      test('trims and uppercases', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(' 010601a0102 ')
+        assert.deepEqual(result, { success: true, data: '010601A0102' })
+      })
+
+      test('rejects person over hundred years old with message', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(over100)
+        assert.equal(result.success, false)
+        assert.equal(result.error?.issues[0].message, 'Invalid ssn')
+      })
+    })
+  })
+
   describe('isFakeYtlSsn', () => {
     test('detects "A" century seperator fake ssn', () => assert.equal(validation.isFakeYtlSsn('200102AU000'), true))
 
     test('detects "-" century seperator fake ssn', () => assert.equal(validation.isFakeYtlSsn('200192-U000'), true))
 
     test('rejects valid ssn', () => assert.equal(validation.isFakeYtlSsn('231194-246W'), false))
+  })
+
+  describe('fakeYtlSsnSchema', () => {
+    test('trims and uppercases', () => {
+      const result = validation.fakeYtlSsnSchema.safeParse(' 200102AU00a\n')
+      assert.deepEqual(result, { success: true, data: '200102AU00A' })
+    })
+
+    test('rejects non-fake ssn with message', () => {
+      const result = validation.fakeYtlSsnSchema.safeParse('231194-246W')
+      assert.equal(result.success, false)
+      assert.equal(result.error?.issues[0].message, 'Invalid fake ssn')
+    })
   })
 
   describe('isValidEmail', () => {
