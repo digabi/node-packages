@@ -1,6 +1,6 @@
 import z from 'zod'
 import { RoleSchema } from './validations'
-import { ssnSchema } from '@digabi/validation'
+import { zodSsn as ssnSchema } from '@digabi/validation'
 import { PermissionGrantSchema } from './permissions'
 
 export type Role = z.infer<typeof RoleSchema>
