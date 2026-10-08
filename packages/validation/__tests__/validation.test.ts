@@ -137,7 +137,7 @@ describe('validation-test', () => {
       test('rejects invalid ssn with message', () => {
         const result = validation.ssnSchema.safeParse('231194-246X')
         assert.equal(result.success, false)
-        assert.equal(result.error?.issues[0].message, 'Invalid ssn')
+        assert.equal(result.error?.issues[0].message, 'SSN must be valid')
       })
 
       test('accepts person over hundred years old', () => {
@@ -154,7 +154,7 @@ describe('validation-test', () => {
       test('rejects person over hundred years old with message', () => {
         const result = validation.ssnSchemaWithAgeChecks.safeParse(over100)
         assert.equal(result.success, false)
-        assert.equal(result.error?.issues[0].message, 'Invalid ssn')
+        assert.equal(result.error?.issues[0].message, 'SSN must be valid')
       })
     })
   })
