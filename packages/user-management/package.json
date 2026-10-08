@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@digabi/validation": "^4.0.0",
+    "@digabi/validation": "4.0.0-feature-ssn-schemas-with-input-trimming.0",
     "zod": "^4.4.3"
   }
 }
