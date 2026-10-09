@@ -69,13 +69,16 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   return checkCode === checkCodes[checkCodeIndex]
 }
 
-const ssnError = 'SSN must be valid'
-export const ssnSchema = z.string({ error: ssnError }).trim().refine(isSsnValid, { error: ssnError }).toUpperCase()
+export const ssnSchema = z
+  .string({ error: 'SSN must be valid' })
+  .trim()
+  .refine(isSsnValid, { error: 'SSN must be valid' })
+  .toUpperCase()
 
 export const ssnSchemaWithAgeChecks = z
-  .string()
+  .string({ error: 'SSN must be valid' })
   .trim()
-  .refine(ssn => isSsnValid(ssn, true), { error: ssnError })
+  .refine(ssn => isSsnValid(ssn, true), { error: 'SSN over 100 years old' })
   .toUpperCase()
 
 export function isFakeYtlSsn(ssn: string): boolean {
@@ -84,7 +87,11 @@ export function isFakeYtlSsn(ssn: string): boolean {
   return fakeYtlSsnRegEx.test(ssn)
 }
 
-export const fakeYtlSsnSchema = z.string().trim().refine(isFakeYtlSsn, { error: 'Invalid fake ssn' }).toUpperCase()
+export const fakeYtlSsnSchema = z
+  .string({ error: 'Invalid YTL fake SSN' })
+  .trim()
+  .refine(isFakeYtlSsn, { error: 'Invalid YTL fake SSN' })
+  .toUpperCase()
 
 export function isValidEmail(email: string): boolean {
   const emailRegex =
