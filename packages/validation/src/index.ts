@@ -36,6 +36,8 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   }
 
   const centurySeparator21st = ['A', 'B', 'C', 'D', 'E', 'F']
+  const centurySeparator20th = ['-', 'Y', 'X', 'W', 'V', 'U']
+
   const matched = ssn
     .trim()
     .match(/^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])([\d]{3}|U[\d]{2})([\dA-Ya-y])$/)
@@ -59,7 +61,7 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
     if (specialFakeSsnToBeAllowed === ssn.trim().toUpperCase()) return true
     // Do not allow people over hundred years old (accidental use of - instead of A)
     if (centurySeparator === '+') return false
-    if (centurySeparator === '-' && birthDateYear < currentYear) return false
+    if (centurySeparator20th.includes(centurySeparator) && birthDateYear < currentYear) return false
 
     // Do not allow people not yet born
     if (centurySeparator21st.includes(centurySeparator) && birthDateYear > currentYear) return false
