@@ -103,8 +103,11 @@ describe('validation-test', () => {
     })
 
     test('rejects when person is over hundred years old, and age sanity check is on', () => {
-      assert.equal(validation.isSsnValid('100417-458U', true), false)
       assert.equal(validation.isSsnValid('231194+246w', true), false)
+      for (const separator of ['-', 'Y', 'X', 'W', 'V', 'U']) {
+        assert.equal(validation.isSsnValid(`010120${separator}123K`, true), false, separator)
+        assert.equal(validation.isSsnValid(`010180${separator}1232`, true), true, separator)
+      }
     })
 
     test('accepts person not yet born when age sanity check is off', () => {
