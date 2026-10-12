@@ -130,6 +130,7 @@ describe('validation-test', () => {
   describe('ssn schemas', () => {
     // Over hundred years old: valid without age checks, rejected with them
     const over100 = '231194+246W'
+    const malformedOver100 = '231194+24W'
 
     describe('ssnSchema', () => {
       test('trims and uppercases', () => {
@@ -157,7 +158,15 @@ describe('validation-test', () => {
       test('rejects person over hundred years old with message', () => {
         const result = validation.ssnSchemaWithAgeChecks.safeParse(over100)
         assert.equal(result.success, false)
-        assert.equal(result.error?.issues[0].message, 'SSN over 100 years old')
+        assert.notEqual(result.error?.issues[0].message, 'SSN must be valid')
+        assert.equal(result.error?.issues[0].message, 'SSN fails age checks')
+      })
+
+      test('rejects person over hundred years old with invalid SSN with a message about invalidity instead of age checks', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(malformedOver100)
+        assert.equal(result.success, false)
+        assert.equal(result.error?.issues[0].message, 'SSN must be valid')
+        assert.notEqual(result.error?.issues[0].message, 'SSN fails age checks')
       })
     })
   })
