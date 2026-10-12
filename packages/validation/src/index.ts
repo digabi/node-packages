@@ -76,7 +76,8 @@ export const ssnSchema = z.string().trim().refine(isSsnValid, { error: 'SSN must
 export const ssnSchemaWithAgeChecks = z
   .string()
   .trim()
-  .refine(ssn => isSsnValid(ssn, true), { error: 'SSN over 100 years old' })
+  .refine(isSsnValid, { error: 'SSN must be valid', abort: true })
+  .refine(ssn => isSsnValid(ssn, true), { error: 'SSN fails age checks' })
   .toUpperCase()
 
 export function isFakeYtlSsn(ssn: string): boolean {
