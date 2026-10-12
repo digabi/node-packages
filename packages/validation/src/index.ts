@@ -71,14 +71,10 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   return checkCode === checkCodes[checkCodeIndex]
 }
 
-export const ssnSchema = z
-  .string({ error: 'SSN must be valid' })
-  .trim()
-  .refine(isSsnValid, { error: 'SSN must be valid' })
-  .toUpperCase()
+export const ssnSchema = z.string().trim().refine(isSsnValid, { error: 'SSN must be valid' }).toUpperCase()
 
 export const ssnSchemaWithAgeChecks = z
-  .string({ error: 'SSN must be valid' })
+  .string()
   .trim()
   .refine(ssn => isSsnValid(ssn, true), { error: 'SSN over 100 years old' })
   .toUpperCase()
