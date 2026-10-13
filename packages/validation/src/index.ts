@@ -86,11 +86,7 @@ export function isFakeYtlSsn(ssn: string): boolean {
   return fakeYtlSsnRegEx.test(ssn)
 }
 
-export const fakeYtlSsnSchema = z
-  .string()
-  .trim()
-  .refine(isFakeYtlSsn, { error: 'Invalid YTL fake SSN' })
-  .toUpperCase()
+export const fakeYtlSsnSchema = z.string().trim().refine(isFakeYtlSsn, { error: 'Invalid YTL fake SSN' }).toUpperCase()
 
 export function isValidEmail(email: string): boolean {
   const emailRegex =
