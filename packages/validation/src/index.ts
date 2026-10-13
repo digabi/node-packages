@@ -87,7 +87,7 @@ export function isFakeYtlSsn(ssn: string): boolean {
 }
 
 export const fakeYtlSsnSchema = z
-  .string({ error: 'Invalid YTL fake SSN' })
+  .string()
   .trim()
   .refine(isFakeYtlSsn, { error: 'Invalid YTL fake SSN' })
   .toUpperCase()
