@@ -129,8 +129,9 @@ describe('validation-test', () => {
 
   describe('ssn schemas', () => {
     // Over hundred years old: valid without age checks, rejected with them
-    const over100 = '231194+246W'
-    const malformedOver100 = '231194+24W'
+    const over100 = ' \t231194+246W\n '
+    const malformedOver100 = '\n 231194+24W \t'
+    const over100fakeYTL = '\n 231194+U46W \t'
 
     describe('ssnSchema', () => {
       test('trims and uppercases', () => {
@@ -146,6 +147,13 @@ describe('validation-test', () => {
 
       test('accepts person over hundred years old', () => {
         assert.equal(validation.ssnSchema.safeParse(over100).success, true)
+      })
+
+      test('accepts fake YTL SSN', () => {
+        let result = validation.ssnSchema.safeParse('\t\n231194-u46w ')
+        assert.equal(result.success, true)
+        result = validation.ssnSchema.safeParse(' 231101au46w\t\n')
+        assert.equal(result.success, true)
       })
     })
 
@@ -168,6 +176,13 @@ describe('validation-test', () => {
         assert.equal(result.error?.issues[0].message, 'SSN must be valid')
         assert.notEqual(result.error?.issues[0].message, 'SSN fails age checks')
       })
+
+      test('rejects person over 100 years old with fake YTL SSN with message', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(over100fakeYTL)
+        assert.equal(result.success, false)
+        assert.notEqual(result.error?.issues[0].message, 'SSN must be valid')
+        assert.equal(result.error?.issues[0].message, 'SSN fails age checks')
+      })
     })
   })
 
@@ -189,6 +204,13 @@ describe('validation-test', () => {
       const result = validation.fakeYtlSsnSchema.safeParse('231194-246W')
       assert.equal(result.success, false)
       assert.equal(result.error?.issues[0].message, 'Invalid YTL fake SSN')
+    })
+
+    test('accepts fake SSN even if U is lowercase', () => {
+      let result = validation.fakeYtlSsnSchema.safeParse('200102au00a')
+      assert.equal(result.success, true)
+      result = validation.fakeYtlSsnSchema.safeParse('200198-u00a')
+      assert.equal(result.success, true)
     })
   })
 
