@@ -43,12 +43,9 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
     .match(/^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])([\d]{3}|[Uu][\d]{2})([\dA-Ya-y])$/)
   if (!matched) return false
 
-  const individualNumber = matched[3]
-  // Special YTL-defined fake ssn. checkCode calculations won't make sense for these
-  if (individualNumber.startsWith('U')) return true
-
   const birthDate = matched[1]
   const centurySeparator = matched[2].toUpperCase()
+  const individualNumber = matched[3]
   const checkCode = matched[4].toUpperCase()
 
   const birthDateYear = Number(birthDate.slice(-2))
@@ -66,6 +63,9 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
     // Do not allow people not yet born
     if (centurySeparator21st.includes(centurySeparator) && birthDateYear > currentYear) return false
   }
+
+  // Special YTL-defined fake ssn. checkCode calculations won't make sense for these
+  if (isFakeYtlSsn(ssn)) return true
 
   const checkCodeIndex = parseInt(birthDate.concat(individualNumber), 10) % 31
   return checkCode === checkCodes[checkCodeIndex]
