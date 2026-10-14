@@ -3,162 +3,245 @@ import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
 
 describe('validation-test', () => {
-  describe('validating ssn', () => {
-    test('accepts valid ssn', () => {
-      assert.equal(validation.isSsnValid('231194-246W'), true)
+  describe('validation functions', () => {
+    describe('isSsnValid', () => {
+      test('accepts valid ssn', () => {
+        assert.equal(validation.isSsnValid('231194-246W'), true)
+      })
+
+      test('accepts check char in lower case', () => {
+        assert.equal(validation.isSsnValid('231194-246w'), true)
+      })
+
+      test('accepts ssn not from 20th century', () => {
+        assert.equal(validation.isSsnValid('231194+246w'), true)
+        assert.equal(validation.isSsnValid('010601A0102'), true)
+        assert.equal(validation.isSsnValid('010601a0102'), true)
+      })
+
+      test('accepts ssn from 20th century', () => {
+        assert.equal(validation.isSsnValid('010103A2465'), true)
+        assert.equal(validation.isSsnValid('010280Y246u'), true)
+        assert.equal(validation.isSsnValid('010280X246u'), true)
+        assert.equal(validation.isSsnValid('010280W246u'), true)
+        assert.equal(validation.isSsnValid('010280V246u'), true)
+        assert.equal(validation.isSsnValid('010280U246u'), true)
+        assert.equal(validation.isSsnValid('010280G246u'), false)
+        assert.equal(validation.isSsnValid('010280y246u'), true)
+        assert.equal(validation.isSsnValid('010280x246u'), true)
+        assert.equal(validation.isSsnValid('010280w246u'), true)
+        assert.equal(validation.isSsnValid('010280v246u'), true)
+        assert.equal(validation.isSsnValid('010280u246u'), true)
+        assert.equal(validation.isSsnValid('010280g246u'), false)
+      })
+
+      test('accepts ssn from 21st century', () => {
+        assert.equal(validation.isSsnValid('010103A2465'), true)
+        assert.equal(validation.isSsnValid('010103B2465'), true)
+        assert.equal(validation.isSsnValid('010103C2465'), true)
+        assert.equal(validation.isSsnValid('010103D2465'), true)
+        assert.equal(validation.isSsnValid('010103E2465'), true)
+        assert.equal(validation.isSsnValid('010103F2465'), true)
+        assert.equal(validation.isSsnValid('010103a2465'), true)
+        assert.equal(validation.isSsnValid('010103b2465'), true)
+        assert.equal(validation.isSsnValid('010103c2465'), true)
+        assert.equal(validation.isSsnValid('010103d2465'), true)
+        assert.equal(validation.isSsnValid('010103e2465'), true)
+        assert.equal(validation.isSsnValid('010103f2465'), true)
+        assert.equal(validation.isSsnValid('010103Z2465'), false)
+        assert.equal(validation.isSsnValid('010103z2465'), false)
+      })
+
+      test('accepts when check char is a number', () => {
+        assert.equal(validation.isSsnValid('130672-4400'), true)
+      })
+
+      test('accepts ssn with leading and trailing whitespace ', () => {
+        assert.equal(validation.isSsnValid(' 130672-4400\t\n'), true)
+      })
+
+      test('rejects when check char is wrong', () => {
+        assert.equal(validation.isSsnValid('010601A010W'), false)
+      })
+
+      test('rejects when check char is missing', () => {
+        assert.equal(validation.isSsnValid('010601A010'), false)
+      })
+
+      test('rejects when century separator is missing', () => {
+        assert.equal(validation.isSsnValid('0106010102'), false)
+      })
+
+      test('rejects when century separator is invalid', () => {
+        assert.equal(validation.isSsnValid('0907184X22N'), false)
+        assert.equal(validation.isSsnValid('0907184x22N'), false)
+      })
+
+      test('rejects when there are extraneous alphabetical characters', () => {
+        assert.equal(validation.isSsnValid('020698-01IS'), false)
+      })
+
+      test('rejects when ssn is too long', () => {
+        assert.equal(validation.isSsnValid('130672-44001'), false)
+      })
+
+      test('rejects when ssn is too short', () => {
+        assert.equal(validation.isSsnValid('130672-44'), false)
+      })
+
+      test('rejects when ssn length is valid but checksum char is whitespace', () => {
+        assert.equal(validation.isSsnValid('130672-44 '), false)
+      })
+
+      test('accepts 010101-0101 as special case', () => {
+        assert.equal(validation.isSsnValid('010101-0101'), true)
+        assert.equal(validation.isSsnValid('010101-0101', true), true)
+      })
+
+      test('accepts when person is over hundred years old, and age sanity check is off', () => {
+        assert.equal(validation.isSsnValid('100417-458U'), true)
+        assert.equal(validation.isSsnValid('231194+246w'), true)
+      })
+
+      test('rejects when person is over hundred years old, and age sanity check is on', () => {
+        assert.equal(validation.isSsnValid('231194+246w', true), false)
+        for (const separator of ['-', 'Y', 'X', 'W', 'V', 'U']) {
+          assert.equal(validation.isSsnValid(`010120${separator}123K`, true), false, separator)
+          assert.equal(validation.isSsnValid(`010180${separator}1232`, true), true, separator)
+        }
+      })
+
+      test('accepts person not yet born when age sanity check is off', () => {
+        assert.equal(validation.isSsnValid('071144A239E'), true)
+      })
+
+      test('rejects person not yet born when age sanity check is on', () => {
+        assert.equal(validation.isSsnValid('071144A239E', true), false)
+      })
+
+      test('Accepts an artificial ssn (last part starts with 9)', () => {
+        assert.equal(validation.isSsnValid('010697-9184'), true)
+      })
+
+      test('Accepts a special YTL-defined fake ssn (checkCode calculation is skipped)', () => {
+        assert.equal(validation.isSsnValid('210999-U097'), true)
+      })
     })
 
-    test('accepts check char in lower case', () => {
-      assert.equal(validation.isSsnValid('231194-246w'), true)
+    describe('isFakeYtlSsn', () => {
+      test('detects "A" century seperator fake ssn', () => assert.equal(validation.isFakeYtlSsn('200102AU000'), true))
+
+      test('detects "-" century seperator fake ssn', () => assert.equal(validation.isFakeYtlSsn('200192-U000'), true))
+
+      test('rejects valid SSN', () => assert.equal(validation.isFakeYtlSsn('231194-246W'), false))
     })
 
-    test('accepts ssn not from 20th century', () => {
-      assert.equal(validation.isSsnValid('231194+246w'), true)
-      assert.equal(validation.isSsnValid('010601A0102'), true)
-      assert.equal(validation.isSsnValid('010601a0102'), true)
-    })
+    describe('isValidEmail', () => {
+      test('Rejects invalid student email', () => {
+        const invalidEmails = [
+          'testuserexample.com',
+          'testuserexample.com...',
+          'tesdkjgqjeklqjwköejökqwjegökljeqwefiqewifqhweufhqowiuhfoqiuwehfoiuqwhefoiuqwhefoiuqhweofiuhqwoiuehfoqiuwehfouiqwehfoiuqwhefoiuqhweoiufhqwouiefhoqiuwehfoiquwehfoiuqhweiufhqwoieufhoqiuwehfoiuqhweouuiuweiqutqiopwuetiouqwepiotuqpwioeutpqwoeutpoqiwuetpoqiwuetpoquweodhlskjhfajdhlajsdhgituqwpoefiht@userexample.com',
+          'erkki.emptysubdomain@.foo.bar',
+          'test.user@@example.com',
+          'test..user@example.com',
+          'test.user@',
+          '.test.user@example.com',
+          ';test.user@example.com',
+          'john.käärä@example.com',
+          {} as string
+        ]
 
-    test('accepts ssn from 20th century', () => {
-      assert.equal(validation.isSsnValid('010103A2465'), true)
-      assert.equal(validation.isSsnValid('010280Y246u'), true)
-      assert.equal(validation.isSsnValid('010280X246u'), true)
-      assert.equal(validation.isSsnValid('010280W246u'), true)
-      assert.equal(validation.isSsnValid('010280V246u'), true)
-      assert.equal(validation.isSsnValid('010280U246u'), true)
-      assert.equal(validation.isSsnValid('010280G246u'), false)
-      assert.equal(validation.isSsnValid('010280y246u'), true)
-      assert.equal(validation.isSsnValid('010280x246u'), true)
-      assert.equal(validation.isSsnValid('010280w246u'), true)
-      assert.equal(validation.isSsnValid('010280v246u'), true)
-      assert.equal(validation.isSsnValid('010280u246u'), true)
-      assert.equal(validation.isSsnValid('010280g246u'), false)
-    })
+        for (const email of invalidEmails) {
+          assert.equal(validation.isValidEmail(email), false)
+        }
+      })
 
-    test('accepts ssn from 21st century', () => {
-      assert.equal(validation.isSsnValid('010103A2465'), true)
-      assert.equal(validation.isSsnValid('010103B2465'), true)
-      assert.equal(validation.isSsnValid('010103C2465'), true)
-      assert.equal(validation.isSsnValid('010103D2465'), true)
-      assert.equal(validation.isSsnValid('010103E2465'), true)
-      assert.equal(validation.isSsnValid('010103F2465'), true)
-      assert.equal(validation.isSsnValid('010103a2465'), true)
-      assert.equal(validation.isSsnValid('010103b2465'), true)
-      assert.equal(validation.isSsnValid('010103c2465'), true)
-      assert.equal(validation.isSsnValid('010103d2465'), true)
-      assert.equal(validation.isSsnValid('010103e2465'), true)
-      assert.equal(validation.isSsnValid('010103f2465'), true)
-      assert.equal(validation.isSsnValid('010103Z2465'), false)
-      assert.equal(validation.isSsnValid('010103z2465'), false)
-    })
+      test('accepts valid email', () => {
+        const validEmails = ['', 'a@a.com', 'test@example.com']
 
-    test('accepts when check char is a number', () => {
-      assert.equal(validation.isSsnValid('130672-4400'), true)
-    })
-
-    test('accepts ssn with leading and trailing whitespace ', () => {
-      assert.equal(validation.isSsnValid(' 130672-4400\t\n'), true)
-    })
-
-    test('rejects when check char is wrong', () => {
-      assert.equal(validation.isSsnValid('010601A010W'), false)
-    })
-
-    test('rejects when check char is missing', () => {
-      assert.equal(validation.isSsnValid('010601A010'), false)
-    })
-
-    test('rejects when century separator is missing', () => {
-      assert.equal(validation.isSsnValid('0106010102'), false)
-    })
-
-    test('rejects when century separator is invalid', () => {
-      assert.equal(validation.isSsnValid('0907184X22N'), false)
-      assert.equal(validation.isSsnValid('0907184x22N'), false)
-    })
-
-    test('rejects when there are extraneous alphabetical characters', () => {
-      assert.equal(validation.isSsnValid('020698-01IS'), false)
-    })
-
-    test('rejects when ssn is too long', () => {
-      assert.equal(validation.isSsnValid('130672-44001'), false)
-    })
-
-    test('rejects when ssn is too short', () => {
-      assert.equal(validation.isSsnValid('130672-44'), false)
-    })
-
-    test('rejects when ssn length is valid but checksum char is whitespace', () => {
-      assert.equal(validation.isSsnValid('130672-44 '), false)
-    })
-
-    test('accepts 010101-0101 as special case', () => {
-      assert.equal(validation.isSsnValid('010101-0101'), true)
-      assert.equal(validation.isSsnValid('010101-0101', true), true)
-    })
-
-    test('accepts when person is over hundred years old, and age sanity check is off', () => {
-      assert.equal(validation.isSsnValid('100417-458U'), true)
-      assert.equal(validation.isSsnValid('231194+246w'), true)
-    })
-
-    test('rejects when person is over hundred years old, and age sanity check is on', () => {
-      assert.equal(validation.isSsnValid('100417-458U', true), false)
-      assert.equal(validation.isSsnValid('231194+246w', true), false)
-    })
-
-    test('accepts person not yet born when age sanity check is off', () => {
-      assert.equal(validation.isSsnValid('071144A239E'), true)
-    })
-
-    test('rejects person not yet born when age sanity check is on', () => {
-      assert.equal(validation.isSsnValid('071144A239E', true), false)
-    })
-
-    test('Accepts an artificial ssn (last part starts with 9)', () => {
-      assert.equal(validation.isSsnValid('010697-9184'), true)
-    })
-
-    test('Accepts a special YTL-defined fake ssn (checkCode calculation is skipped)', () => {
-      assert.equal(validation.isSsnValid('210999-U097'), true)
+        for (const email of validEmails) {
+          assert.equal(validation.isValidEmail(email), true)
+        }
+      })
     })
   })
+  describe('ssn schemas', () => {
+    // Over hundred years old: valid without age checks, rejected with them
+    const over100 = ' \t231194+246W\n '
+    const malformedOver100 = '\n 231194+24W \t'
+    const over100fakeYTL = '\n 231194+U46W \t'
 
-  describe('isFakeYtlSsn', () => {
-    test('detects "A" century seperator fake ssn', () => assert.equal(validation.isFakeYtlSsn('200102AU000'), true))
+    describe('ssnSchema', () => {
+      test('trims and uppercases', () => {
+        const result = validation.ssnSchema.safeParse(' 231194-246w\t\n')
+        assert.deepEqual(result, { success: true, data: '231194-246W' })
+      })
 
-    test('detects "-" century seperator fake ssn', () => assert.equal(validation.isFakeYtlSsn('200192-U000'), true))
+      test('rejects invalid ssn with message', () => {
+        const result = validation.ssnSchema.safeParse('231194-246X')
+        assert.equal(result.success, false)
+        assert.equal(result.error?.issues[0].message, 'SSN must be valid')
+      })
 
-    test('rejects valid ssn', () => assert.equal(validation.isFakeYtlSsn('231194-246W'), false))
-  })
+      test('accepts person over hundred years old', () => {
+        assert.equal(validation.ssnSchema.safeParse(over100).success, true)
+      })
 
-  describe('isValidEmail', () => {
-    test('Rejects invalid student email', () => {
-      const invalidEmails = [
-        'testuserexample.com',
-        'testuserexample.com...',
-        'tesdkjgqjeklqjwköejökqwjegökljeqwefiqewifqhweufhqowiuhfoqiuwehfoiuqwhefoiuqwhefoiuqhweofiuhqwoiuehfoqiuwehfouiqwehfoiuqwhefoiuqhweoiufhqwouiefhoqiuwehfoiquwehfoiuqhweiufhqwoieufhoqiuwehfoiuqhweouuiuweiqutqiopwuetiouqwepiotuqpwioeutpqwoeutpoqiwuetpoqiwuetpoquweodhlskjhfajdhlajsdhgituqwpoefiht@userexample.com',
-        'erkki.emptysubdomain@.foo.bar',
-        'test.user@@example.com',
-        'test..user@example.com',
-        'test.user@',
-        '.test.user@example.com',
-        ';test.user@example.com',
-        'john.käärä@example.com',
-        {} as string
-      ]
-
-      for (const email of invalidEmails) {
-        assert.equal(validation.isValidEmail(email), false)
-      }
+      test('accepts fake YTL SSN', () => {
+        let result = validation.ssnSchema.safeParse('\t\n231194-u46w ')
+        assert.equal(result.success, true)
+        result = validation.ssnSchema.safeParse(' 231101au46w\t\n')
+        assert.equal(result.success, true)
+      })
     })
 
-    test('accepts valid email', () => {
-      const validEmails = ['', 'a@a.com', 'test@example.com']
+    describe('ssnSchemaWithAgeChecks', () => {
+      test('trims and uppercases', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(' 010601a0102 ')
+        assert.deepEqual(result, { success: true, data: '010601A0102' })
+      })
 
-      for (const email of validEmails) {
-        assert.equal(validation.isValidEmail(email), true)
-      }
+      test('rejects person over hundred years old with message', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(over100)
+        assert.equal(result.success, false)
+        assert.notEqual(result.error?.issues[0].message, 'SSN must be valid')
+        assert.equal(result.error?.issues[0].message, 'SSN fails age checks')
+      })
+
+      test('rejects person over hundred years old with invalid SSN with a message about invalidity instead of age checks', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(malformedOver100)
+        assert.equal(result.success, false)
+        assert.equal(result.error?.issues[0].message, 'SSN must be valid')
+        assert.notEqual(result.error?.issues[0].message, 'SSN fails age checks')
+      })
+
+      test('rejects person over 100 years old with fake YTL SSN with message', () => {
+        const result = validation.ssnSchemaWithAgeChecks.safeParse(over100fakeYTL)
+        assert.equal(result.success, false)
+        assert.notEqual(result.error?.issues[0].message, 'SSN must be valid')
+        assert.equal(result.error?.issues[0].message, 'SSN fails age checks')
+      })
+    })
+
+    describe('fakeYtlSsnSchema', () => {
+      test('trims and uppercases', () => {
+        const result = validation.fakeYtlSsnSchema.safeParse(' 200102AU00a\n')
+        assert.deepEqual(result, { success: true, data: '200102AU00A' })
+      })
+
+      test('rejects non-fake ssn with message', () => {
+        const result = validation.fakeYtlSsnSchema.safeParse('231194-246W')
+        assert.equal(result.success, false)
+        assert.equal(result.error?.issues[0].message, 'Invalid YTL fake SSN')
+      })
+
+      test('accepts fake SSN even if U is lowercase', () => {
+        let result = validation.fakeYtlSsnSchema.safeParse('200102au00a')
+        assert.equal(result.success, true)
+        result = validation.fakeYtlSsnSchema.safeParse('200198-u00a')
+        assert.equal(result.success, true)
+      })
     })
   })
 })
