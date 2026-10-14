@@ -3,7 +3,7 @@ import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
 
 describe('validation-test', () => {
-  describe('validating ssn', () => {
+  describe('isSsnValid', () => {
     test('accepts valid ssn', () => {
       assert.equal(validation.isSsnValid('231194-246W'), true)
     })
