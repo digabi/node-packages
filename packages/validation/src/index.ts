@@ -40,7 +40,7 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
 
   const matched = ssn
     .trim()
-    .match(/^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])([\d]{3}|U[\d]{2})([\dA-Ya-y])$/)
+    .match(/^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])([\d]{3}|[Uu][\d]{2})([\dA-Ya-y])$/)
   if (!matched) return false
 
   const individualNumber = matched[3]
@@ -81,7 +81,7 @@ export const ssnSchemaWithAgeChecks = z
   .toUpperCase()
 
 export function isFakeYtlSsn(ssn: string): boolean {
-  const fakeYtlSsnRegEx = /\d{6}(AU|-U)\d{2}\w$/
+  const fakeYtlSsnRegEx = /^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])[Uu][\d]{2}([\dA-Ya-y])$/
 
   return fakeYtlSsnRegEx.test(ssn)
 }
