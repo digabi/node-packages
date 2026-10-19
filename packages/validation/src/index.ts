@@ -40,7 +40,8 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
 
   const matched = ssn
     .trim()
-    .match(/^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])([\d]{3}|[Uu][\d]{2})([\dA-Ya-y])$/)
+    .toUpperCase()
+    .match(/^([0-9]{6})([-+]|[A-F]|Y|X|W|V|U)([\d]{3}|[U][\d]{2})([\dA-Y])$/)
   if (!matched) return false
 
   const birthDate = matched[1]
@@ -81,9 +82,9 @@ export const ssnSchemaWithAgeChecks = z
   .toUpperCase()
 
 export function isFakeYtlSsn(ssn: string): boolean {
-  const fakeYtlSsnRegEx = /^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])[Uu][\d]{2}([\dA-Ya-y])$/
+  const fakeYtlSsnRegEx = /^([0-9]{6})([-+]|[A-F]|Y|X|W|V|U)[U][\d]{2}([\dA-Y])$/
 
-  return fakeYtlSsnRegEx.test(ssn)
+  return fakeYtlSsnRegEx.test(ssn.toUpperCase())
 }
 
 export const fakeYtlSsnSchema = z.string().trim().toUpperCase().refine(isFakeYtlSsn, { error: 'Invalid YTL fake SSN' })
