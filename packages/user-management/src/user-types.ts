@@ -1,6 +1,6 @@
 import z from 'zod'
 import { RoleSchema } from './validations'
-import { zodSsn } from '@digabi/validation'
+import { ssnSchema } from '@digabi/validation'
 import { PermissionGrantSchema } from './permissions'
 
 export type Role = z.infer<typeof RoleSchema>
@@ -19,8 +19,8 @@ export const PrincipalOrganizationSchema = z.object({
 export type Impersonation = z.infer<typeof ImpersonationSchema>
 export const ImpersonationSchema = z.object({
   id: z.uuid(),
-  realSsn: zodSsn,
-  impersonatedSsn: zodSsn.or(z.literal('')),
+  realSsn: ssnSchema,
+  impersonatedSsn: ssnSchema.or(z.literal('')),
   explanation: z.string(),
   validityStart: z.string(),
   validityEnd: z.string(),
@@ -32,7 +32,7 @@ export const MockUserSchema = z.object({
   username: z.string(),
   lastname: z.string(),
   firstname: z.string(),
-  ssn: zodSsn,
+  ssn: ssnSchema,
   henkiloOid: z.string(),
   principalOrganization: z.array(PrincipalOrganizationSchema),
   roles: z.array(z.object({ role: z.string() })).optional()
@@ -143,7 +143,7 @@ export const UserSchoolSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>
 export const UserSchema = StoredUserDetailsSchema.extend({
-  ssn: zodSsn,
+  ssn: ssnSchema,
   userAccountId: z.string(),
   schools: z.array(UserSchoolSchema),
   censoring: CensoringSchema.optional(),
@@ -152,7 +152,7 @@ export const UserSchema = StoredUserDetailsSchema.extend({
 
 export type UserToUpsert = z.infer<typeof UserToUpsertSchema>
 export const UserToUpsertSchema = UserDetailsSchema.extend({
-  ssn: zodSsn,
+  ssn: ssnSchema,
   schools: z.array(UserSchoolToUpsertSchema),
   censoring: CensoringSchema.optional()
 }).strict()
@@ -185,7 +185,7 @@ export const UserForAuthenticationSchema = z.xor([UserSchema, ImpersonatedUserSc
 export type UserWithSchoolRoleAndSchoolId = z.infer<typeof UserWithSchoolRoleAndSchoolIdSchema>
 export const UserWithSchoolRoleAndSchoolIdSchema = z.object({
   userAccountId: z.string(),
-  ssn: zodSsn,
+  ssn: ssnSchema,
   userDetails: UserDetailsSchema,
   name: z.string(),
   allowedExams: z.array(z.string()),

@@ -36,18 +36,17 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   }
 
   const centurySeparator21st = ['A', 'B', 'C', 'D', 'E', 'F']
-  const specialFakeSsnToBeAllowed = '010101-0101'
+  const centurySeparator20th = ['-', 'Y', 'X', 'W', 'V', 'U']
+
   const matched = ssn
     .trim()
-    .match(/^([0-9]{6})([-+]|[A-F]|[a-f]|[Yy]|[Xx]|[Ww]|[Vv]|[Uu])([\d]{3}|U[\d]{2})([\dA-Ya-y])$/)
+    .toUpperCase()
+    .match(/^([0-9]{6})([-+]|[A-F]|Y|X|W|V|U)([\d]{3}|[U][\d]{2})([\dA-Y])$/)
   if (!matched) return false
-
-  const individualNumber = matched[3]
-  // Special YTL-defined fake ssn. checkCode calculations won't make sense for these
-  if (individualNumber.startsWith('U')) return true
 
   const birthDate = matched[1]
   const centurySeparator = matched[2].toUpperCase()
+  const individualNumber = matched[3]
   const checkCode = matched[4].toUpperCase()
 
   const birthDateYear = Number(birthDate.slice(-2))
@@ -56,26 +55,39 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   // We don't want to always do these checks, for example if we validate
   // data which is not related to current matricular exams
   if (ageSanityCheckForExams) {
-    if (ssn.trim() === specialFakeSsnToBeAllowed) return true
+    const specialFakeSsnToBeAllowed = '010101-0101'
+    if (specialFakeSsnToBeAllowed === ssn.trim().toUpperCase()) return true
     // Do not allow people over hundred years old (accidental use of - instead of A)
     if (centurySeparator === '+') return false
-    if (centurySeparator === '-' && birthDateYear < currentYear) return false
+    if (centurySeparator20th.includes(centurySeparator) && birthDateYear < currentYear) return false
 
     // Do not allow people not yet born
     if (centurySeparator21st.includes(centurySeparator) && birthDateYear > currentYear) return false
   }
 
+  // Special YTL-defined fake ssn. checkCode calculations won't make sense for these
+  if (isFakeYtlSsn(ssn)) return true
+
   const checkCodeIndex = parseInt(birthDate.concat(individualNumber), 10) % 31
   return checkCode === checkCodes[checkCodeIndex]
 }
 
-export const zodSsn = z.string().refine(isSsnValid, { message: 'Invalid ssn' }).toUpperCase()
+export const ssnSchema = z.string().trim().toUpperCase().refine(isSsnValid, { error: 'SSN must be valid' })
+
+export const ssnSchemaWithAgeChecks = z
+  .string()
+  .trim()
+  .refine(isSsnValid, { error: 'SSN must be valid', abort: true })
+  .refine(ssn => isSsnValid(ssn, true), { error: 'SSN fails age checks' })
+  .toUpperCase()
 
 export function isFakeYtlSsn(ssn: string): boolean {
-  const fakeYtlSsnRegEx = /\d{6}(AU|-U)\d{2}\w$/
+  const fakeYtlSsnRegEx = /^([0-9]{6})([-+]|[A-F]|Y|X|W|V|U)[U][\d]{2}([\dA-Y])$/
 
-  return fakeYtlSsnRegEx.test(ssn)
+  return fakeYtlSsnRegEx.test(ssn.toUpperCase())
 }
+
+export const fakeYtlSsnSchema = z.string().trim().toUpperCase().refine(isFakeYtlSsn, { error: 'Invalid YTL fake SSN' })
 
 export function isValidEmail(email: string): boolean {
   const emailRegex =
