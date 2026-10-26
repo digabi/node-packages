@@ -126,6 +126,10 @@ describe('validation-test', () => {
       test('Accepts a special YTL-defined fake ssn (checkCode calculation is skipped)', () => {
         assert.equal(validation.isSsnValid('210999-U097'), true)
       })
+
+      test('Rejects impossible birthdates', () => {
+        assert.equal(validation.isSsnValid('888888-8883'), false)
+      })
     })
 
     describe('isFakeYtlSsn', () => {
