@@ -52,6 +52,11 @@ export function isSsnValid(ssn: string, ageSanityCheckForExams = false): boolean
   const birthDateYear = Number(birthDate.slice(-2))
   const currentYear = Number(new Date().getFullYear().toString().slice(-2))
 
+  const month = Number(birthDate.slice(2, 4))
+  const day = Number(birthDate.slice(0, 2))
+  if (month > 12) return false
+  if (day > 31) return false
+
   // We don't want to always do these checks, for example if we validate
   // data which is not related to current matricular exams
   if (ageSanityCheckForExams) {
