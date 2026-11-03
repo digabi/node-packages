@@ -54,7 +54,7 @@ describe('examination-period', () => {
         assert.equal(getCurrentExaminationPeriod(), '2012K')
       })
 
-      test('should use the clock when process does not exist, as in frontend bundles', async context => {
+      test('should use the clock when process does not exist, because in frontend the browser does not have node.js', async context => {
         context.mock.timers.enable({ apis: ['Date'], now: new Date(2012, 0, 15) })
         const { getCurrentExaminationPeriod } = await import('../src/examination-period.js')
 
